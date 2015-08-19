@@ -12,13 +12,13 @@ public:
 
 	~Elemento()
 	{
-        delete info;
+		delete info;
 	}
 
 	Elemento<T>* getProximo() const
-	{
-        return _next;
-    }
+    			{
+		return _next;
+    			}
 
 	T getInfo() const
 	{
@@ -29,7 +29,6 @@ public:
 	{
 		_next = next;
 	}
-
 };
 
 #endif

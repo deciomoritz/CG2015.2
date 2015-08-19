@@ -1,10 +1,12 @@
 #include <iostream>
 
+#include "include/ListaEnc.hpp"
+
 using namespace std;
 
 int main() {
 
-	ListaEnc<int> lista;
+	ListaEnc<int> lista();
 
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;

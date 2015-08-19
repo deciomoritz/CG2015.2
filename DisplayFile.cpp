@@ -5,14 +5,10 @@
  *      Author: luiz
  */
 
-#include "DisplayFile.hpp"
+#include "include/DisplayFile.hpp"
 
 DisplayFile::DisplayFile() {
-	// TODO Auto-generated constructor stub
-
 }
 
 DisplayFile::~DisplayFile() {
-	// TODO Auto-generated destructor stub
 }
-

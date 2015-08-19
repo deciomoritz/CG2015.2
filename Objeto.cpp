@@ -5,14 +5,5 @@
  *      Author: luiz
  */
 
-#include "Objeto.hpp"
-
-Objeto::Objeto() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Objeto::~Objeto() {
-	// TODO Auto-generated destructor stub
-}
+#include "include/Objeto.hpp"
 

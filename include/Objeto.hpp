@@ -5,13 +5,20 @@
 #include "Coordenadas.hpp"
 
 using namespace std;
+
 class Objeto {
+
 private:
 	string nome;
 	ListaEnc<Coordenadas> pontos;
+
 public:
-	Objeto(string nome);
-	virtual ~Objeto();
+	Objeto(string nome){
+		this->nome = nome;
+	}
+
+	virtual ~Objeto(){
+	}
 };
 
 #endif /* OBJETO_HPP_ */

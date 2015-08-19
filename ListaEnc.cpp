@@ -1,4 +1,6 @@
-#include "ListaEnc.hpp"
+#include "include/ListaEnc.hpp"
+#include <stdexcept>
+
 using namespace std;
 
 template<typename T> ListaEnc<T>::ListaEnc(): head(0), size(0){
@@ -6,8 +8,8 @@ template<typename T> ListaEnc<T>::ListaEnc(): head(0), size(0){
 
 template<typename T> void ListaEnc<T>::adicionaNoInicio(const T& dado){
 	Elemento<T> * novo = new Elemento<T>(dado);
-	//	if (novo == 0)
-	//  	throw std::runtime_error("Impossível adicionar nova transação! Erro de lista cheia!");
+		if (novo == 0)
+			throw std::runtime_error("Impossível adicionar nova transação! Erro de lista cheia!");
 	size++;
 	if (head == 0) {
 		head = novo;
@@ -30,7 +32,7 @@ template<typename T> T ListaEnc<T>::retiraDoInicio(){
 		delete aux;
 		return dado;
 	}
-	//throw std::runtime_error("Tentando remover elemento de lista vazia");
+	throw std::runtime_error("Tentando remover elemento de lista vazia");
 }
 
 template<typename T> void ListaEnc<T>::eliminaDoInicio(){
@@ -47,8 +49,8 @@ template<typename T> void ListaEnc<T>::eliminaDoInicio(){
 }
 
 template<typename T> void ListaEnc<T>::adicionaNaPosicao(const T& dado, int pos){
-	//	if (pos < 0 || pos > size)
-	//		throw std::runtime_error("Deu merda");
+		if (pos < 0 || pos > size)
+			throw std::runtime_error("Deu merda");
 
 	if (pos == 0){
 		adicionarNoInicio(dado);
@@ -57,8 +59,8 @@ template<typename T> void ListaEnc<T>::adicionaNaPosicao(const T& dado, int pos)
 	Elemento<T> *novo = new Elemento<T>(dado);
 	Elemento<T> *aux;
 
-	//	if (novo == 0)
-	//		throw std::runtime_error("Deu merda");
+		if (novo == 0)
+			throw std::runtime_error("Deu merda");
 	aux = head;
 	for (int i = 1; i < pos; i++)
 		aux = aux->proximo;
@@ -93,8 +95,8 @@ template<typename T> bool ListaEnc<T>::contem(const T& dado){
 }
 
 template<typename T> T ListaEnc<T>::retiraDaPosicao(int pos){
-	//	if (pos >= size || pos < 0)
-	//		throw std::runtime_error("Posição inválida");
+		if (pos >= size || pos < 0)
+			throw std::runtime_error("Posição inválida");
 
 	Elemento<T> *aux, *eliminar;
 	T retorno;
