@@ -6,9 +6,8 @@ private:
 	Elemento<T>* head;
 	int size;
 public:
-	ListaEnc(){
+	ListaEnc() : size(0), head(0){}
 
-	}
 	~ListaEnc(){
 
 	}
