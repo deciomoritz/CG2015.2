@@ -1,10 +1,11 @@
 class Ponto: public Objeto {
 
 using std::string;
-
+using Objeto::pontos;
 public:
-	Ponto(string nome, Coordenadas a){
-
+	Ponto(string name, Coordenada a){
+		nome = name;
+		insert_gambiarra(a);
 	}
 	virtual ~Ponto();
 };
