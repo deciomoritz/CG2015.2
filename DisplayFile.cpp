@@ -12,3 +12,11 @@ DisplayFile::DisplayFile() {
 
 DisplayFile::~DisplayFile() {
 }
+
+void DisplayFile::inserirObjeto(Objeto obj){
+//	objetos.adiciona(obj);
+}
+
+void DisplayFile::removerObjeto(Objeto obj){
+//	objetos.retiraEspecifico(obj);
+}
