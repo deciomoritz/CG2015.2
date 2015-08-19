@@ -9,7 +9,6 @@ public:
 	ListaEnc() : size(0), head(0){}
 
 	~ListaEnc(){
-
 	}
 	// inicio
 	void adicionaNoInicio(const T& dado);
