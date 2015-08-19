@@ -6,8 +6,12 @@ private:
 	Elemento<T>* head;
 	int size;
 public:
-	ListaEnc();
-	~ListaEnc();
+	ListaEnc(){
+
+	}
+	~ListaEnc(){
+
+	}
 	// inicio
 	void adicionaNoInicio(const T& dado);
 	T retiraDoInicio();

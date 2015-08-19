@@ -3,9 +3,6 @@
 
 using namespace std;
 
-template<typename T> ListaEnc<T>::ListaEnc(): head(0), size(0){
-}
-
 template<typename T> void ListaEnc<T>::adicionaNoInicio(const T& dado){
 	Elemento<T> * novo = new Elemento<T>(dado);
 		if (novo == 0)
