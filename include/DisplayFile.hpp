@@ -9,13 +9,11 @@
 #define DISPLAYFILE_HPP_
 #include "Objeto.hpp"
 
-class DisplayFile {
-private:
-	ListaEnc<Objeto> _objetos;
+class DisplayFile : ListaEnc<Objeto>{
 public:
-	DisplayFile();
-	ListaEnc<Objeto>* objetos();
-	void desenha(DisplayFile* displayFile);
+	DisplayFile(){
+
+	}
 	virtual ~DisplayFile();
 };
 

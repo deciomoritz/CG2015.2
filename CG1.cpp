@@ -35,6 +35,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget, gpointer data
 }
 
 int main(int argc, char* argv[]) {
+
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();
