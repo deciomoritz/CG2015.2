@@ -7,16 +7,6 @@
 
 #include "include/DisplayFile.hpp"
 
-DisplayFile::DisplayFile() {
-}
-
-DisplayFile::~DisplayFile() {
-}
-
 void DisplayFile::desenha(DisplayFile* displayFile){
 
-}
-
-ListaEnc<Objeto>* DisplayFile::objetos(){
-	return &_objetos;
 }

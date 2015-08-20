@@ -189,10 +189,9 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkFixed" id="fixed2">
+              <object class="GtkDrawingArea" id="drawingarea1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">172</property>
               </object>
             </child>
           </object>

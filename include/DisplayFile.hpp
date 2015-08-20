@@ -11,10 +11,15 @@
 
 class DisplayFile : ListaEnc<Objeto>{
 public:
-	DisplayFile(){
 
+	DisplayFile(){
 	}
-	virtual ~DisplayFile();
+
+	~DisplayFile(){
+	}
+
+	void desenha(DisplayFile* displayFile);
+
 };
 
 #endif /* DISPLAYFILE_HPP_ */
