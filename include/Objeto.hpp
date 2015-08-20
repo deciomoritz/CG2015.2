@@ -29,7 +29,7 @@ public:
 	}
 
 	void insert_gambiarra(Coordenada c){
-		_pontos.adiciona(c);
+//		_pontos.adiciona(c);
 	}
 
 };

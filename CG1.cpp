@@ -22,6 +22,7 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 }
 
 int main(int argc, char* argv[]) {
+
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();
