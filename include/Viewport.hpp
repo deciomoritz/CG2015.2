@@ -12,10 +12,14 @@
 #include <cairo/cairo.h>
 
 class Viewport {
+	cairo_t* _cr;
 public:
 	Viewport();
 	virtual ~Viewport();
-	void desenha(cairo_t   *cr, Objeto obj);
+	void setCairo(cairo_t* cr){
+		this->_cr = cr;
+	}
+	void desenha(cairo_t *cr, Objeto obj);
 };
 
 #endif /* VIEWPORT_H_ */

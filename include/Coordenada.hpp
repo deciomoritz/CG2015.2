@@ -16,6 +16,8 @@ public:
 		x=x1;
 		y=y1;
 	}
+
+	Coordenada(){}
 	virtual ~Coordenada();
 	double getX(){
 		return x;

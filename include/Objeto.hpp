@@ -9,19 +9,27 @@ using namespace std;
 class Objeto {
 
 private:
-	string nome;
-	ListaEnc<Coordenada> pontos;
+	string _nome;
+	ListaEnc<Coordenada> _pontos;
 
 public:
 	Objeto(string nome){
-		this->nome = nome;
+		this->_nome = nome;
 	};
 
 	~Objeto(){
 	};
 
+	string nome(){
+		return _nome;
+	}
+
+	ListaEnc<Coordenada>* pontos(){
+		return &_pontos;
+	}
+
 	void insert_gambiarra(Coordenada c){
-		pontos.adiciona(c);
+		_pontos.adiciona(c);
 	}
 
 };

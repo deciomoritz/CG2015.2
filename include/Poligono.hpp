@@ -3,7 +3,7 @@ class Poligono: public Objeto {
 	using Objeto::pontos;
 public:
 	Poligono(string name){
-		nome = name;
+		_nome = name;
 	}
 	virtual ~Poligono();
 	void inserePonto(Coordenada c){

@@ -10,6 +10,9 @@ public:
 
 	~ListaEnc(){
 	}
+	Elemento<T>* getHead(){
+		return head;
+	}
 	// inicio
 	void adicionaNoInicio(const T& dado);
 	T retiraDoInicio();
