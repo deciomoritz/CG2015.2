@@ -13,10 +13,10 @@ DisplayFile::DisplayFile() {
 DisplayFile::~DisplayFile() {
 }
 
-void DisplayFile::inserirObjeto(Objeto obj){
-//	objetos.adiciona(obj);
+void DisplayFile::desenha(DisplayFile* displayFile){
+
 }
 
-void DisplayFile::removerObjeto(Objeto obj){
-//	objetos.retiraEspecifico(obj);
+ListaEnc<Objeto>* DisplayFile::objetos(){
+	return &_objetos;
 }

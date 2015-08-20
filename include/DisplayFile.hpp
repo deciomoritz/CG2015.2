@@ -11,11 +11,11 @@
 
 class DisplayFile {
 private:
-	ListaEnc<Objeto> objetos();
+	ListaEnc<Objeto> _objetos;
 public:
 	DisplayFile();
-	void inserirObjeto(Objeto obj);
-	void removerObjeto(Objeto obj);
+	ListaEnc<Objeto>* objetos();
+	void desenha(DisplayFile* displayFile);
 	virtual ~DisplayFile();
 };
 

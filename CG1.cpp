@@ -6,39 +6,44 @@
 
 using namespace std;
 
-int main(int argc,char* argv[]) {
+GtkWidget *window;
+GtkBuilder *builder;
 
-	ListaEnc<int> lista;
+static gboolean draw_cb (GtkWidget *widget, cairo_t   *cr, gpointer data, int x) {
+	 cairo_set_source_rgb(cr, 0, 0, 0);
+	 cairo_set_line_width(cr, 0.5);
 
-	cout << "!!!Hello World!!!" << endl;
+	 cairo_move_to(cr, 0,0);
+	 cairo_line_to(cr, 500,500);
 
+	 cairo_stroke(cr);
+
+	return FALSE;
+}
+
+static gboolean clicked(GtkWidget *widget, GdkEventButton *event,
+    gpointer user_data)
+{
+	window = GTK_WIDGET(gtk_builder_get_object(builder, "window2"));
+    return TRUE;
+}
+
+int main(int argc, char* argv[]) {
 	gtk_init(&argc, &argv);
 
-	GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	builder = gtk_builder_new();
+	gtk_builder_add_from_file(builder, "glade.glade", NULL);
 
-	gtk_widget_set_size_request(window, 800, 600);
+	GtkViewport* viewport = GTK_VIEWPORT(gtk_builder_get_object(builder, "viewport1"));
+	g_signal_connect (G_OBJECT(viewport), "draw", G_CALLBACK (draw_cb), NULL);
 
-	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
-	gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+	g_signal_connect (window, "button-press-event", G_CALLBACK (clicked), NULL);
 
-
-	GtkWidget* button = gtk_button_new_with_label("Meu botão");
-	gtk_widget_set_size_request(button, 30,10);
-	gtk_widget_show(button);
-
-
-	GtkWidget* button2 = gtk_button_new_with_label("Meu botão2");
-	gtk_widget_set_size_request(button2, 30,10);
-	gtk_widget_show(button2);
-
-	GtkWidget* grid = gtk_grid_new();
-	gtk_grid_attach(GTK_GRID(grid),button,0,0,30,10);
-	gtk_grid_attach(GTK_GRID(grid),button2,0,30,30,10);
-
-	gtk_container_add(GTK_CONTAINER(window), grid);
-
-	gtk_widget_show (window);
-	gtk_widget_show_all (window);
+	window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
+	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+	gtk_builder_connect_signals(builder, NULL);
+	g_object_unref(G_OBJECT(builder));
+	gtk_widget_show(window);
 	gtk_main();
 
 	return 0;

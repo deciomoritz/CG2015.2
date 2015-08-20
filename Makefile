@@ -3,3 +3,4 @@ make all:
 
 make run:
 	./exec
+
