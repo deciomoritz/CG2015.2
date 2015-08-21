@@ -175,6 +175,9 @@ public:
 		while (!listaVazia())
 			eliminaDoInicio();
 	}
+	int getSize(){
+			return size;
+	}
 
 	T* posicaoMem(int i){
 		Elemento<T> *aux = head;
