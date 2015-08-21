@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
 	viewport = GTK_VIEWPORT(gtk_builder_get_object(builder, "viewport1"));
 
-	GtkDrawingArea* da = GTK_DRAWINGAREA(gtk_builder_get_object(builder, "drawingarea1"));
+	GtkDrawingArea* da = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "drawingarea1"));
 
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
