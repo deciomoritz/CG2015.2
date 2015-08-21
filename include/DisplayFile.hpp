@@ -9,9 +9,11 @@
 #define DISPLAYFILE_HPP_
 #include "Objeto.hpp"
 
-class DisplayFile : ListaEnc<Objeto>{
+class DisplayFile : ListaEnc<Objeto*>{
 public:
-
+	using ListaEnc<Objeto*>::getHead;
+	using ListaEnc<Objeto*>::getSize;
+	using ListaEnc<Objeto*>::adicionaNoInicio;
 	DisplayFile(){
 	}
 
@@ -19,6 +21,7 @@ public:
 	}
 
 	void desenha(DisplayFile* displayFile);
+
 
 };
 
