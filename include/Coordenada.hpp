@@ -10,11 +10,12 @@
 
 class Coordenada {
 private:
-	double x, y;
+	double x, y, z;
 public:
-	Coordenada(double x1, double y1){
+	Coordenada(double x1, double y1, double z1){
 		x=x1;
 		y=y1;
+		z=z1;
 	}
 
 	Coordenada(){}
@@ -24,6 +25,9 @@ public:
 	}
 	double getY(){
 		return y;
+	}
+	double getZ(){
+		return z;
 	}
 
 };
