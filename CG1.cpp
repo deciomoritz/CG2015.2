@@ -17,7 +17,6 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	Viewport view;
 	view.setCairo(cr);
 
-
 	return FALSE;
 }
 
