@@ -3,30 +3,32 @@
 
 template<typename T>
 class Elemento {
-private:
+
+public:
 	T *info;
 	Elemento<T>* _next;
 
-public:
-	Elemento(const T& info, Elemento<T>* next) : info(new T(info)), _next(next) {}
+	Elemento(const T& info, Elemento<T>* next) :
+			info(new T(info)), _next(next) {
+	}
 
-	~Elemento()
-	{
+	Elemento(const T& info) :
+				info(new T(info)), _next(NULL) {
+		}
+
+	~Elemento() {
 		delete info;
 	}
 
-	Elemento<T>* getProximo() const
-    			{
+	Elemento<T>* getProximo() const {
 		return _next;
-    			}
+	}
 
-	T getInfo() const
-	{
+	T getInfo() const {
 		return *info;
 	}
 
-	void setProximo(Elemento<T>* next)
-	{
+	void setProximo(Elemento<T>* next) {
 		_next = next;
 	}
 };

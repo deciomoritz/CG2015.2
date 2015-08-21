@@ -24,7 +24,7 @@ public:
 			head = novo;
 			return;
 		}
-		novo->proximo = head;
+		novo->_next = head;
 		head = novo;
 	}
 
@@ -37,7 +37,7 @@ public:
 				head = 0;
 				return dado;
 			}
-			head = head->proximo;
+			head = head->_next;
 			delete aux;
 			return dado;
 		}
@@ -52,7 +52,7 @@ public:
 				head = 0;
 				return;
 			}
-			head = head->proximo;
+			head = head->_next;
 			delete aux;
 		}
 	}
@@ -62,7 +62,7 @@ public:
 			throw std::runtime_error("Deu merda");
 
 		if (pos == 0){
-			adicionarNoInicio(dado);
+			adicionaNoInicio(dado);
 			return;
 		}
 		Elemento<T> *novo = new Elemento<T>(dado);
@@ -72,9 +72,9 @@ public:
 			throw std::runtime_error("Deu merda");
 		aux = head;
 		for (int i = 1; i < pos; i++)
-			aux = aux->proximo;
-		novo->proximo = aux->proximo;
-		aux->proximo = novo;
+			aux = aux->_next;
+		novo->_next = aux->_next;
+		aux->_next = novo;
 		size++;
 	}
 
@@ -83,7 +83,7 @@ public:
 		for (int j = 0; j < size; j++){
 			if(igual(*aux->info, dado))
 				return j;
-			aux = aux->proximo;
+			aux = aux->_next;
 		}
 		return -1;
 	}
@@ -94,7 +94,7 @@ public:
 		for (int j = 0; j < size; j++){
 			if(igual(*aux->info, dado))
 				aux->info;
-			aux = aux->proximo;
+			aux = aux->_next;
 		}
 		return 0;
 	}
@@ -114,10 +114,10 @@ public:
 			return retiraDoInicio();
 		aux = head;
 		for (int i = 0; i < pos-1; i++)
-			aux = aux->proximo;
-		eliminar = aux->proximo;
+			aux = aux->_next;
+		eliminar = aux->_next;
 		retorno = aux->dado;
-		aux->proximo = eliminar;
+		aux->_next = eliminar;
 		size--;
 		delete eliminar;
 		return retorno;
@@ -137,7 +137,7 @@ public:
 		for (int j = 0; j < size; j++){
 			if(igual(*aux->info, dado))
 				return retiraDaPosicao(j);
-			aux = aux->proximo;
+			aux = aux->_next;
 		}
 		return 0;
 	}
@@ -150,7 +150,7 @@ public:
 		for (; i < size; i++){
 			if(maior(*aux->info, data))
 				break;
-			aux = aux->proximo;
+			aux = aux->_next;
 		}
 		adicionaNaPosicao(data, i);
 	}
@@ -182,7 +182,7 @@ public:
 	T* posicaoMem(int i){
 		Elemento<T> *aux = head;
 		for (int j = 0; j < i; j++){
-			aux = aux->proximo;
+			aux = aux->_next;
 		}
 		return &(aux->getInfo());
 	}

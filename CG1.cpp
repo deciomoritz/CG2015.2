@@ -16,9 +16,6 @@ DisplayFile* displayFile;
 
 static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
-	Viewport view;
-	view.setCairo(cr);
-
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 0.5);
 
@@ -35,6 +32,19 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget, gpointer data
 }
 
 int main(int argc, char* argv[]) {
+
+	displayFile = new DisplayFile();
+
+	Coordenada c1(0,0,1);
+	Coordenada c2(10,10,1);
+	Coordenada c3(15,15,1);
+
+	Objeto* obj = new Objeto("teste");
+	obj->adiciona(c1);
+	obj->adiciona(c2);
+	obj->adiciona(c3);
+
+	displayFile->adicionaNoInicio(obj);
 
 	gtk_init(&argc, &argv);
 

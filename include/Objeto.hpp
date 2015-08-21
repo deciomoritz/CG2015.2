@@ -28,8 +28,8 @@ public:
 		return &_pontos;
 	}
 
-	void insert_gambiarra(Coordenada c){
-//		_pontos.adiciona(c);
+	void adiciona(const Coordenada & c){
+		_pontos.adiciona(c);
 	}
 
 };
