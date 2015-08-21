@@ -19,6 +19,10 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 0.5);
 
+	for (int i = 0; i < displayFile->getSize(); ++i) {
+
+	}
+
 	cairo_move_to(cr, 0,0);
 	cairo_line_to(cr, 500,500);
 
@@ -26,9 +30,25 @@ static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	return FALSE;
 }
 
-extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget, gpointer data_user)
+static void
+draw (GtkWidget *widget,
+     gpointer   data)
 {
+	g_print ("Antes\n");
 	g_signal_connect(G_OBJECT(viewport), "draw", G_CALLBACK (draw_cb), NULL);
+	g_print ("Depois\n");
+}
+
+//extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget, gpointer data_user)
+//{
+//	g_signal_connect(G_OBJECT(viewport), "draw", G_CALLBACK (draw_cb), NULL);
+//}
+
+static void
+print_hello (GtkWidget *widget,
+     gpointer   data)
+{
+  g_print ("Hello World\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -46,6 +66,7 @@ int main(int argc, char* argv[]) {
 
 	displayFile->adicionaNoInicio(obj);
 
+
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();
@@ -56,6 +77,12 @@ int main(int argc, char* argv[]) {
 	GtkDrawingArea* da = GTK_DRAWING_AREA(gtk_builder_get_object(builder, "drawingarea1"));
 
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+	GtkWidget* button = GTK_WIDGET(gtk_builder_get_object(builder, "novo"));
+	g_signal_connect (button, "clicked", G_CALLBACK (draw), NULL);
+
+
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	gtk_builder_connect_signals(builder, NULL);
 	g_object_unref(G_OBJECT(builder));
