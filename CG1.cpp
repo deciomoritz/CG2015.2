@@ -3,7 +3,8 @@
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include <stdexcept>
-
+#include "include/Objeto.hpp"
+#include "include/formas/Poligono.hpp"
 #include <gtk-3.0/gtk/gtk.h>
 
 using namespace std;
@@ -12,14 +13,16 @@ GtkWidget *window;
 GtkBuilder *builder;
 GtkViewport* viewport;
 
-DisplayFile* displayFile;
+DisplayFile displayFile;
+Viewport* viewport_m;
+Window* window_m;
 
 static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 0.5);
 
-	for (int i = 0; i < displayFile->getSize(); ++i) {
+	for (int i = 0; i < displayFile.getSize(); ++i) {
 
 	}
 
@@ -53,18 +56,27 @@ print_hello (GtkWidget *widget,
 
 int main(int argc, char* argv[]) {
 
-	displayFile = new DisplayFile();
 
-	Coordenada c1(0,0,1);
+	Coordenada wmax(100,100,1);
+	Coordenada wmin(0,0,1);
+	Coordenada vmax(0,100,1);
+	Coordenada vmin(100,0,1);
+	viewport_m = new Viewport(vmax, vmin);
+	window_m = new Window(wmax, wmin);
+
+	Coordenada c1(20,20,1);
 	Coordenada c2(10,10,1);
 	Coordenada c3(15,15,1);
-
-	Objeto* obj = new Objeto("teste");
-	obj->adiciona(c1);
-	obj->adiciona(c2);
-	obj->adiciona(c3);
-
-	displayFile->adicionaNoInicio(obj);
+	Objeto *pol1 = new Poligono("teste1");
+	Objeto *pol2 = new Poligono("teste2");
+	pol1->adiciona(c1);
+	pol1->adiciona(c2);
+	pol1->adiciona(c3);
+	pol2->adiciona(c1);
+	pol2->adiciona(c3);
+	window_m->adicionaObjeto(pol1);
+	window_m->adicionaObjeto(pol2);
+	displayFile = (viewport_m->transformadaViewport(*window_m));
 
 
 	gtk_init(&argc, &argv);

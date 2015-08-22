@@ -5,6 +5,7 @@ private:
 	DisplayFile disp;
 public:
 	Window(Coordenada wMax, Coordenada wMin){
+		//verificar coordenadas
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
@@ -30,6 +31,10 @@ public:
 	void zoomWindow(double z){
 		wMax = wMax*z;
 		wMin = wMin*z;
+	}
+
+	void adicionaObjeto(Objeto* obj){
+		disp.adiciona(obj);
 	}
 
 

@@ -8,11 +8,12 @@
 using namespace std;
 class Objeto {
 
-private:
+protected:
 	string _nome;
 	ListaEnc<Coordenada> _pontos;
 
 public:
+	Objeto(){};
 	Objeto(string nome){
 		this->_nome = nome;
 	};
