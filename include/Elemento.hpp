@@ -25,7 +25,7 @@ public:
 	}
 
 	T getInfo() const {
-		return *info;
+		return *(info);
 	}
 
 	void setProximo(Elemento<T>* next) {

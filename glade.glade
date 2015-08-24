@@ -185,15 +185,19 @@
           </object>
         </child>
         <child>
-          <object class="GtkViewport" id="viewport1">
+          <object class="GtkFrame" id="frame1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
             <child>
-              <object class="GtkFixed" id="fixed2">
+              <object class="GtkDrawingArea" id="drawingarea1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">172</property>
               </object>
+            </child>
+            <child type="label_item">
+              <placeholder/>
             </child>
           </object>
           <packing>

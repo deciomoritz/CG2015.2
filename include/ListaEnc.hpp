@@ -184,7 +184,7 @@ public:
 		for (int j = 0; j < i; j++){
 			aux = aux->_next;
 		}
-		return &(aux->getInfo());
+		return aux->info;
 	}
 
 };
