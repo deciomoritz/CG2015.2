@@ -30,7 +30,6 @@ public:
 		return z;
 	}
 	Coordenada operator* (double o);
-//	friend Coordenada* operator *(const Coordenada &a, double o);
 	friend Coordenada operator +(const Coordenada & a, const Coordenada & b);
 	friend Coordenada operator -(const Coordenada & a, const Coordenada & b);
 };

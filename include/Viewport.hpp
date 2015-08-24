@@ -16,6 +16,7 @@ class Viewport {
 	cairo_t* _cr;
 public:
 	Viewport(Coordenada vMax, Coordenada vMin){
+		//verificar coordenadas
 		this->vMax = vMax;
 		this->vMin = vMin;
 	}
@@ -29,32 +30,36 @@ public:
 
 	DisplayFile transformadaViewport(Window w){
 		DisplayFile novoDisplay;
-		DisplayFile ori = w.getDisplay();
+		DisplayFile originalDisplay = w.getDisplay();
+		//constantes da transformacao
 		double divX, divY, multX, multY;
 		divX = (w.getwMax()-w.getwMin()).getX();
 		divY = (w.getwMax()-w.getwMin()).getY();
 		multX = (vMax-vMin).getX();
 		multY = (vMax-vMin).getY();
-		Elemento<Objeto*>* it_ori = ori.getHead();
-		for(int i = 0; i<ori.getSize();i++){
-			ListaEnc<Coordenada> novasCoordenadas;
-			ListaEnc<Coordenada>* coordenadas_obj = (it_ori->getInfo())->pontos();
+		// iterando lista de objetos
+		Elemento<Objeto*>* it_originalDisplay = originalDisplay.getHead();
+		for(int i = 0; i<originalDisplay.getSize();i++){
+			Objeto *novoObj = new Objeto((it_originalDisplay->getInfo())->nome());
+			ListaEnc<Coordenada>* coordenadas_obj = (it_originalDisplay->getInfo())->pontos();
 			Elemento<Coordenada>* it_coordenada = coordenadas_obj->getHead();
+			//iterando as coordenadas do objeto
 			for(int j =0; j<coordenadas_obj->getSize();j++){
 				Coordenada atual = it_coordenada->getInfo();
+				//Transformacao
 				double newX, newY, newZ;
 				newX = ((atual.getX()-w.getwMin().getX())/divX)*multX;
 				newY = (1-(atual.getY()-w.getwMin().getY())/divY)*multY;
 				newZ=1;
+				//criando novo ponto
 				Coordenada novoPonto(newX, newY, newZ);
-//				novasCoordenadas.adicionaNoInicio(novoPonto);
+				novoObj->adiciona(novoPonto);
 				it_coordenada = it_coordenada->getProximo();
 			}
-
-//			novoDisplay.adicionaNoInicio(novoPonto);
-			it_ori = it_ori->getProximo();
+			novoDisplay.adicionaNoInicio(novoObj);
+			it_originalDisplay = it_originalDisplay->getProximo();
 		}
-		return novoDisplay;
+//		return novoDisplay;
 	}
 };
 

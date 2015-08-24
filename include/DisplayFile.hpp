@@ -14,6 +14,7 @@ public:
 	using ListaEnc<Objeto*>::getHead;
 	using ListaEnc<Objeto*>::getSize;
 	using ListaEnc<Objeto*>::adicionaNoInicio;
+	using ListaEnc<Objeto*>::adiciona;
 	DisplayFile(){
 	}
 
