@@ -37,5 +37,9 @@ public:
 		disp.adiciona(obj);
 	}
 
+//	void transformaObjeto(string nome){
+//		disp.
+//	}
+
 
 };
