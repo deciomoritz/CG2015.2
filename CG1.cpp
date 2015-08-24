@@ -14,6 +14,23 @@ GtkViewport* viewport;
 
 DisplayFile* displayFile;
 
+static cairo_surface_t *surface = NULL;
+
+static void
+clear_surface (void)
+{
+	g_print ("Antes\n");
+	cairo_t *cr;
+
+	cr = cairo_create(surface);
+
+	cairo_set_source_rgb(cr, 1, 1, 1);
+	cairo_paint(cr);
+
+	cairo_destroy(cr);
+	g_print ("Depois\n");
+}
+
 static gboolean draw_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
@@ -34,9 +51,7 @@ static void
 draw (GtkWidget *widget,
      gpointer   data)
 {
-	g_print ("Antes\n");
 	g_signal_connect(G_OBJECT(viewport), "draw", G_CALLBACK (draw_cb), NULL);
-	g_print ("Depois\n");
 }
 
 //extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget, gpointer data_user)
@@ -81,7 +96,6 @@ int main(int argc, char* argv[]) {
 
 	GtkWidget* button = GTK_WIDGET(gtk_builder_get_object(builder, "novo"));
 	g_signal_connect (button, "clicked", G_CALLBACK (draw), NULL);
-
 
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	gtk_builder_connect_signals(builder, NULL);
