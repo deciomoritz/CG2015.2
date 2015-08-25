@@ -123,7 +123,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,gpointer data_
 }
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(-1,1,1);
+	Coordenada coord(1,1,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -132,7 +132,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,gpointer data_
 }
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(1,1,1);
+	Coordenada coord(-1,1,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -141,15 +141,6 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,gpointer data
 }
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(1,1,1);
-	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
-
-	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
-	gtk_widget_queue_draw (drawingArea);
-}
-
-extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,gpointer data_user) {
 	Coordenada coord(1,-1,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
@@ -158,8 +149,17 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,gpointer data_
 	gtk_widget_queue_draw (drawingArea);
 }
 
+extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,gpointer data_user) {
+	Coordenada coord(1,1,1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
 extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,gpointer data_user) {
-	window_m->zoomWindow(1.5);
+	window_m->zoomWindow(0.5);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -167,7 +167,7 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,gpointer data_us
 }
 
 extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,gpointer data_user) {
-	window_m->zoomWindow(0.5);
+	window_m->zoomWindow(1.5);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
