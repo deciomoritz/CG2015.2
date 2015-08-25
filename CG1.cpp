@@ -39,7 +39,7 @@ static void clear_surface(void) {
 }
 
 vector<string> separarParametros(string comando) {
-	vector<string> tokens;
+	vector < string > tokens;
 	std::string delimiter = " ";
 	size_t pos = 0;
 	std::string token;
@@ -58,14 +58,14 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	vector<string> aux = separarParametros(comando);
 
 	Objeto* obj = new Objeto(aux[0]);
-	for (int i = 1; i < aux.size()-1; i+=2) {
-		Coordenada* coord = new Coordenada(atoi(aux[i].c_str()),atoi(aux[i+1].c_str()),1);
+	Coordenada* coord;
+	for (int i = 1; i < aux.size() - 1; i += 2) {
+		coord = new Coordenada(atoi(aux[i].c_str()),atoi(aux[i + 1].c_str()), 1);
 		obj->adiciona(*coord);
 	}
+//	window_m->adicionaObjeto(obj);
 	displayFile.adiciona(obj);
-	g_print(obj->to_string().c_str());
-	gtk_text_buffer_set_text (buffer, displayFile.to_string().c_str(), -1);
-
+	gtk_text_buffer_set_text(buffer, displayFile.to_string().c_str(), -1);
 	return FALSE;
 }
 
@@ -78,73 +78,98 @@ static gboolean clear(GtkWidget *widget, cairo_t *cr, gpointer data) {
 }
 
 static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
+
 	editDisplayFile(widget, cr, data);
 
-//	clear(widget, cr, data);
-//
-//	cairo_set_source_rgb(cr, 0, 0, 0);
-//	cairo_set_line_width(cr, 0.5);
-//
-//	Coordenada* primeiro;
-//	Coordenada* ultimo;
-//	for (int i = 0; i < displayFile.getSize(); ++i) {
-//		Objeto & obj = **displayFile.posicaoMem(i);
-//		ListaEnc<Coordenada> & pontos = *obj.pontos();
-//		g_print("Objeto: ");
-//		g_print("\n");
-//
-//		primeiro = pontos.posicaoMem(0);
-//		ultimo = pontos.posicaoMem(pontos.getSize()-1);
-//		for (int j = 0; j < pontos.getSize() - 1; ++j) {
-//
-//			Coordenada & coord1 = *pontos.posicaoMem(j);
-//			Coordenada & coord2 = *pontos.posicaoMem(j+1);
-//			//g_print(to_string(pontos.getSize()).c_str());
-//			string x1 = to_string(coord1.getX());
-//			string y1 = to_string(coord1.getY());
-//			string x2 = to_string(coord2.getX());
-//			string y2 = to_string(coord2.getY());
-//			g_print(x1.c_str());
-//			g_print("\t");
-//			g_print(y1.c_str());
-//			g_print("\n");
-//			g_print(x2.c_str());
-//			g_print("\t");
-//			g_print(y2.c_str());
-//			g_print("\n");
-//			cairo_move_to(cr, coord1.getX(), coord1.getY());
-//			cairo_line_to(cr, coord2.getX(), coord2.getY());
-//		}
-//		cairo_move_to(cr, primeiro->getX(), primeiro->getY());
-//		cairo_line_to(cr, ultimo->getX(), ultimo->getY());
-//
-//		string primeirox = to_string(primeiro->getX());
-//		string primeiroy = to_string(primeiro->getY());
-//		string ultimox = to_string(ultimo->getX());
-//		string ultimoy = to_string(ultimo->getY());
-//		g_print("primeiro: ");
-//		g_print(primeirox.c_str());
-//		g_print("\t");
-//		g_print(primeiroy.c_str());
-//		g_print("\n");
-//		g_print("ultimo: ");
-//		g_print(ultimox.c_str());
-//		g_print("\t");
-//		g_print(ultimoy.c_str());
-//		g_print("\n");
-//	}
-//
-//	cairo_stroke(cr);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	clear(widget, cr, data);
+
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	cairo_set_line_width(cr, 0.5);
+
+	Coordenada* primeiro;
+	Coordenada* ultimo;
+	for (int i = 0; i < displayFile.getSize(); ++i) {
+		Objeto & obj = **displayFile.posicaoMem(i);
+		ListaEnc<Coordenada> & pontos = *obj.pontos();
+
+		primeiro = pontos.posicaoMem(0);
+		ultimo = pontos.posicaoMem(pontos.getSize()-1);
+		for (int j = 0; j < pontos.getSize() - 1; ++j) {
+
+			Coordenada & coord1 = *pontos.posicaoMem(j);
+			Coordenada & coord2 = *pontos.posicaoMem(j+1);
+			cairo_move_to(cr, coord1.getX(), coord1.getY());
+			cairo_line_to(cr, coord2.getX(), coord2.getY());
+		}
+		cairo_move_to(cr, primeiro->getX(), primeiro->getY());
+		cairo_line_to(cr, ultimo->getX(), ultimo->getY());
+	}
+
+	cairo_stroke(cr);
 
 //	const char* input = gtk_entry_get_text(entry);
 	return FALSE;
 }
 
 static void draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
-	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw2), NULL);
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK(draw2), NULL);
 }
 
 extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,gpointer data_user) {
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,gpointer data_user) {
+	Coordenada coord(-1,1,1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,gpointer data_user) {
+	Coordenada coord(1,1,1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,gpointer data_user) {
+	Coordenada coord(1,1,1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,gpointer data_user) {
+	Coordenada coord(1,-1,1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,gpointer data_user) {
+	window_m->zoomWindow(1.5);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw (drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,gpointer data_user) {
+	window_m->zoomWindow(0.5);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw (drawingArea);
 }
@@ -170,29 +195,6 @@ int main(int argc, char* argv[]) {
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
 
-	Coordenada c1(10, 200, 1);
-	Coordenada c2(200, 50, 1);
-	Coordenada c3(40,60, 1);
-
-	Coordenada c4(100, 100, 1);
-	Coordenada c5(200,200, 1);
-
-	Objeto *pol1 = new Poligono("teste1");
-	Objeto *pol2 = new Poligono("teste2");
-	pol1->adiciona(c1);
-	pol1->adiciona(c2);
-	pol1->adiciona(c3);
-	pol2->adiciona(c4);
-	pol2->adiciona(c5);
-	window_m->adicionaObjeto(pol1);
-	window_m->adicionaObjeto(pol2);
-
-	g_print(pol1->to_string().c_str());
-//	displayFile = (viewport_m->transformadaViewport(*window_m));
-
-	displayFile.adiciona(pol1);
-	displayFile.adiciona(pol2);
-
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();
@@ -202,24 +204,22 @@ int main(int argc, char* argv[]) {
 
 	view = GTK_WIDGET(gtk_builder_get_object(builder, "textview1"));
 	gtk_widget_set_size_request(view, 400, 500);
-	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-	gtk_text_buffer_set_text (buffer, displayFile.to_string().c_str(), -1);
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+	gtk_text_buffer_set_text(buffer, displayFile.to_string().c_str(), -1);
 
 	frame = GTK_WIDGET(gtk_builder_get_object(builder, "frame1"));
 
-	drawingArea = GTK_WIDGET(
-	gtk_builder_get_object(builder, "drawingarea1"));
+	drawingArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawingarea1"));
 	gtk_widget_set_size_request(drawingArea, 400, 600);
-	g_signal_connect(drawingArea, "draw", G_CALLBACK (clear), NULL);
+	g_signal_connect(drawingArea, "draw", G_CALLBACK(clear), NULL);
 	g_signal_connect(drawingArea, "configure-event",
-			G_CALLBACK (configure_event_cb), NULL);
+			G_CALLBACK(configure_event_cb), NULL);
 
 	window = GTK_WIDGET(gtk_builder_get_object(builder, "window1"));
-	g_signal_connect(window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
-
+	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 	GtkWidget* button = GTK_WIDGET(gtk_builder_get_object(builder, "novo"));
-	g_signal_connect(button, "clicked", G_CALLBACK (draw), NULL);
+	g_signal_connect(button, "clicked", G_CALLBACK(draw), NULL);
 
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	gtk_builder_connect_signals(builder, NULL);

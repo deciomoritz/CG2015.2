@@ -23,7 +23,7 @@ public:
 		return disp;
 	}
 //Chance de dar merda, por não retornar novo objeto e o conteúdo estar na stack!!!!!!!!!!!!!!!!
-	void delocarWindow(Coordenada desl){
+	void deslocarWindow(Coordenada desl){
 		wMax = wMax+desl;
 		wMin = wMin+desl;
 	}
@@ -36,10 +36,4 @@ public:
 	void adicionaObjeto(Objeto* obj){
 		disp.adiciona(obj);
 	}
-
-//	void transformaObjeto(string nome){
-//		disp.
-//	}
-
-
 };
