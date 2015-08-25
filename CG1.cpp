@@ -63,9 +63,8 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		coord = new Coordenada(atoi(aux[i].c_str()),atoi(aux[i + 1].c_str()), 1);
 		obj->adiciona(*coord);
 	}
-//	window_m->adicionaObjeto(obj);
-	displayFile.adiciona(obj);
-	gtk_text_buffer_set_text(buffer, displayFile.to_string().c_str(), -1);
+	window_m->adicionaObjeto(obj);
+	gtk_text_buffer_set_text(buffer, window_m->getDisplay().to_string().c_str(), -1);
 	return FALSE;
 }
 
@@ -82,6 +81,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	editDisplayFile(widget, cr, data);
 
 	displayFile = viewport_m->transformadaViewport(*window_m);
+	g_print(displayFile.to_string().c_str());
 
 	clear(widget, cr, data);
 
@@ -190,8 +190,8 @@ int main(int argc, char* argv[]) {
 
 	Coordenada wmax(100, 100, 1);
 	Coordenada wmin(0, 0, 1);
-	Coordenada vmax(0, 100, 1);
-	Coordenada vmin(100, 0, 1);
+	Coordenada vmax(100, 100, 1);
+	Coordenada vmin(0, 0, 1);
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
 

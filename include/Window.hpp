@@ -17,7 +17,7 @@ public:
 		return wMax;
 	}
 	Coordenada getwMin(){
-		return wMax;
+		return wMin;
 	}
 	DisplayFile getDisplay(){
 		return disp;
