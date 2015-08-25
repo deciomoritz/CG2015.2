@@ -33,6 +33,8 @@ public:
 		_pontos.adiciona(c);
 	}
 
+	string to_string();
+
 };
 
 #endif /* OBJETO_HPP_ */

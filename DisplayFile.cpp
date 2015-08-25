@@ -6,7 +6,17 @@
  */
 
 #include "include/DisplayFile.hpp"
+#include <string>
 
 void DisplayFile::desenha(DisplayFile* displayFile){
 
+}
+
+string DisplayFile::to_string(){
+	string s = "";
+	for (int i = 0; i < getSize(); ++i) {
+		Objeto & obj = **posicaoMem(i);
+		s += obj.to_string() + "\n";
+	}
+	return s;
 }
