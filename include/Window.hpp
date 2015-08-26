@@ -36,4 +36,12 @@ public:
 	void adicionaObjeto(Objeto* obj){
 		disp.adiciona(obj);
 	}
+
+
+	Objeto* getObjeto(string nome){
+		Objeto *ref = new Objeto(nome);
+		Objeto* retorno = *disp.posicaoMem(ref);
+		delete ref;
+		return retorno;
+	}
 };

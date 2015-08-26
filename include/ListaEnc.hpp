@@ -31,7 +31,7 @@ public:
 	T retiraDoInicio(){
 		if (!listaVazia()) {
 			Elemento<T>* aux = head;
-			T dado = head->dado;
+			T dado = *head->info;
 			size--;
 			if (size == 0) {
 				head = 0;
@@ -92,8 +92,8 @@ public:
 		Elemento<T> *aux = head;
 
 		for (int j = 0; j < size; j++){
-			if(igual(*aux->info, dado))
-				aux->info;
+			if(*aux->info==dado)
+				return aux->info;
 			aux = aux->_next;
 		}
 		return 0;
@@ -135,7 +135,7 @@ public:
 		Elemento<T> *aux = head;
 
 		for (int j = 0; j < size; j++){
-			if(igual(*aux->info, dado))
+			if(*aux->info== dado)
 				return retiraDaPosicao(j);
 			aux = aux->_next;
 		}

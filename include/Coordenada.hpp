@@ -31,6 +31,12 @@ public:
 	double getZ(){
 		return ponto[2][0];
 	}
+	void setVector(vector<vector<double> >novo){
+		ponto = novo;
+	}
+	vector<vector<double> > getVector(){
+			return ponto;
+	}
 	Coordenada operator* (double o);
 	friend Coordenada operator +(const Coordenada & a, const Coordenada & b);
 	friend Coordenada operator -(const Coordenada & a, const Coordenada & b);
