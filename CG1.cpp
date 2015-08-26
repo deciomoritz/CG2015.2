@@ -123,7 +123,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,gpointer data_
 }
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(1,1,1);
+	Coordenada coord(10,0,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -132,7 +132,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,gpointer data_
 }
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(-1,1,1);
+	Coordenada coord(-10,0,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -141,7 +141,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,gpointer data
 }
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(1,-1,1);
+	Coordenada coord(0,-10,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -150,7 +150,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,gpointer data_us
 }
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,gpointer data_user) {
-	Coordenada coord(1,1,1);
+	Coordenada coord(0,10,1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
