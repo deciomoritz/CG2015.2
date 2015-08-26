@@ -32,6 +32,7 @@ public:
 	Coordenada operator* (double o);
 	friend Coordenada operator +(const Coordenada & a, const Coordenada & b);
 	friend Coordenada operator -(const Coordenada & a, const Coordenada & b);
+	friend bool operator ==(const Coordenada & a, const Coordenada & b);
 };
 
 #endif /* COORDENADAS_HPP_ */

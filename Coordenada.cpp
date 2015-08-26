@@ -21,3 +21,7 @@ Coordenada operator -(const Coordenada & a, const Coordenada & b){
 	newZ = 1;
 	return  Coordenada(newX, newY, newZ);
 }
+
+bool operator ==(const Coordenada & a, const Coordenada & b){
+	return (a.x == b.x && a.y == b.y) && a.z == b.z;
+}

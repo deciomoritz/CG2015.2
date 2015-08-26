@@ -86,7 +86,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	clear(widget, cr, data);
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
-	cairo_set_line_width(cr, 0.5);
+	cairo_set_line_width(cr, 5);
 
 	Coordenada* primeiro;
 	Coordenada* ultimo;
@@ -96,6 +96,13 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 		primeiro = pontos.posicaoMem(0);
 		ultimo = pontos.posicaoMem(pontos.getSize()-1);
+
+		if(primeiro==ultimo){
+			ultimo = new Coordenada(primeiro->getX()+1,primeiro->getY()+1,1);
+			cairo_move_to(cr, primeiro->getX(), primeiro->getY());
+			cairo_line_to(cr, ultimo->getX(), ultimo->getY());
+			continue;
+		}
 		for (int j = 0; j < pontos.getSize() - 1; ++j) {
 
 			Coordenada & coord1 = *pontos.posicaoMem(j);
