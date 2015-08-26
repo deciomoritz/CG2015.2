@@ -7,27 +7,29 @@
 
 #ifndef COORDENADA_HPP_
 #define COORDENADA_HPP_
+#include <vector>
+using namespace std;
 
 class Coordenada {
 private:
-	double x, y, z;
+	vector<vector<double> > ponto;
 public:
-	Coordenada(double x1, double y1, double z1){
-		x=x1;
-		y=y1;
-		z=z1;
+	Coordenada(double x1, double y1, double z1):ponto(3,vector<double>(1,0)){
+		ponto[0][0]=x1;
+		ponto[1][0]=y1;
+		ponto[2][0]=z1;
 	}
 
 	Coordenada(){}
 	 ~Coordenada(){};
 	double getX(){
-		return x;
+		return ponto[0][0];
 	}
 	double getY(){
-		return y;
+		return ponto[1][0];
 	}
 	double getZ(){
-		return z;
+		return ponto[2][0];
 	}
 	Coordenada operator* (double o);
 	friend Coordenada operator +(const Coordenada & a, const Coordenada & b);

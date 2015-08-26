@@ -1,7 +1,5 @@
-#include <vector>
 #include <math.h>
 #include "Coordenada.hpp"
-using namespace std;
 class ManipulaMatirz {
 private:
 	vector<vector<double> >translacaoBase, rotacaoBase, escalonamentoBase;
