@@ -305,6 +305,7 @@ extern "C" G_MODULE_EXPORT void on_rotObject_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
+
 	Coordenada coord(obj->getCentro().getX(), obj->getCentro().getY(), 1);
 	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
 	manipulaObjeto->Rotaciona(obj, coord, atof(aux[1].c_str()));

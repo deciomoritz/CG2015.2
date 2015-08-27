@@ -42,7 +42,8 @@ public:
 			centro = centro + it_pontos->getInfo();
 			it_pontos = it_pontos->getProximo();
 		}
-		return centro*(1/i);
+		Coordenada teste(centro.getX()/i,centro.getY()/i,centro.getZ()/i);
+		return teste;
 	}
 	friend bool operator ==(const Coordenada & a, const Coordenada & b);
 
