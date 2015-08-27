@@ -9,6 +9,7 @@ private:
 			Coordenada antiga = coordenadas->retiraDoInicio();
 			vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
 			Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
+			//cout << nova[0][0]<<","<< nova[1][0]<<","<<nova[2][0]<<"\n";
 			coordenadas->adiciona(nova_c);
 		}
 	}
@@ -18,6 +19,7 @@ public:
 	void Translada(Objeto* obj, Coordenada c){
 		vector<vector<double> > m = manipulador->getTranslacao(c);
 		transformaObjeto(obj, m);
+
 	}
 	void Escalona(Objeto* obj, Coordenada c){
 		Coordenada centro = obj->getCentro();
