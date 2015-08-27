@@ -85,9 +85,11 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	editDisplayFile(widget, cr, data);
 
 	displayFile = viewport_m->transformadaViewport(*window_m);
-	g_print(displayFile.to_string().c_str());
+//	g_print(displayFile.to_string().c_str());
 
 	clear(widget, cr, data);
+
+	gtk_text_buffer_set_text(buffer, window_m->getDisplay().to_string().c_str(), -1);
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 5);
@@ -137,7 +139,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(10, 0, 1);
+	Coordenada coord(-10, 0, 1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -147,7 +149,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(-10, 0, 1);
+	Coordenada coord(10, 0, 1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -157,7 +159,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, -10, 1);
+	Coordenada coord(0, 10, 1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -167,7 +169,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, 10, 1);
+	Coordenada coord(0, -10, 1);
 	window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
