@@ -15,7 +15,7 @@ private:
 	}
 public:
 	ManipulaObjeto(){	manipulador = new ManipulaMatriz();}
-	~ManipulaObjeto(){	}
+	~ManipulaObjeto(){ delete manipulador;	}
 	void Translada(Objeto* obj, Coordenada c){
 		vector<vector<double> > m = manipulador->getTranslacao(c);
 		transformaObjeto(obj, m);

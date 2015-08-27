@@ -53,4 +53,8 @@ public:
 		}
 		return NULL;
 	}
+
+	void clear(){
+		disp.destroiLista();
+	}
 };

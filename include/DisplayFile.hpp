@@ -16,6 +16,7 @@ public:
 	using ListaEnc<Objeto*>::adicionaNoInicio;
 	using ListaEnc<Objeto*>::adiciona;
 	using ListaEnc<Objeto*>::posicaoMem;
+	using ListaEnc<Objeto*>::destroiLista;
 	DisplayFile(){
 	}
 
