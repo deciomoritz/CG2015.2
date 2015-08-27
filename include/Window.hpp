@@ -44,4 +44,11 @@ public:
 		}
 		return false;
 	}
+
+	Objeto* getObjeto(string nome){
+		Objeto *ref = new Objeto(nome);
+		Objeto* retorno = *disp.posicaoMem(ref);
+		delete ref;
+		return retorno;
+	}
 };

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
-#include "include/ManipulaMatriz.hpp"
+#include "include/ManipulaObjeto.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include "include/Objeto.hpp"
@@ -211,7 +211,11 @@ int main(int argc, char* argv[]) {
 	Coordenada vmin(0, 0, 1);
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
+	//TESTE
 
+
+
+	//END TESTE
 	gtk_init(&argc, &argv);
 
 	builder = gtk_builder_new();

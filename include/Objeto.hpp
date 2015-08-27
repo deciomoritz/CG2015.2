@@ -34,6 +34,17 @@ public:
 	}
 
 	string to_string();
+	Coordenada getCentro(){
+		Coordenada centro(0,0,0);
+		Elemento<Coordenada>* it_pontos = _pontos.getHead();
+		int i=0;
+		for(; i<_pontos.getSize();i++){
+			centro = centro + it_pontos->getInfo();
+			it_pontos = it_pontos->getProximo();
+		}
+		return centro*(1/i);
+	}
+	friend bool operator ==(const Coordenada & a, const Coordenada & b);
 
 };
 

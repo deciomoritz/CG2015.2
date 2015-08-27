@@ -1,10 +1,10 @@
 #include <math.h>
 #include "Coordenada.hpp"
-class ManipulaMatirz {
+class ManipulaMatriz {
 private:
 	vector<vector<double> >translacaoBase, rotacaoBase, escalonamentoBase;
 public:
-	ManipulaMatirz():translacaoBase(3,vector<double>(3,0)), rotacaoBase(3,vector<double>(3,0)), escalonamentoBase(3,vector<double>(3,0)){
+	ManipulaMatriz():translacaoBase(3,vector<double>(3,0)), rotacaoBase(3,vector<double>(3,0)), escalonamentoBase(3,vector<double>(3,0)){
 
 		for(int i =0; i<3; i++){
 			translacaoBase[i][i]=1.0;
@@ -13,7 +13,7 @@ public:
 		rotacaoBase[3][3]=1.0;
 		escalonamentoBase[3][3] =1.0;
 	};
-	~ManipulaMatirz(){};
+	~ManipulaMatriz(){};
 		vector<vector<double>> getTranslacao(Coordenada deslocamento){
 			translacaoBase[0][3] = deslocamento.getX();
 			translacaoBase[1][3] = deslocamento.getY();
