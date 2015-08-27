@@ -191,6 +191,46 @@ extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 	gtk_widget_queue_draw(drawingArea);
 }
 
+extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+	Coordenada coord(10, 0, 1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_right1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+	Coordenada coord(-10, 0, 1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_up1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+	Coordenada coord(0, -10, 1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
+extern "C" G_MODULE_EXPORT void on_down1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+	Coordenada coord(0, 10, 1);
+	window_m->deslocarWindow(coord);
+	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
 static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event,
 		gpointer data) {
 	if (surface)
