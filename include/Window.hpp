@@ -1,54 +1,56 @@
 #include "DisplayFile.hpp"
 class Window {
 private:
-	Coordenada  wMax, wMin;
+	Coordenada wMax, wMin;
 	DisplayFile disp;
 public:
-	Window(Coordenada wMax, Coordenada wMin){
+	Window(Coordenada wMax, Coordenada wMin) {
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
-	~Window(){
+	~Window() {
 
 	}
 
-	Coordenada getwMax(){
+	Coordenada getwMax() {
 		return wMax;
 	}
-	Coordenada getwMin(){
+	Coordenada getwMin() {
 		return wMin;
 	}
-	DisplayFile getDisplay(){
+	DisplayFile getDisplay() {
 		return disp;
 	}
 
-	void deslocarWindow(Coordenada desl){
-		wMax = wMax+desl;
-		wMin = wMin+desl;
+	void deslocarWindow(Coordenada desl) {
+		wMax = wMax + desl;
+		wMin = wMin + desl;
 	}
 
-	void zoomWindow(double z){
-		wMax = wMax*z;
-		wMin = wMin*z;
+	void zoomWindow(double z) {
+		wMax = wMax * z;
+		wMin = wMin * z;
 	}
 
-	void adicionaObjeto(Objeto* obj){
+	void adicionaObjeto(Objeto* obj) {
 		disp.adiciona(obj);
 	}
 
-	bool contem(string nomeDoObjeto){
+	bool contem(string nomeDoObjeto) {
 		for (int i = 0; i < disp.getSize(); ++i) {
 			Objeto & obj = **disp.posicaoMem(i);
-			if(obj.nome().compare(nomeDoObjeto.c_str()) == 0)
+			if (obj.nome().compare(nomeDoObjeto.c_str()) == 0)
 				return true;
 		}
 		return false;
 	}
 
-	Objeto* getObjeto(string nome){
-		Objeto *ref = new Objeto(nome);
-		Objeto* retorno = *disp.posicaoMem(ref);
-		delete ref;
-		return retorno;
+	Objeto* getObjeto(string nome) {
+		for (int i = 0; i < disp.getSize(); ++i) {
+			Objeto & obj = **disp.posicaoMem(i);
+			if (obj.nome().compare(nome.c_str()) == 0)
+				return &obj;
+		}
+		return NULL;
 	}
 };

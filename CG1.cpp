@@ -199,12 +199,11 @@ extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 	string comando = gtk_entry_get_text(entry2);
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
-	g_print("teste");
-
 
 	Coordenada coord(1,1,1);
-	ManipulaObjeto manipulaObjeto;
-	manipulaObjeto.Translada(obj,coord);
+	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
+	manipulaObjeto->Translada(obj,coord);
+	g_print("teste");
 
 //	displayFile = viewport_m->transformadaViewport(*window_m);
 
