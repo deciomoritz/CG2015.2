@@ -5,7 +5,6 @@ private:
 	DisplayFile disp;
 public:
 	Window(Coordenada wMax, Coordenada wMin){
-		//verificar coordenadas
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
@@ -22,7 +21,7 @@ public:
 	DisplayFile getDisplay(){
 		return disp;
 	}
-//Chance de dar merda, por não retornar novo objeto e o conteúdo estar na stack!!!!!!!!!!!!!!!!
+
 	void deslocarWindow(Coordenada desl){
 		wMax = wMax+desl;
 		wMin = wMin+desl;
@@ -35,5 +34,14 @@ public:
 
 	void adicionaObjeto(Objeto* obj){
 		disp.adiciona(obj);
+	}
+
+	bool contem(string nomeDoObjeto){
+		for (int i = 0; i < disp.getSize(); ++i) {
+			Objeto & obj = **disp.posicaoMem(i);
+			if(obj.nome().compare(nomeDoObjeto.c_str()) == 0)
+				return true;
+		}
+		return false;
 	}
 };
