@@ -25,6 +25,8 @@ GtkWidget *view;
 GtkTextBuffer *buffer;
 
 GtkEntry* entry;
+GtkEntry* entry2;
+
 
 static cairo_surface_t *surface = NULL;
 
@@ -193,9 +195,18 @@ extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(10, 0, 1);
-	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+
+	string comando = gtk_entry_get_text(entry2);
+	vector<string> aux = separarParametros(comando);
+	Objeto* obj = window_m->getObjeto(aux[0]);
+	g_print("teste");
+
+
+	Coordenada coord(1,1,1);
+	ManipulaObjeto manipulaObjeto;
+	manipulaObjeto.Translada(obj,coord);
+
+//	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -254,7 +265,6 @@ int main(int argc, char* argv[]) {
 	//TESTE
 
 
-
 	//END TESTE
 	gtk_init(&argc, &argv);
 
@@ -262,6 +272,7 @@ int main(int argc, char* argv[]) {
 	gtk_builder_add_from_file(builder, "glade.glade", NULL);
 
 	entry = GTK_ENTRY(gtk_builder_get_object(builder, "entry1"));
+	entry2 = GTK_ENTRY(gtk_builder_get_object(builder, "entry2"));
 
 	view = GTK_WIDGET(gtk_builder_get_object(builder, "textview1"));
 	gtk_widget_set_size_request(view, 400, 600);
