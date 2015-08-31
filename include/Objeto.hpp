@@ -25,6 +25,10 @@ public:
 		return _nome;
 	}
 
+	void setNome(string nome){
+		_nome = nome;
+	}
+
 	ListaEnc<Coordenada>* pontos(){
 		return &_pontos;
 	}
@@ -34,17 +38,11 @@ public:
 	}
 
 	string to_string();
-	Coordenada getCentro(){
-		Coordenada centro(0,0,0);
-		Elemento<Coordenada>* it_pontos = _pontos.getHead();
-		int i=0;
-		for(; i<_pontos.getSize();i++){
-			centro = centro + it_pontos->getInfo();
-			it_pontos = it_pontos->getProximo();
-		}
-		Coordenada teste(centro.getX()/i,centro.getY()/i,centro.getZ()/i);
-		return teste;
-	}
+
+	string to_obj();
+
+	Coordenada getCentro();
+
 	friend bool operator ==(const Coordenada & a, const Coordenada & b);
 
 };
