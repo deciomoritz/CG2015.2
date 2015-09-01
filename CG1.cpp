@@ -37,6 +37,8 @@ static cairo_surface_t *surface = NULL;
 static void clear_surface(void) {
 	cairo_t *cr;
 
+	g_print("limpando surface");
+
 	cr = cairo_create(surface);
 	cairo_set_source_rgb(cr, 1, 1, 1);
 	cairo_paint(cr);
@@ -61,19 +63,21 @@ vector<string> separarParametros(string comando) {
 static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	string comando = gtk_entry_get_text(entry);
 
-	vector<string> aux = separarParametros(comando);
+	if (!comando.empty()) {
+		vector<string> aux = separarParametros(comando);
 
-	if (!window_m->contem(aux[0])) {
-		Objeto* obj = new Objeto(aux[0]);
-		Coordenada* coord;
-		for (int i = 1; i < aux.size() - 1; i += 2) {
-			coord = new Coordenada(atoi(aux[i].c_str()),
-					atoi(aux[i + 1].c_str()), 1);
-			obj->adiciona(*coord);
+		if (!window_m->contem(aux[0])) {
+			Objeto* obj = new Objeto(aux[0]);
+			Coordenada* coord;
+			for (int i = 1; i < aux.size() - 1; i += 2) {
+				coord = new Coordenada(atoi(aux[i].c_str()),
+						atoi(aux[i + 1].c_str()), 1);
+				obj->adiciona(*coord);
+			}
+			window_m->adicionaObjeto(obj);
+			gtk_text_buffer_set_text(buffer,
+					window_m->getDisplay().to_string().c_str(), -1);
 		}
-		window_m->adicionaObjeto(obj);
-		gtk_text_buffer_set_text(buffer,
-				window_m->getDisplay().to_string().c_str(), -1);
 	}
 	return FALSE;
 }
@@ -87,6 +91,10 @@ static gboolean clear(GtkWidget *widget, cairo_t *cr, gpointer data) {
 }
 
 static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
+
+	g_print("teste");
+
+	g_print(window_m->getDisplay().to_string().c_str());
 
 	editDisplayFile(widget, cr, data);
 
@@ -137,6 +145,23 @@ static void draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK(draw2), NULL);
 }
 
+extern "C" G_MODULE_EXPORT void on_load1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+
+	parser = new Parser();
+	string path = gtk_entry_get_text(entry2);
+	DisplayFile dp = *parser->read(path);
+	window_m->clear();
+	for (int i = 0; i < dp.getSize(); ++i) {
+		Objeto & obj = **dp.posicaoMem(i);
+		window_m->adicionaObjeto(&obj);
+	}
+	delete parser;
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
 extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -147,7 +172,6 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(-10, 0, 1);
 	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -157,7 +181,6 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(10, 0, 1);
 	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -167,7 +190,6 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, 10, 1);
 	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -177,7 +199,6 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, -10, 1);
 	window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -186,7 +207,6 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	window_m->zoomWindow(0.5);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -195,7 +215,6 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	window_m->zoomWindow(1.5);
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -344,16 +363,6 @@ extern "C" G_MODULE_EXPORT void on_save_clicked(GtkWidget* widget,
 	delete parser;
 }
 
-extern "C" G_MODULE_EXPORT void on_load_clicked(GtkWidget* widget,
-		gpointer data_user) {
-
-	parser = new Parser();
-	string path = gtk_entry_get_text(entry2);
-	displayFile = *parser->read(path);
-	parser->write(&displayFile);
-	delete parser;
-}
-
 static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event,
 		gpointer data) {
 	if (surface)
@@ -404,6 +413,9 @@ int main(int argc, char* argv[]) {
 
 	GtkWidget* button = GTK_WIDGET(gtk_builder_get_object(builder, "novo"));
 	g_signal_connect(button, "clicked", G_CALLBACK(draw), NULL);
+
+	GtkWidget* button2 = GTK_WIDGET(gtk_builder_get_object(builder, "load"));
+	g_signal_connect(button2, "clicked", G_CALLBACK(draw), NULL);
 
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	gtk_builder_connect_signals(builder, NULL);

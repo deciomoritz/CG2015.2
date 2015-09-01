@@ -57,4 +57,11 @@ public:
 	void clear(){
 		disp.destroiLista();
 	}
+
+	void load(DisplayFile displayFile){
+		disp.destroiLista();
+		for (int i = 0; i < displayFile.getSize(); ++i) {
+			disp.adiciona(*displayFile.posicaoMem(i));
+		}
+	}
 };
