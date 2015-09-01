@@ -25,11 +25,11 @@ Coordenada Objeto::getCentro() {
 }
 
 string Objeto::to_obj(){
-	string s = "#" + _nome + "\n";
+	string s = "#" + _nome + "\n" + "v ";
 
 	for (int j = 0; j < _pontos.getSize(); ++j) {
 		Coordenada & coord = *_pontos.posicaoMem(j);
-		s += "v " + std::to_string(coord.getX()) + " "
+		s += std::to_string(coord.getX()) + " "
 				+ std::to_string(coord.getY());
 	}
 	s += "\n\n";

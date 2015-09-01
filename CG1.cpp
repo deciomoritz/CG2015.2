@@ -358,7 +358,7 @@ extern "C" G_MODULE_EXPORT void on_save_clicked(GtkWidget* widget,
 		gpointer data_user) {
 
 	parser = new Parser();
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	displayFile = window_m->getDisplay();
 	parser->write(&displayFile);
 	delete parser;
 }
