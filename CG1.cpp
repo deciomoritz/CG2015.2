@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
-#include "include/ManipulaObjeto.hpp"
+#include "include/Manipuldores/ManipulaObjeto.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include "include/Objeto.hpp"

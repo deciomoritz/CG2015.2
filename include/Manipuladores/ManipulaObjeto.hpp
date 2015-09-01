@@ -1,19 +1,19 @@
 #include "Objeto.hpp"
 #include "ManipulaMatriz.hpp"
 class ManipulaObjeto {
-	ManipulaMatriz *manipulador;
 private:
+	ManipulaMatriz *manipulador;
+public:
 	void transformaObjeto(Objeto* b, vector<vector<double> >transformada){
 		ListaEnc<Coordenada>* coordenadas = b->pontos();
 		for(int i=0; i<coordenadas->getSize(); i++){
 			Coordenada antiga = coordenadas->retiraDoInicio();
 			vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
 			Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
-			//cout << nova[0][0]<<","<< nova[1][0]<<","<<nova[2][0]<<"\n";
 			coordenadas->adiciona(nova_c);
 		}
 	}
-public:
+
 	ManipulaObjeto(){	manipulador = new ManipulaMatriz();}
 	~ManipulaObjeto(){ delete manipulador;	}
 	void Translada(Objeto* obj, Coordenada c){

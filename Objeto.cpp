@@ -24,6 +24,7 @@ Coordenada Objeto::getCentro() {
 	return teste;
 }
 
+
 string Objeto::to_obj(){
 	string s = "#" + _nome + "\n";
 
