@@ -43,19 +43,27 @@ DisplayFile * Parser::read(string path) {
 	ifstream file(path);
 	DisplayFile * displayFile = new DisplayFile();
 	if (file.is_open()) {
+		Objeto * obj;
 		while (getline(file, line)) {
-			Objeto * obj = new Objeto();
-			if(line.find("#")){
-				obj->setNome(line.substr(1,line.size()));
-			}else{
+			Coordenada * coord;
+			if(!line.find("#")){
+				obj = new Objeto();
+				string nome = line.erase(0,1);
+				obj->setNome(nome);
+				continue;
+			}else if(!line.find("v")){
 				vector<string> aux = split(line," ");
-				Coordenada * coord = new Coordenada(atoi(aux[1].c_str()),atoi(aux[2].c_str()),atoi(aux[3].c_str()));
-				obj->adiciona(*coord);
+				for (int i = 1; i < aux.size() - 1; i += 2) {
+					coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), 1);
+					obj->adiciona(*coord);
+				}
+			}else{
+				continue;
 			}
 			displayFile->adiciona(obj);
 		}
 		file.close();
 	}
-	return 0;
+	return displayFile;
 }
 
