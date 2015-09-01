@@ -37,7 +37,6 @@ public:
 		delete manipulaMtr;
 	}
 
-
 	void Rotaciona(DisplayFile* ori, DisplayFile* virt, double angulo){
 		for (int i=0; i<display->getSize(); i++){
 					transformaMundo(it_Objeto->info,m);
