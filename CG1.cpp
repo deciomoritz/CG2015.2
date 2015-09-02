@@ -367,8 +367,8 @@ static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event,
 }
 
 int main(int argc, char* argv[]) {
-
-	Coordenada wmax(100, 100, 1);
+	//coordenadas da window são importantes para realizar o escalonamento de objetos na normalizaćão do mundo
+	Coordenada wmax(99, 99, 1);
 	Coordenada wmin(0, 0, 1);
 	Coordenada vmax(100, 100, 1);
 	Coordenada vmin(0, 0, 1);

@@ -1,52 +1,39 @@
-#include "ManipulaObjeto.hpp"
 #include "../DisplayFile.hpp"
+#include "ManipulaObjeto"
 class ManipulaMundo {
 private:
 	ManipulaMatriz *manipulaMtr;
 	ManipulaObjeto *manipulaObj;
 
-	void transformaMundo(Objeto* Obj, vector<vector<double> >transformada){
-		Elemento<Objeto*>* it_Objeto = display->getHead();
-		for (int i=0; i<display->getSize(); i++){
-			Objeto* obj = it_Objeto->info;
-			ListaEnc<Coordenada>* coord_real = obj->pontos();
-			ListaEnc<Coordenada>* coord_virtual = obj->pontos_virtual();
-			Elemento<Coordenada>* it_coord = coord_real->getHead();
-			for(int j=0; j<coord_real->getSize(); j++){
-				Coordenada *real = it_coord->info;
-				coord_virtual->retiraDoInicio();
-				vector<vector<double> > nova = manipulaMtr->multiplicaMatriz(real->getVector(), transformada);
-				Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
-				coord_virtual->adiciona(nova_c);
-				it_coord = it_coord->getProximo();
-			}
-			it_Objeto = it_Objeto->getProximo();
-		}
-	}
-
-
-
-
 public:
 	ManipulaMundo(){
 		manipulaMtr = new ManipulaMatriz();
 		manipulaObj = new ManipulaObjeto();
-
 	}
 	~ManipulaMundo(){
 		delete manipulaMtr;
+		delete manipulaObj;
 	}
+	void fuckMundo(Display ori, Display *virt, vector<vector<double> >m, Coordenada fator){
+		virt->destroiLista();
+		Elemento<Objeto*>* it_objeto = ori.getHead();
 
-	void Rotaciona(DisplayFile* ori, DisplayFile* virt, double angulo){
-		for (int i=0; i<display->getSize(); i++){
-					transformaMundo(it_Objeto->info,m);
-					it_Objeto = it_Objeto->getProximo();
-				}
-		Coordenada centro = window->getwCentro();
-		Coordenada a(-1*centro.getX(),-1*centro.getY(),1);
-		vector<vector<double> > m = manipulaMtr->getTranslacao(a);
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacao(angulo));
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getTranslacao(coord));
-		transformaMundo(display, m);
+		for(int i =0; i< ori.getSize(); i++){
+			Objeto* obj= it_objeto->info;
+			Objeto* obj_virtual = new Objeto(obj->getNome());
+			ListaEnc<Coordenada>* pontos = obj->pontos();
+			Elemento<Coordenada>* it_pontos = pontos->getHead();
+			for(int j =0; j< pontos.getSize(); j++){
+				Coordenada coord_real = it_pontos->info;
+				//Pode dar merda por ser temporário....
+				Coordenada coord_virtual(1,1,1);
+				coord_virtual.setVector(manipulaMtr->multiplicaMatriz(coord_real.getVector(),m));
+				it_pontos = it_pontos->getProximo();
+				obj_virtual->adiciona(coord_virtual);
+			}
+			it_objeto = it_objeto->getProximo();
+			manipulaObj->escalona(obj_virtual, fator);
+			virt->adicionaNoInicio(obj_virtual);
+		}
 	}
 };

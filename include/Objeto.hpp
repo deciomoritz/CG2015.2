@@ -29,6 +29,10 @@ public:
 		_nome = nome;
 	}
 
+	string getNome(){
+			return _nome;
+		}
+
 	ListaEnc<Coordenada>* pontos(){
 		return &_pontos;
 	}
