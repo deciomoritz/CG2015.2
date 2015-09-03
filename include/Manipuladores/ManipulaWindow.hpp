@@ -18,8 +18,6 @@ private:
 		return m;
 	}
 
-
-
 public:
 	ManipulaWindow(){
 		manipulaMtr = new ManipulaMatriz();

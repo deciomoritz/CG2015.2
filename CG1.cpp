@@ -90,7 +90,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	editDisplayFile(widget, cr, data);
 
-	displayFile = viewport_m->transformadaViewport(*window_m);
+//	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	clear(widget, cr, data);
 
@@ -145,10 +145,13 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
+
+	g_print("teste");
 	Coordenada coord(-10, 0, 1);
-	//manipulaWindow
-	//window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	manipulaWindow = new ManipulaWindow();
+	manipulaWindow->translada(window_m, coord);
+	displayFile = *window_m->getDisplay_virtual();
+	g_print(window_m->getDisplay_virtual()->to_string().c_str());
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -157,9 +160,9 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(10, 0, 1);
-	//ManipulaWindow
-	//window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	manipulaWindow = new ManipulaWindow();
+		manipulaWindow->translada(window_m, coord);
+		displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -168,9 +171,9 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, 10, 1);
-	//ManipulaWindow
-	//window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	manipulaWindow = new ManipulaWindow();
+		manipulaWindow->translada(window_m, coord);
+		displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -179,9 +182,9 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, -10, 1);
-	//anipulaWindow
-	//window_m->deslocarWindow(coord);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	manipulaWindow = new ManipulaWindow();
+		manipulaWindow->translada(window_m, coord);
+		displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -189,9 +192,10 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	//ManipulaWindow
-	//window_m->zoomWindow(0.5);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	Coordenada coord(1.5, 1.5, 1);
+	manipulaWindow = new ManipulaWindow();
+		manipulaWindow->escalona(window_m, coord);
+		displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -199,9 +203,10 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	//ManipulaWindow
-	//window_m->zoomWindow(1.5);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+	Coordenada coord(0, 0, 1);
+	manipulaWindow = new ManipulaWindow();
+		manipulaWindow->escalona(window_m, coord);
+		displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
