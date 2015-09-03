@@ -27,12 +27,17 @@ public:
 				Coordenada *coord_real = it_pontos->info;
 				//Pode dar merda por ser temporário....
 				Coordenada coord_virtual(1,1,1);
+				manipulaMtr->printaMatriz(coord_real->getVector());
+//				vector<vector<double>> x = manipulaMtr->multiplicaMatriz(m, fator.getVector());
 				coord_virtual.setVector(manipulaMtr->multiplicaMatriz(coord_real->getVector(),m));
+				manipulaMtr->printaMatriz(coord_virtual.getVector());
 				it_pontos = it_pontos->getProximo();
 				obj_virtual->adiciona(coord_virtual);
 			}
 			it_objeto = it_objeto->getProximo();
-			manipulaObj->escalona(obj_virtual, fator);
+			cout << obj_virtual->to_string() << endl;
+//			manipulaObj->escalona(obj_virtual, fator);
+//			cout << obj_virtual->to_string() << endl;
 			virt->adicionaNoInicio(obj_virtual);
 		}
 	}

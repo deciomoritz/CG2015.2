@@ -15,8 +15,12 @@ private:
 		Coordenada tr(-1*wCentro.getX(),-1*wCentro.getY(),1);
 		vector<vector<double> > m = manipulaMtr->getTranslacao(tr);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacao(-1*angulo));
+		Coordenada tr2(0.01,0.01,1);
+		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getEscalonamento(tr2));
 		return m;
 	}
+
+
 
 public:
 	ManipulaWindow(){
@@ -29,17 +33,18 @@ public:
 	}
 	void translada(Window* window, Coordenada c){
 		vector<vector<double> > m = manipulaMtr->getTranslacao(c);
+//		manipulaMtr->printaMatriz(m);
 		transformaWindow(window, m);
-		Coordenada escalonamento(0.02, 0.02,1);// =2/dimensão window
+//		manipulaMtr->printaMatriz(window->getwMax()->getVector());
+//		manipulaMtr->printaMatriz(window->getwMin()->getVector());
+		Coordenada escalonamento(0.01, 0.01,1);// =2/dimensão window
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(window->getwCentro()), escalonamento);
-
+		cout << window->getDisplay_virtual()->to_string() << endl;
 	}
 	void escalona(Window* window, Coordenada c){
 		Coordenada centro = window->getwCentro();
 		Coordenada a(-1*centro.getX(),-1*centro.getY(),1);
 		vector<vector<double> > m = manipulaMtr->getTranslacao(a);
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getEscalonamento(c));
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getTranslacao(centro));
 		transformaWindow(window, m);
 		Coordenada escalonamento(0.02, 0.02,1);// =2/dimensão window
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro), escalonamento);

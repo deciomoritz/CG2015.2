@@ -25,7 +25,7 @@ public:
 
 	DisplayFile transformadaViewport(Window w) {
 		DisplayFile novoDisplay;
-		DisplayFile originalDisplay = w.getDisplay();
+		DisplayFile originalDisplay = *w.getDisplay_virtual();
 		//constantes da transformacao
 		double divX, divY, multX, multY;
 //		divX = (w.getwMax() - w.getwMin()).getX();
