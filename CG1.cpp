@@ -4,12 +4,9 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
-#include "include/Manipuladores/ManipulaObjeto.hpp"
 #include "include/Manipuladores/ManipulaWindow.hpp"
-#include "include/Manipuladores/ManipulaMundo.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
-#include "include/Objeto.hpp"
 #include "include/formas/Poligono.hpp"
 #include "include/Parser.h"
 
@@ -149,7 +146,8 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(-10, 0, 1);
-	window_m->deslocarWindow(coord);
+	//manipulaWindow
+	//window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -159,7 +157,8 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(10, 0, 1);
-	window_m->deslocarWindow(coord);
+	//ManipulaWindow
+	//window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -169,7 +168,8 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, 10, 1);
-	window_m->deslocarWindow(coord);
+	//ManipulaWindow
+	//window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -179,7 +179,8 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, -10, 1);
-	window_m->deslocarWindow(coord);
+	//anipulaWindow
+	//window_m->deslocarWindow(coord);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -188,7 +189,8 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	window_m->zoomWindow(0.5);
+	//ManipulaWindow
+	//window_m->zoomWindow(0.5);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -197,7 +199,8 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	window_m->zoomWindow(1.5);
+	//ManipulaWindow
+	//window_m->zoomWindow(1.5);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -213,7 +216,7 @@ extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 
 	Coordenada coord(-10, 0, 1);
 	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
-	manipulaObjeto->Translada(obj, coord);
+	manipulaObjeto->translada(obj, coord);
 	delete manipulaObjeto;
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -229,7 +232,7 @@ extern "C" G_MODULE_EXPORT void on_right1_clicked(GtkWidget* widget,
 
 	Coordenada coord(10, 0, 1);
 	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
-	manipulaObjeto->Translada(obj, coord);
+	manipulaObjeto->translada(obj, coord);
 	delete manipulaObjeto;
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -244,7 +247,7 @@ extern "C" G_MODULE_EXPORT void on_up1_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(0, 10, 1);
-	manipulaObjeto->Translada(obj, coord);
+	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -258,7 +261,7 @@ extern "C" G_MODULE_EXPORT void on_down1_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(0, -10, 1);
-	manipulaObjeto->Translada(obj, coord);
+	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -273,7 +276,7 @@ extern "C" G_MODULE_EXPORT void on_out2_clicked(GtkWidget* widget,
 
 	Coordenada coord(atof(aux[1].c_str()), atof(aux[1].c_str()), 1);
 //	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
-	manipulaObjeto->Escalona(obj, coord);
+	manipulaObjeto->escalona(obj, coord);
 //	delete manipulaObjeto;
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -288,7 +291,7 @@ extern "C" G_MODULE_EXPORT void on_in2_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(atof(aux[1].c_str()), atof(aux[1].c_str()), 1);
-	manipulaObjeto->Escalona(obj, coord);
+	manipulaObjeto->escalona(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -303,7 +306,7 @@ extern "C" G_MODULE_EXPORT void on_rotArb_clicked(GtkWidget* widget,
 
 	Coordenada coord(atof(aux[1].c_str()), atof(aux[2].c_str()), 1);
 //	ManipulaObjeto* manipulaObjeto = new ManipulaObjeto();
-	manipulaObjeto->Rotaciona(obj, coord, atof(aux[3].c_str()));
+	manipulaObjeto->rotaciona(obj, coord, atof(aux[3].c_str()));
 //	delete manipulaObjeto;
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -318,7 +321,7 @@ extern "C" G_MODULE_EXPORT void on_rotObject_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(obj->getCentro().getX(), obj->getCentro().getY(), 1);
-	manipulaObjeto->Rotaciona(obj, coord, atof(aux[1].c_str()));
+	manipulaObjeto->rotaciona(obj, coord, atof(aux[1].c_str()));
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -332,7 +335,7 @@ extern "C" G_MODULE_EXPORT void on_rotWorld_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(0, 0, 1);
-	manipulaObjeto->Rotaciona(obj, coord, atof(aux[1].c_str()));
+	manipulaObjeto->rotaciona(obj, coord, atof(aux[1].c_str()));
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);

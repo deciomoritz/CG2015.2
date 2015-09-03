@@ -16,12 +16,12 @@ public:
 
 	ManipulaObjeto(){	manipulador = new ManipulaMatriz();}
 	~ManipulaObjeto(){ delete manipulador;	}
-	void Translada(Objeto* obj, Coordenada c){
+	void translada(Objeto* obj, Coordenada c){
 		vector<vector<double> > m = manipulador->getTranslacao(c);
 		transformaObjeto(obj, m);
 
 	}
-	void Escalona(Objeto* obj, Coordenada c){
+	void escalona(Objeto* obj, Coordenada c){
 		Coordenada centro = obj->getCentro();
 		Coordenada a(-1*centro.getX(),-1*centro.getY(),1);
 		vector<vector<double> > m = manipulador->getTranslacao(a);
@@ -29,7 +29,7 @@ public:
 		m = manipulador->multiplicaMatriz(m, manipulador->getTranslacao(centro));
 		transformaObjeto(obj, m);
 	}
-	void Rotaciona(Objeto* obj, Coordenada coord, double angulo){
+	void rotaciona(Objeto* obj, Coordenada coord, double angulo){
 		/* (0,0,1): rotaciona no centro do mundo
 		 * getCentro: rotaciona no centro do objeto
 		 * (x, y, 1): rotaciona no  ponto

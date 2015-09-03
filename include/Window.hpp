@@ -1,3 +1,5 @@
+#ifndef WINDOW_H_
+#define WINDOW_H_
 #include "DisplayFile.hpp"
 class Window {
 private:
@@ -67,3 +69,4 @@ public:
 		disp.destroiLista();
 	}
 };
+#endif /* WINDOW_H_ */
