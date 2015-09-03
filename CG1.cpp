@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
-#include "include/Manipuldores/ManipulaObjeto.hpp"
+#include "include/Manipuladores/ManipulaObjeto.hpp"
+#include "include/Manipuladores/ManipulaWindow.hpp"
+#include "include/Manipuladores/ManipulaMundo.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include "include/Objeto.hpp"
@@ -29,7 +31,8 @@ GtkEntry* entry;
 GtkEntry* entry2;
 
 ManipulaObjeto* manipulaObjeto;
-
+ManipulaMundo* manipulaMundo;
+ManipulaWindow* manipulaWindow;
 Parser* parser;
 
 static cairo_surface_t *surface = NULL;
@@ -375,6 +378,8 @@ int main(int argc, char* argv[]) {
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
 	manipulaObjeto = new ManipulaObjeto();
+	manipulaMundo = new ManipulaMundo();
+	manipulaWindow = new ManipulaWindow();
 	//TESTE
 
 	//END TESTE

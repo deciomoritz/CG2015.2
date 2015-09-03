@@ -1,4 +1,4 @@
-#include "Window.hpp"
+#include "../Window.hpp"
 #include "ManipulaMundo.hpp"
 class ManipulaWindow {
 
@@ -33,8 +33,8 @@ public:
 	void Translada(Window* window, Coordenada c){
 		vector<vector<double> > m = manipulaMtr->getTranslacao(c);
 		transformaWindow(window, m);
-
-		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro));
+		Coordenada escalonamento(0.02, 0.02,1);// =2/dimensão window
+		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro), escalonamento);
 
 	}
 	void Escalona(Window* window, Coordenada c){
@@ -44,7 +44,8 @@ public:
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getEscalonamento(c));
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getTranslacao(centro));
 		transformaWindow(window, m);
-		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro));
+		Coordenada escalonamento(0.02, 0.02,1);// =2/dimensão window
+		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro), escalonamento);
 	}
 	void Rotaciona(Window* window, double angulo){
 		this->angulo+=angulo;

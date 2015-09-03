@@ -1,5 +1,5 @@
 #include "../DisplayFile.hpp"
-#include "ManipulaObjeto"
+#include "ManipulaObjeto.hpp"
 class ManipulaMundo {
 private:
 	ManipulaMatriz *manipulaMtr;

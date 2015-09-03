@@ -1,4 +1,4 @@
-#include "Objeto.hpp"
+#include "../Objeto.hpp"
 #include "ManipulaMatriz.hpp"
 class ManipulaObjeto {
 private:

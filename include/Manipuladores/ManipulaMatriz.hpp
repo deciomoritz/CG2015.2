@@ -1,6 +1,6 @@
 #include <math.h>
 #include <iostream>
-#include "Coordenada.hpp"
+#include "../Coordenada.hpp"
 using namespace std;
 class ManipulaMatriz {
 	//FUCK
