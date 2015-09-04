@@ -1,9 +1,11 @@
 #include <math.h>
 #include <iostream>
-#include "Coordenada.hpp"
+#include "../Coordenada.hpp"
 using namespace std;
 class ManipulaMatriz {
+
 private:
+	int fuck = 0;
 	vector<vector<double> >translacaoBase, rotacaoBase, escalonamentoBase;
 public:
 	void printaMatriz(vector<vector<double> > m){

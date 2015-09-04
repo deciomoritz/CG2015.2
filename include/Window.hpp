@@ -1,10 +1,16 @@
+#ifndef WINDOW_H_
+#define WINDOW_H_
 #include "DisplayFile.hpp"
 class Window {
 private:
-	Coordenada wMax, wMin;
+	Coordenada  wMin, wMax;
 	DisplayFile disp;
+	DisplayFile disp_virtual;
+	double altura, largura;
 public:
 	Window(Coordenada wMax, Coordenada wMin) {
+		largura = wMax.getX();
+		altura = wMax.getY();
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
@@ -12,25 +18,46 @@ public:
 
 	}
 
-	Coordenada getwMax() {
-		return wMax;
+	void setTamanho(Coordenada c){
+		largura *= c.getX();
+		altura *= c.getY();
 	}
-	Coordenada getwMin() {
-		return wMin;
+
+	double getLargura(){
+		return largura;
+	}
+
+	double getAltura(){
+		return altura;
+	}
+
+	Coordenada* getwMax() {
+		return &wMax;
+	}
+	Coordenada* getwMin() {
+		return &wMin;
+	}
+	Coordenada getwCentro() {
+		Coordenada result = wMax+wMin;
+		Coordenada centro(result.getX()/2,result.getY()/2,result.getZ()/2);
+		return centro;
 	}
 	DisplayFile getDisplay() {
 		return disp;
 	}
-
-	void deslocarWindow(Coordenada desl) {
-		wMax = wMax + desl;
-		wMin = wMin + desl;
+	DisplayFile* getDisplay_virtual() {
+			return &disp_virtual;
 	}
 
-	void zoomWindow(double z) {
-		wMax = wMax * z;
-		wMin = wMin * z;
-	}
+//	void deslocarWindow(Coordenada desl) {
+//		wMax = wMax + desl;
+//		wMin = wMin + desl;
+//	}
+//
+//	void zoomWindow(double z) {
+//		wMax = wMax * z;
+//		wMin = wMin * z;
+//	}
 
 	void adicionaObjeto(Objeto* obj) {
 		disp.adiciona(obj);
@@ -65,3 +92,4 @@ public:
 		}
 	}
 };
+#endif /* WINDOW_H_ */
