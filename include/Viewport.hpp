@@ -28,8 +28,8 @@ public:
 		DisplayFile originalDisplay = *w.getDisplay_virtual();
 		//constantes da transformacao
 		double divX, divY, multX, multY;
-//		divX = (w.getwMax() - w.getwMin()).getX();
-//		divY = (w.getwMax() - w.getwMin()).getY();
+		//		divX = (w.getwMax() - w.getwMin()).getX();
+		//		divY = (w.getwMax() - w.getwMin()).getY();
 		//Alterado para 2 devido ao processo de normalizacao das coordenadas do mundo: window=(-1,-1), (1,1)
 		divX = 2;
 		divY = 2;
@@ -46,8 +46,8 @@ public:
 				Coordenada atual = it_coordenada->getInfo();
 				//Transformacao
 				double newX, newY, newZ;
-//				newX = ((atual.getX() - w.getwMin().getX()) / divX) * multX;
-//				newY = (1 - (atual.getY() - w.getwMin().getY()) / divY) * multY;
+				//				newX = ((atual.getX() - w.getwMin().getX()) / divX) * multX;
+				//				newY = (1 - (atual.getY() - w.getwMin().getY()) / divY) * multY;
 				//Alterado para 2 devido ao processo de normalizacao das coordenadas do mundo: window=(-1,-1), (1,1)
 				newX = ((atual.getX() +1) / divX) * multX;
 				newY = (1 - (atual.getY() +1) / divY) * multY;
@@ -61,6 +61,24 @@ public:
 			it_originalDisplay = it_originalDisplay->getProximo();
 		}
 		return novoDisplay;
+	}
+
+	Coordenada* transformadaViewport(Coordenada atual) {
+		//constantes da transformacao
+		double divX, divY, multX, multY;
+		divX = 2;
+		divY = 2;
+		multX = (vMax - vMin).getX();
+		multY = (vMax - vMin).getY();
+		// iterando lista de objetos
+		//iterando as coordenadas do objeto
+		//Transformacao
+		double newX, newY, newZ;
+		newX = ((atual.getX() +1) / divX) * multX;
+		newY = (1 - (atual.getY() +1) / divY) * multY;
+		newZ = 1;
+		//criando novo ponto
+		return new Coordenada(newX, newY, newZ);
 	}
 };
 

@@ -37,6 +37,9 @@ public:
 	vector<vector<double> > getVector(){
 			return ponto;
 	}
+	Coordenada negative(){
+		return Coordenada(-ponto[0][0], -ponto[1][0], -ponto[2][0]);
+	}
 	Coordenada operator* (double o);
 	friend Coordenada operator +(const Coordenada & a, const Coordenada & b);
 	friend Coordenada operator -(const Coordenada & a, const Coordenada & b);

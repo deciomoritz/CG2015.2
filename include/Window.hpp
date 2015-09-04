@@ -6,13 +6,29 @@ private:
 	Coordenada  wMin, wMax;
 	DisplayFile disp;
 	DisplayFile disp_virtual;
+	double altura, largura;
 public:
 	Window(Coordenada wMax, Coordenada wMin) {
+		largura = wMax.getX();
+		altura = wMax.getY();
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
 	~Window() {
 
+	}
+
+	void setTamanho(Coordenada c){
+		largura *= c.getX();
+		altura *= c.getY();
+	}
+
+	double getLargura(){
+		return largura;
+	}
+
+	double getAltura(){
+		return altura;
 	}
 
 	Coordenada* getwMax() {
