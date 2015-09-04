@@ -42,9 +42,9 @@ public:
 	void escalona(Window* window, Coordenada c){
 		window->setTamanho(c);
 		Coordenada centro = window->getwCentro();
-//		Coordenada a(-1*centro.getX(),-1*centro.getY(),1);
-		Coordenada a = centro.negative();
-		vector<vector<double> > m = manipulaMtr->getTranslacao(a);
+		vector<vector<double> > m = manipulaMtr->getTranslacao(centro.negative());
+		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getEscalonamento(c));
+		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getTranslacao(centro));
 		transformaWindow(window, m);
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 	}
