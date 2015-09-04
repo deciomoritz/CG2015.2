@@ -93,10 +93,13 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	manipulaWindow->refresh(window_m);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
+	g_print("--------\n");
+	g_print(displayFile.to_string().c_str());
+	g_print("--------\n");
+
 	clear(widget, cr, data);
 
-	gtk_text_buffer_set_text(buffer, window_m->getDisplay().to_string().c_str(),
-			-1);
+	gtk_text_buffer_set_text(buffer, window_m->getDisplay().to_string().c_str(),-1);
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 5);
@@ -105,8 +108,11 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	Coordenada* ultimo;
 	for (int i = 0; i < displayFile.getSize(); ++i) {
 		Objeto & obj = **displayFile.posicaoMem(i);
+		if(obj.getNome().empty())
+			continue;
 		ListaEnc<Coordenada> & pontos = *obj.pontos();
 
+	g_print("--------\n");
 		primeiro = pontos.posicaoMem(0);
 		ultimo = pontos.posicaoMem(pontos.getSize() - 1);
 
@@ -128,24 +134,24 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		cairo_line_to(cr, ultimo->getX(), ultimo->getY());
 	}
 
-	cairo_move_to(cr, window_m->getwCentro().getX(), window_m->getwCentro().getY());
-	cairo_line_to(cr, window_m->getwCentro().getX()+1, window_m->getwCentro().getY()+1);
+//	cairo_move_to(cr, window_m->getwCentro().getX(), window_m->getwCentro().getY());
+//	cairo_line_to(cr, window_m->getwCentro().getX()+1, window_m->getwCentro().getY()+1);
 //________________________________________________________________________________________
 
-	Coordenada* min = viewport_m->transformadaViewport(*window_m->getwMin());
-	Coordenada* max = viewport_m->transformadaViewport(*window_m->getwMax());
-
-	cairo_move_to(cr, min->getX(), min->getY());
-	cairo_line_to(cr, min->getX(), max->getY());
-	cairo_move_to(cr, min->getX(), max->getY());
-
-	cairo_line_to(cr, max->getX(), max->getY());
-	cairo_move_to(cr, max->getX(), max->getY());
-
-	cairo_line_to(cr, max->getX(), min->getY());
-	cairo_move_to(cr, max->getX(), min->getY());
-
-	cairo_line_to(cr, min->getX(), min->getY());
+//	Coordenada* min = viewport_m->transformadaViewport(*window_m->getwMin());
+//	Coordenada* max = viewport_m->transformadaViewport(*window_m->getwMax());
+//
+//	cairo_move_to(cr, min->getX(), min->getY());
+//	cairo_line_to(cr, min->getX(), max->getY());
+//	cairo_move_to(cr, min->getX(), max->getY());
+//
+//	cairo_line_to(cr, max->getX(), max->getY());
+//	cairo_move_to(cr, max->getX(), max->getY());
+//
+//	cairo_line_to(cr, max->getX(), min->getY());
+//	cairo_move_to(cr, max->getX(), min->getY());
+//
+//	cairo_line_to(cr, min->getX(), min->getY());
 
 	cairo_stroke(cr);
 
@@ -157,18 +163,21 @@ static void draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK(draw2), NULL);
 }
 
-extern "C" G_MODULE_EXPORT void on_load1_clicked(GtkWidget* widget,
+extern "C" G_MODULE_EXPORT void on_load_clicked(GtkWidget* widget,
 		gpointer data_user) {
 
 	parser = new Parser();
 	string path = gtk_entry_get_text(entry2);
 	DisplayFile dp = *parser->read(path);
-	window_m->clear();
-	for (int i = 0; i < dp.getSize(); ++i) {
-		Objeto & obj = **dp.posicaoMem(i);
-		window_m->adicionaObjeto(&obj);
-	}
-	delete parser;
+	window_m->load(dp);
+//	g_print(dp.to_string().c_str());
+//	window_m->clear();
+//	for (int i = 0; i < dp.getSize(); ++i) {
+//		Objeto & obj = **dp.posicaoMem(i);
+//		window_m->adicionaObjeto(&obj);
+//	}
+//	delete parser;
+//	g_print(window_m->getDisplay().to_string().c_str());
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -183,12 +192,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(-10, 0, 1);
-	g_print(displayFile.to_string().c_str());
-	g_print("\n\n");
 	manipulaWindow->translada(window_m, coord);
-
-	g_print(displayFile.to_string().c_str());
-	g_print("-------------------------------------------\n");
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -197,12 +201,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(10, 0, 1);
-	g_print(displayFile.to_string().c_str());
-	g_print("\n\n");
 	manipulaWindow->translada(window_m, coord);
-
-	g_print(displayFile.to_string().c_str());
-	g_print("-------------------------------------------\n");
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -219,12 +218,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0, -10, 1);
-	g_print(displayFile.to_string().c_str());
-	g_print("\n\n");
 	manipulaWindow->translada(window_m, coord);
-
-	g_print(displayFile.to_string().c_str());
-	g_print("-------------------------------------------\n");
 
 //	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -233,8 +227,10 @@ extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(1.5, 1.5, 1);
-		manipulaWindow->escalona(window_m, coord);
-		displayFile = *window_m->getDisplay_virtual();
+//	manipulaWindow->translada(window_m, window_m->getwCentro());
+	manipulaWindow->escalona(window_m, coord);
+//	manipulaWindow->translada(window_m, window_m->getwCentro().negative());
+	displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -389,16 +385,6 @@ extern "C" G_MODULE_EXPORT void on_save_clicked(GtkWidget* widget,
 	delete parser;
 }
 
-extern "C" G_MODULE_EXPORT void on_load_clicked(GtkWidget* widget,
-		gpointer data_user) {
-
-	parser = new Parser();
-	string path = gtk_entry_get_text(entry2);
-	displayFile = *parser->read(path);
-	parser->write(&displayFile);
-	delete parser;
-}
-
 static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event,
 		gpointer data) {
 	if (surface)
@@ -452,6 +438,9 @@ int main(int argc, char* argv[]) {
 
 	GtkWidget* button = GTK_WIDGET(gtk_builder_get_object(builder, "novo"));
 	g_signal_connect(button, "clicked", G_CALLBACK(draw), NULL);
+
+	GtkWidget* button2 = GTK_WIDGET(gtk_builder_get_object(builder, "load"));
+	g_signal_connect(button2, "clicked", G_CALLBACK(draw), NULL);
 
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 	gtk_builder_connect_signals(builder, NULL);

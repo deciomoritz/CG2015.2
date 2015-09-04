@@ -3,7 +3,7 @@
 #include "../Coordenada.hpp"
 using namespace std;
 class ManipulaMatriz {
-	//FUCK
+
 private:
 	int fuck = 0;
 	vector<vector<double> >translacaoBase, rotacaoBase, escalonamentoBase;
