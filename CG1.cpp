@@ -157,6 +157,23 @@ static void draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK(draw2), NULL);
 }
 
+extern "C" G_MODULE_EXPORT void on_load1_clicked(GtkWidget* widget,
+		gpointer data_user) {
+
+	parser = new Parser();
+	string path = gtk_entry_get_text(entry2);
+	DisplayFile dp = *parser->read(path);
+	window_m->clear();
+	for (int i = 0; i < dp.getSize(); ++i) {
+		Objeto & obj = **dp.posicaoMem(i);
+		window_m->adicionaObjeto(&obj);
+	}
+	delete parser;
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
+}
+
 extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -165,7 +182,6 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-
 	Coordenada coord(-10, 0, 1);
 	g_print(displayFile.to_string().c_str());
 	g_print("\n\n");
