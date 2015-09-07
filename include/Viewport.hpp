@@ -23,6 +23,14 @@ public:
 	~Viewport() {
 	}
 
+	Coordenada& getVMax(){
+		return vMax;
+	}
+
+	Coordenada& getVMin(){
+			return vMin;
+		}
+
 	DisplayFile transformadaViewport(Window w) {
 		DisplayFile novoDisplay;
 		DisplayFile originalDisplay = *w.getDisplay_virtual();
@@ -74,7 +82,8 @@ public:
 		//iterando as coordenadas do objeto
 		//Transformacao
 		double newX, newY, newZ;
-		newX = ((atual.getX() +1) / divX) * multX;
+//		newX = ((atual.getX() +1) / divX) * multX;
+		newX = (1 - (atual.getX() +1) / divX) * multX;
 		newY = (1 - (atual.getY() +1) / divY) * multY;
 		newZ = 1;
 		//criando novo ponto
