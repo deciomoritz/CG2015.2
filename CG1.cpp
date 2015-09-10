@@ -91,6 +91,11 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	editDisplayFile(widget, cr, data);
 
 	manipulaWindow->refresh(window_m);
+	g_print("----------------------------------------------------\n");
+	g_print("fuck\n");
+	g_print(window_m->getDisplay_virtual()->to_string().c_str());
+
+	g_print("****************************************************\n");
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	clear(widget, cr, data);
@@ -129,8 +134,6 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		cairo_line_to(cr, ultimo->getX(), ultimo->getY());
 	}
 
-	cairo_move_to(cr, window_m->getwCentro().getX(), window_m->getwCentro().getY());
-	cairo_line_to(cr, window_m->getwCentro().getX()+1, window_m->getwCentro().getY()+1);
 //________________________________________________________________________________________
 
 //	Coordenada* min = viewport_m->transformadaViewport(*window_m->getwMin());
@@ -138,16 +141,6 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	Coordenada* min = &viewport_m->getVMin();
 	Coordenada* max = &viewport_m->getVMax();
-
-	g_print("---------------");
-//	g_print(to_string(window_m->getwMax()->getX()).c_str());
-//	g_print(" ");
-//	g_print(to_string(window_m->getwMax()->getY()).c_str());
-//	g_print("\n");
-	g_print(to_string(min->getX()).c_str());
-	g_print(" ");
-	g_print(to_string(max->getY()).c_str());
-	g_print("\n");
 
 	cairo_move_to(cr, min->getX(), min->getY());
 	cairo_line_to(cr, min->getX(), max->getY());
@@ -191,7 +184,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(-10, 0, 1);
+	Coordenada coord(-1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -200,7 +193,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(10, 0, 1);
+	Coordenada coord(1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -208,7 +201,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, 10, 1);
+	Coordenada coord(0, 1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -217,7 +210,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, -10, 1);
+	Coordenada coord(0, -1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -248,7 +241,7 @@ extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(-10, 0, 1);
+	Coordenada coord(-1, 0, 1);
 	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -262,7 +255,7 @@ extern "C" G_MODULE_EXPORT void on_right1_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(10, 0, 1);
+	Coordenada coord(1, 0, 1);
 	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -276,7 +269,7 @@ extern "C" G_MODULE_EXPORT void on_up1_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(0, 10, 1);
+	Coordenada coord(0, 1, 1);
 	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -290,7 +283,7 @@ extern "C" G_MODULE_EXPORT void on_down1_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(0, -10, 1);
+	Coordenada coord(0, -1, 1);
 	manipulaObjeto->translada(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -394,10 +387,10 @@ static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event,
 
 int main(int argc, char* argv[]) {
 	//coordenadas da window são importantes para realizar o escalonamento de objetos na normalizaćão do mundo
-	Coordenada wmax(400, 600, 1);
-	Coordenada wmin(0, 0, 1);
-	Coordenada vmax(390, 590, 1);
-	Coordenada vmin(10, 10, 1);
+	Coordenada wmax(50, 50, 1);
+	Coordenada wmin(-50, -50, 1);
+	Coordenada vmax(400, 400, 1);
+	Coordenada vmin(0, 0, 1);
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
 	manipulaObjeto = new ManipulaObjeto();
@@ -423,7 +416,7 @@ int main(int argc, char* argv[]) {
 	frame = GTK_WIDGET(gtk_builder_get_object(builder, "frame1"));
 
 	drawingArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawingarea1"));
-	gtk_widget_set_size_request(drawingArea, 400, 600);
+	gtk_widget_set_size_request(drawingArea, 400, 400);
 	g_signal_connect(drawingArea, "draw", G_CALLBACK(clear), NULL);
 	g_signal_connect(drawingArea, "configure-event",
 			G_CALLBACK(configure_event_cb), NULL);

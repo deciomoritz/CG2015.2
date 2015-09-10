@@ -34,7 +34,7 @@ public:
 				obj_virtual->adiciona(coord_virtual);
 			}
 			it_objeto = it_objeto->getProximo();
-			cout << obj_virtual->to_string() << endl;
+//			cout << obj_virtual->to_string() << endl;
 			virt->adicionaNoInicio(obj_virtual);
 		}
 	}

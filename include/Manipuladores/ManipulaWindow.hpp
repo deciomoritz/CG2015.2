@@ -14,7 +14,7 @@ private:
 		Coordenada tr(-1*wCentro.getX(),-1*wCentro.getY(),1);
 		vector<vector<double> > m = manipulaMtr->getTranslacao(tr);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacao(-1*angulo));
-		Coordenada tr2(1/window->getLargura(),1/window->getAltura(),1);
+		Coordenada tr2(2/window->getLargura(),2/window->getAltura(),1);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getEscalonamento(tr2));
 		return m;
 	}
@@ -37,7 +37,7 @@ public:
 //		manipulaMtr->printaMatriz(window->getwMax()->getVector());
 //		manipulaMtr->printaMatriz(window->getwMin()->getVector());
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(window->getwCentro(), window));
-		cout << window->getDisplay_virtual()->to_string() << endl;
+//		cout << window->getDisplay_virtual()->to_string() << endl;
 	}
 	void escalona(Window* window, Coordenada c){
 		window->setTamanho(c);

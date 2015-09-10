@@ -1,6 +1,7 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 #include "DisplayFile.hpp"
+#include <math.h>
 class Window {
 private:
 	Coordenada  wMin, wMax;
@@ -9,8 +10,8 @@ private:
 	double altura, largura;
 public:
 	Window(Coordenada wMax, Coordenada wMin) {
-		largura = wMax.getX();
-		altura = wMax.getY();
+		largura = fabs(wMax.getX() - wMin.getX());
+		altura = fabs(wMax.getY() - wMin.getY());
 		this->wMax = wMax;
 		this->wMin = wMin;
 	}
