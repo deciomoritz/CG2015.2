@@ -77,7 +77,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
+                    <property name="top_attach">1</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
@@ -152,7 +152,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="novo">
-                        <property name="label" translatable="yes">Criar Objeto</property>
+                        <property name="label" translatable="yes">New object</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -206,10 +206,26 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label13">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Navegate Window</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -222,7 +238,7 @@
               <object class="GtkLabel" id="label11">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Digite o nome do objeto a ser operado</property>
+                <property name="label" translatable="yes">Type object name with parameters</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -239,6 +255,18 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label12">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Operate Object</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
@@ -357,7 +385,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="zoomIndividual">
-                    <property name="label" translatable="yes">Zoom Individual</property>
+                    <property name="label" translatable="yes">Zoom</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -378,7 +406,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
@@ -420,19 +448,19 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">5</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label10">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Digite [nome] [x1] [y1] ... [xn] [yn]</property>
+                <property name="label" translatable="yes">Type [name] [x1] [y1] ... [xn] [yn]</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">6</property>
+                <property name="position">7</property>
               </packing>
             </child>
           </object>
@@ -470,11 +498,11 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="checkbutton1">
-            <property name="label" translatable="yes">Preenchido</property>
+            <property name="label" translatable="yes">Fill</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">False</property>
-            <property name="xalign">0.5</property>
+            <property name="xalign">0.49000000953674316</property>
             <property name="draw_indicator">True</property>
           </object>
           <packing>
