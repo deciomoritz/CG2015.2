@@ -20,7 +20,7 @@ public:
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto* obj= *it_objeto->info;
-			Objeto* obj_virtual = new Objeto(obj->getNome());
+			Objeto* obj_virtual = new Objeto(obj->getNome(), obj->getTipo(), obj->isPreenchido());
 			ListaEnc<Coordenada>* pontos = obj->pontos();
 			Elemento<Coordenada>* it_pontos = pontos->getHead();
 			for(int j =0; j< pontos->getSize(); j++){

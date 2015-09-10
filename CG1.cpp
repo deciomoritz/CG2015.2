@@ -26,6 +26,7 @@ GtkTextBuffer *buffer;
 
 GtkEntry* entry;
 GtkEntry* entry2;
+GtkToggleButton* checkButton;
 
 ManipulaObjeto* manipulaObjeto;
 ManipulaMundo* manipulaMundo;
@@ -61,10 +62,12 @@ vector<string> separarParametros(string comando) {
 static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	string comando = gtk_entry_get_text(entry);
 
+	bool preenchido = gtk_toggle_button_get_active(checkButton);
+
 	vector<string> aux = separarParametros(comando);
 
 	if (!window_m->contem(aux[0])) {
-		Objeto* obj = new Objeto(aux[0]);
+		Objeto* obj = new Objeto(aux[0], Poligono, preenchido);
 		Coordenada* coord;
 		for (int i = 1; i < aux.size() - 1; i += 2) {
 			coord = new Coordenada(atoi(aux[i].c_str()),
@@ -103,7 +106,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	gtk_text_buffer_set_text(buffer, window_m->getDisplay().to_string().c_str(),-1);
 
 	cairo_set_source_rgb(cr, 0, 0, 0);
-	cairo_set_line_width(cr, 5);
+	cairo_set_line_width(cr, 2);
 
 	Coordenada* primeiro;
 	Coordenada* ultimo;
@@ -113,25 +116,18 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 			continue;
 		ListaEnc<Coordenada> & pontos = *obj.pontos();
 
-		primeiro = pontos.posicaoMem(0);
-		ultimo = pontos.posicaoMem(pontos.getSize() - 1);
-
-		if (primeiro == ultimo) {
-			ultimo = new Coordenada(primeiro->getX() + 1, primeiro->getY() + 1,
-					1);
-			cairo_move_to(cr, primeiro->getX(), primeiro->getY());
-			cairo_line_to(cr, ultimo->getX(), ultimo->getY());
-			continue;
-		}
-		for (int j = 0; j < pontos.getSize() - 1; ++j) {
+		for (int j = 0; j < pontos.getSize() ; ++j) {
 
 			Coordenada & coord1 = *pontos.posicaoMem(j);
-			Coordenada & coord2 = *pontos.posicaoMem(j + 1);
-			cairo_move_to(cr, coord1.getX(), coord1.getY());
-			cairo_line_to(cr, coord2.getX(), coord2.getY());
+			cairo_line_to(cr, coord1.getX(), coord1.getY());
 		}
-		cairo_move_to(cr, primeiro->getX(), primeiro->getY());
-		cairo_line_to(cr, ultimo->getX(), ultimo->getY());
+		cairo_close_path(cr);
+		if(obj.isPreenchido()){
+			cairo_stroke_preserve(cr);
+			cairo_fill(cr);
+		}else{
+			cairo_stroke(cr);
+		}
 	}
 
 //________________________________________________________________________________________
@@ -154,7 +150,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	cairo_line_to(cr, min->getX(), min->getY());
 
-	cairo_stroke(cr);
+//	cairo_stroke(cr);
 
 	displayFile.destroiLista();
 	return FALSE;
@@ -222,6 +218,9 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 	Coordenada coord(0.5, 0.5, 1);
 	manipulaWindow->escalona(window_m, coord);
 	displayFile = *window_m->getDisplay_virtual();
+
+	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
+	gtk_widget_queue_draw(drawingArea);
 }
 
 extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
@@ -414,6 +413,8 @@ int main(int argc, char* argv[]) {
 	gtk_text_buffer_set_text(buffer, displayFile.to_string().c_str(), -1);
 
 	frame = GTK_WIDGET(gtk_builder_get_object(builder, "frame1"));
+
+	checkButton = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton1"));
 
 	drawingArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawingarea1"));
 	gtk_widget_set_size_request(drawingArea, 400, 400);

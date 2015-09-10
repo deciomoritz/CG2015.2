@@ -6,20 +6,43 @@
 #include "ListaEnc.hpp"
 
 using namespace std;
+
+
+enum Tipo{ Ponto, Reta, Poligono};
+
 class Objeto {
 
 protected:
 	string _nome;
 	ListaEnc<Coordenada> _pontos;
+	Tipo tipo;
+	bool preenchido;
 
 public:
 	Objeto(){};
+
+	Objeto(string nome, Tipo tipo, bool preenchido){
+		this->_nome = nome;
+		this->tipo = tipo;
+		this->preenchido = preenchido;
+	};
+
 	Objeto(string nome){
 		this->_nome = nome;
+		this->tipo = tipo;
+		this->preenchido = preenchido;
 	};
 
 	~Objeto(){
 	};
+
+	Tipo getTipo(){
+		return tipo;
+	}
+
+	bool isPreenchido(){
+		return preenchido;
+	}
 
 	string nome(){
 		return _nome;

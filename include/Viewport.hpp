@@ -46,7 +46,7 @@ public:
 		// iterando lista de objetos
 		Elemento<Objeto*>* it_originalDisplay = originalDisplay.getHead();
 		for (int i = 0; i < originalDisplay.getSize(); i++) {
-			Objeto *novoObj = new Objeto((it_originalDisplay->getInfo())->nome());
+			Objeto *novoObj = new Objeto((it_originalDisplay->getInfo())->nome(), it_originalDisplay->getInfo()->getTipo(), it_originalDisplay->getInfo()->isPreenchido());
 			ListaEnc<Coordenada>* coordenadas_obj = (it_originalDisplay->getInfo())->pontos();
 			Elemento<Coordenada>* it_coordenada = coordenadas_obj->getHead();
 			//iterando as coordenadas do objeto
