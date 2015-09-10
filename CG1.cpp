@@ -66,8 +66,17 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	vector<string> aux = separarParametros(comando);
 
+	Tipo tipo;
+	if(aux.size() == 3){
+		tipo = Ponto;
+	}else if(aux.size() == 5){
+		tipo = Reta;
+	}else{
+		tipo = Poligono;
+	}
+
 	if (!window_m->contem(aux[0])) {
-		Objeto* obj = new Objeto(aux[0], Poligono, preenchido);
+		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
 		Coordenada* coord;
 		for (int i = 1; i < aux.size() - 1; i += 2) {
 			coord = new Coordenada(atoi(aux[i].c_str()),
@@ -116,17 +125,24 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 			continue;
 		ListaEnc<Coordenada> & pontos = *obj.pontos();
 
-		for (int j = 0; j < pontos.getSize() ; ++j) {
-
-			Coordenada & coord1 = *pontos.posicaoMem(j);
-			cairo_line_to(cr, coord1.getX(), coord1.getY());
-		}
-		cairo_close_path(cr);
-		if(obj.isPreenchido()){
+		if(obj.getTipo() != Ponto){
+			for (int j = 0; j < pontos.getSize() ; ++j) {
+				Coordenada & coord1 = *pontos.posicaoMem(j);
+				cairo_line_to(cr, coord1.getX(), coord1.getY());
+			}
+			cairo_close_path(cr);
+			if(obj.isPreenchido()){
+				cairo_stroke_preserve(cr);
+				cairo_fill(cr);
+			}else{
+				cairo_stroke(cr);
+			}
+		}else{
+			Coordenada & coord = *pontos.posicaoMem(0);
+			cairo_rectangle(cr,coord.getX(), coord.getY(),1,1);
+			cairo_close_path(cr);
 			cairo_stroke_preserve(cr);
 			cairo_fill(cr);
-		}else{
-			cairo_stroke(cr);
 		}
 	}
 
