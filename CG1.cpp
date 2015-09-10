@@ -7,7 +7,6 @@
 #include "include/Manipuladores/ManipulaWindow.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
-#include "include/formas/Poligono.hpp"
 #include "include/Parser.h"
 
 using namespace std;
