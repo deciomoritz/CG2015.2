@@ -23,6 +23,9 @@ Window* window_m;
 GtkWidget *view;
 GtkTextBuffer *buffer;
 
+GtkWidget* gridWorld;
+GtkWidget* gridObj;
+
 GtkEntry* entry;
 GtkEntry* entry2;
 GtkToggleButton* checkButton;
@@ -430,6 +433,16 @@ int main(int argc, char* argv[]) {
 	frame = GTK_WIDGET(gtk_builder_get_object(builder, "frame1"));
 
 	checkButton = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton1"));
+
+	GdkColor red = {0, 0xffff, 0x0ff0, 0x0000};
+	GdkColor green = {0, 0x0000, 0xffff, 0x0000};
+	GdkColor blue = {0, 0x0000, 0x0000, 0xffff};
+
+	gridWorld = GTK_WIDGET(gtk_builder_get_object(builder, "grid1"));
+	gtk_widget_modify_bg(gridWorld, GTK_STATE_NORMAL, &red);
+
+	gridObj = GTK_WIDGET(gtk_builder_get_object(builder, "grid13"));
+	gtk_widget_modify_bg(gridObj, GTK_STATE_NORMAL, &blue);
 
 	drawingArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawingarea1"));
 	gtk_widget_set_size_request(drawingArea, 400, 400);
