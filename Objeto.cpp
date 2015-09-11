@@ -24,14 +24,13 @@ Coordenada Objeto::getCentro() {
 	return teste;
 }
 
-
 string Objeto::to_obj(){
-	string s = "#" + _nome + "\n" + "v ";
+	string s = "#" + _nome + " " + std::to_string(preenchido) + "\n" + "v ";
 
 	for (int j = 0; j < _pontos.getSize(); ++j) {
 		Coordenada & coord = *_pontos.posicaoMem(j);
 		s += std::to_string(coord.getX()) + " "
-				+ std::to_string(coord.getY());
+				+ std::to_string(coord.getY()) + " ";
 	}
 	s += "\n\n";
 	return s;

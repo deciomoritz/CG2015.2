@@ -184,6 +184,7 @@ extern "C" G_MODULE_EXPORT void on_load_clicked(GtkWidget* widget,
 	parser = new Parser();
 	string path = gtk_entry_get_text(entry2);
 	DisplayFile dp = *parser->read(path);
+	delete parser;
 	window_m->load(dp);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -384,9 +385,11 @@ extern "C" G_MODULE_EXPORT void on_RotWorldRight_clicked(GtkWidget* widget,
 extern "C" G_MODULE_EXPORT void on_save_clicked(GtkWidget* widget,
 		gpointer data_user) {
 
+	string path = gtk_entry_get_text(entry2);
+
 	parser = new Parser();
 	displayFile = window_m->getDisplay();
-	parser->write(&displayFile);
+	parser->write(&displayFile, path);
 	delete parser;
 }
 

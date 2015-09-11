@@ -55,16 +55,6 @@ public:
 			return &disp_virtual;
 	}
 
-//	void deslocarWindow(Coordenada desl) {
-//		wMax = wMax + desl;
-//		wMin = wMin + desl;
-//	}
-//
-//	void zoomWindow(double z) {
-//		wMax = wMax * z;
-//		wMin = wMin * z;
-//	}
-
 	void adicionaObjeto(Objeto* obj) {
 		disp.adiciona(obj);
 	}

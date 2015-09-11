@@ -40,6 +40,10 @@ public:
 		return tipo;
 	}
 
+	void setTipo(Tipo tipo){//usado na leitura de objetos de arquivo
+		this->tipo = tipo;
+	}
+
 	bool isPreenchido(){
 		return preenchido;
 	}

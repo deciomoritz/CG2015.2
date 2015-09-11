@@ -21,7 +21,7 @@ public:
 	Parser();
 	virtual ~Parser();
 
-	void write(DisplayFile * displayFile);
+	void write(DisplayFile * displayFile, string path);
 	DisplayFile * read(string path);
 };
 

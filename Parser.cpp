@@ -13,9 +13,9 @@ Parser::Parser() {
 Parser::~Parser() {
 }
 
-void Parser::write(DisplayFile * displayFile) {
+void Parser::write(DisplayFile * displayFile, string path) {
 	ofstream file;
-	file.open("world.obj");
+	file.open(path.c_str());
 	if(file.is_open()){
 		for (int i = 0; i < displayFile->getSize(); ++i) {
 			Objeto * obj = *displayFile->posicaoMem(i);
@@ -49,12 +49,27 @@ DisplayFile * Parser::read(string path) {
 			if(!line.find("#")){
 				obj = new Objeto();
 				string nome = line.erase(0,1);
+				nome = split(nome," ").front();
 				obj->setNome(nome);
 				continue;
 			}else if(!line.find("v")){
 				vector<string> aux = split(line," ");
-				for (int i = 1; i < aux.size() - 1; i += 2) {
-					coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), 1);
+				Tipo tipo;
+				if(aux.size() == 3){
+					tipo = Ponto;
+				}else if(aux.size() == 5){
+					tipo = Reta;
+				}else{
+					tipo = Poligono;
+				}
+				obj->setTipo(tipo);
+				if(tipo != Ponto){
+					for (int i = 1; i < aux.size() - 1; i += 2) {
+						coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), 1);
+						obj->adiciona(*coord);
+					}
+				}else{
+					coord = new Coordenada(atoi(aux[1].c_str()), atoi(aux[2].c_str()), 1);
 					obj->adiciona(*coord);
 				}
 			}else{
