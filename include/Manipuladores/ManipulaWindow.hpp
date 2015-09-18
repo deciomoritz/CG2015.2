@@ -32,12 +32,12 @@ public:
 	}
 	void translada(Window* window, Coordenada c){
 		vector<vector<double> > m = manipulaMtr->getTranslacao(c);
-//		manipulaMtr->printaMatriz(m);
+		//		manipulaMtr->printaMatriz(m);
 		transformaWindow(window, m);
-//		manipulaMtr->printaMatriz(window->getwMax()->getVector());
-//		manipulaMtr->printaMatriz(window->getwMin()->getVector());
+		//		manipulaMtr->printaMatriz(window->getwMax()->getVector());
+		//		manipulaMtr->printaMatriz(window->getwMin()->getVector());
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(window->getwCentro(), window));
-//		cout << window->getDisplay_virtual()->to_string() << endl;
+		//		cout << window->getDisplay_virtual()->to_string() << endl;
 	}
 	void escalona(Window* window, Coordenada c){
 		window->setTamanho(c);
@@ -62,5 +62,35 @@ public:
 	void refresh(Window * window){
 		Coordenada centro = window->getwCentro();
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+	}
+
+	void clipping(Window* window){
+		DisplayFile ori = window->getDisplay();
+		DisplayFile* virt = window->getDisplay_virtual();
+		virt->destroiLista();
+		Elemento<Objeto*>* it_objeto = ori.getHead();
+
+		for(int i =0; i< ori.getSize(); i++){
+			Objeto* obj= *it_objeto->info;
+
+			it_objeto = it_objeto->getProximo();
+		}
+	}
+
+	void clip_Ponto(Objeto obj, Window* window){
+		Coordenada centro = window->getwCentro();
+		Coordenada* ponto = obj.pontos()->getHead()->info;
+		if(ponto->getX<){
+			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), false);
+			novo->adiciona(*ponto);
+			window->adicionaVirtual(novo);
+		}
+
+	}
+	void clip_Reta(Objeto obj, Window* window){
+
+	}
+	void clip_Poligono(Objeto obj, Window* window){
+
 	}
 };

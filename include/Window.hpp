@@ -59,6 +59,10 @@ public:
 		disp.adiciona(obj);
 	}
 
+	void adicionaVirtual(Objeto* obj) {
+			disp_virtual.adiciona(obj);
+		}
+
 	bool contem(string nomeDoObjeto) {
 		for (int i = 0; i < disp.getSize(); ++i) {
 			Objeto & obj = **disp.posicaoMem(i);
