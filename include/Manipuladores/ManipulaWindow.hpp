@@ -73,16 +73,16 @@ public:
 		for(int i =0; i< virt->getSize(); i++){
 			Objeto* obj= *it_objeto->info;
 			switch(obj->getTipo()){
-				case(Ponto):{
-					clip_Ponto(*obj, virt_clip);
-					break;
-				}
-				case(Reta):{
-					break;
-				}
-				case(Poligono):{
-					break;
-				}
+			case(Ponto):{
+				clip_Ponto(*obj, virt_clip);
+				break;
+			}
+			case(Reta):{
+				break;
+			}
+			case(Poligono):{
+				break;
+			}
 			}
 			it_objeto = it_objeto->getProximo();
 		}
@@ -91,17 +91,88 @@ public:
 
 	void clip_Ponto(Objeto obj, DisplayFile* virt_clip){
 		Coordenada* ponto = obj.pontos()->getHead()->info;
-		if(ponto->getX()<1 && ponto->getX()>-1 && ponto->getY()<1 && ponto->getY()>-1){
+		//Pode dar merda no trabalho por estar usando coordenadas normalizadas Aula de clipping 1, 9:10seg
+		if(verificaPonto(ponto)){
 			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 			novo->adiciona(*ponto);
 			virt_clip->adicionaNoInicio(novo);
 		}
+	}
+
+	void clip_Reta(Objeto obj, DisplayFile* virt_clip){
+		ListaEnc<Coordenada>* pontos = obj.pontos();
+		//Pode dar merda se a lista comećar a contar indices do 1
+		Coordenada ponto_A = *pontos->posicaoMem(0);
+		Coordenada ponto_B = *pontos->posicaoMem(1);
+		int codeA = rcCode(ponto_A);
+		int codeB = rcCode(ponto_B);
+		while(true){
+			if((codeA | codeB) ==0){
+				Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
+				novo->adiciona(ponto_A);
+				novo->adiciona(ponto_B);
+				virt_clip->adiciona(novo);
+				return;
+			}
+			else if(codeA & codeB){
+				return;
+			}
+			else{
+				double novo_x, novo_y;
+				int rcFora = codeA ? codeA : codeB;
+				if (rcFora & 8) {           // point is above the clip rectangle
+					novo_x = ponto_A.getX() + (ponto_B.getX() - ponto_A.getX()) * (1 - ponto_A.getY()) / (ponto_B.getX() - ponto_A.getY());
+					novo_y = 1;
+				} else if (rcFora & 4) { // point is below the clip rectangle
+					novo_x = ponto_A.getX() + (ponto_B.getX() - ponto_A.getX()) * (-1 - ponto_A.getY()) / (ponto_B.getY() - ponto_A.getY());
+					novo_y = -1;
+				} else if (rcFora & 2) {  // point is to the right of clip rectangle
+					novo_y = ponto_A.getY() + (ponto_B.getY() - ponto_A.getY()) * (1 - ponto_A.getX()) / (ponto_B.getX() - ponto_A.getX());
+					novo_x = 1;
+				} else if (rcFora & 1) {   // point is to the left of clip rectangle
+					novo_y = ponto_A.getY() + (ponto_B.getY() - ponto_A.getY()) * (-1 - ponto_A.getX()) / (ponto_B.getX() - ponto_A.getX());
+					novo_x = -1;
+				}
+
+				if (rcFora == codeA) {
+					ponto_A = Coordenada(novo_x, novo_y, 1);
+					codeA = rcCode(ponto_A);
+				} else {
+					ponto_B = Coordenada(novo_x, novo_y, 1);
+					codeB = rcCode(ponto_B);
+				}
+			}
+		}
+	}
+
+	void clip_Poligono(Objeto obj, DisplayFile* virt_clip){
+		ListaEnc<Coordenada>* pontos_obj = obj.pontos();
+		ListaEnc<Coordenada> pontos_window;
+		pontos_window.adiciona(Coordenada(-1,1,1));
+		pontos_window.adiciona(Coordenada(1,1,1));
+		pontos_window.adiciona(Coordenada(1,-1,1));
+		pontos_window.adiciona(Coordenada(-1,-1,1));
+
 
 	}
-	void clip_Reta(Objeto obj, Window* window){
 
+	bool verificaPonto(Coordenada *ponto){
+		if(ponto->getX()<1 && ponto->getX()>-1 && ponto->getY()<1 && ponto->getY()>-1){
+			return true;
+		}
+		return false;
 	}
-	void clip_Poligono(Objeto obj, Window* window){
 
+	int rcCode(Coordenada ponto){
+		int code =0;
+		if (ponto.getX() < -1)
+			code |= 1;
+		else if (ponto.getX() > 1)
+			code |= 2;
+		if (ponto.getY() < -1)
+			code |= 4;
+		else if (ponto.getY() > 1)
+			code |= 8;
+		return code;
 	}
 };
