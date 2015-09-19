@@ -65,25 +65,24 @@ public:
 	}
 
 	void clipping(Window* window){
-		DisplayFile ori = window->getDisplay();
+		DisplayFile* virt_clip = new DisplayFile();
 		DisplayFile* virt = window->getDisplay_virtual();
 		virt->destroiLista();
-		Elemento<Objeto*>* it_objeto = ori.getHead();
+		Elemento<Objeto*>* it_objeto = virt->getHead();
 
-		for(int i =0; i< ori.getSize(); i++){
+		for(int i =0; i< virt->getSize(); i++){
 			Objeto* obj= *it_objeto->info;
 
 			it_objeto = it_objeto->getProximo();
 		}
 	}
 
-	void clip_Ponto(Objeto obj, Window* window){
-		Coordenada centro = window->getwCentro();
+	void clip_Ponto(Objeto obj, DisplayFile* virt_clip){
 		Coordenada* ponto = obj.pontos()->getHead()->info;
-		if(ponto->getX<){
-			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), false);
+		if(ponto->getX()<1 && ponto->getX()>-1 && ponto->getY()<1 && ponto->getY()>-1){
+			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 			novo->adiciona(*ponto);
-			window->adicionaVirtual(novo);
+			virt_clip->adicionaNoInicio(novo);
 		}
 
 	}
