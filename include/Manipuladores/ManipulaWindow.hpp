@@ -189,7 +189,7 @@ public:
 					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
 					Coordenada novoB = *pontos_reta->posicaoMem(1);//pode dar problema de índice;
 					insereNaWindow(&pontos_window, novoB);
-					insereNoObjeto(&pontos_obj, pontoA, novoB, 0);
+					insereNoObjeto(&pontos_obj, pontoA, novoB);
 				}
 			}
 			else{
@@ -203,12 +203,12 @@ public:
 					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
 					Coordenada novoA = *pontos_reta->posicaoMem(0);//pode dar problema de índice;
 					insereNaWindow(&pontos_window, novoA);
-					insereNoObjeto(&pontos_obj, pontoA, novoA, 0)
+					insereNoObjeto(&pontos_obj, pontoA, novoA);
 					entrantes.adiciona(novoA);
 				}
 				else{
 					//caso fora-fora
-					if(nova_reta=0){
+					if(nova_reta==0){
 						continue;
 					}
 					//cortando 2 pontos da window:
@@ -334,6 +334,17 @@ public:
 		}
 	}
 
+	//Obs: não consegui passar parâmetro null para fazer uma única funćão
+	void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA){
+		int pos = 0;
+		Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
+		while(it_lista->info->getX()!=ref.getX() || it_lista->info->getY()!=ref.getY()){//busca como referência o ponto A
+			it_lista = it_lista->_next;
+			pos++;
+		}
+		pos++;
+		pontosObjeto->adicionaNaPosicao(pontoA, pos);
+	}
 	void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA, Coordenada pontoB){
 		int pos = 0;
 		Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
@@ -342,9 +353,7 @@ public:
 			pos++;
 		}
 		pos++;
-		pontosWindow->adicionaNaPosicao(pontoA, pos++);
-		if(pontoB!=0){
-			pontosWindow->adicionaNaPosicao(pontoB, pos);
-		}
+		pontosObjeto->adicionaNaPosicao(pontoA, pos++);
+		pontosObjeto->adicionaNaPosicao(pontoB, pos);
 	}
 };
