@@ -174,9 +174,17 @@ public:
 		for(int i =0; i<pontos_obj.getSize();i++){
 			Coordenada pontoA = *it_objeto->info;
 			Coordenada pontoB = *it_objeto->_next->info;
+
 			if(rcCode(pontoA)==0){ // A dentro;
 				if(rcCode(pontoB)!=0){ //pontoB fora;
 					//caso dentro-fora
+					Objeto reta(" ", Reta, false);
+					reta.adiciona(pontoA);
+					reta.adiciona(pontoB);
+					Objeto *nova_reta = reta_clippada(reta);
+					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
+					Coordenada novoA = *pontos_reta->posicaoMem(0);
+					Coordenada novoB = *pontos_reta->posicaoMem(1);
 				}
 				continue;
 			}
@@ -184,13 +192,13 @@ public:
 				if(rcCode(pontoB)==0){ //pontoB dentro;
 					//caso fora-dentro;
 				}
+				else{
+					//caso fora-fora
+
+				}
 				continue;
 			}
-//			Objeto reta(" ", Reta, false);
-//			Objeto *nova_reta = reta_clippada(reta);
-//			ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
-//			Coordenada novoA = *pontos_reta->posicaoMem(0);
-//			Coordenada novoB = *pontos_reta->posicaoMem(1);
+
 
 		}
 	}
@@ -206,6 +214,7 @@ public:
 			return 4;//borda Sul
 		return 0; //centro
 	}
+
 	int rcCode(Coordenada ponto){
 		int code =0;
 		if (ponto.getX() < -1)
@@ -217,5 +226,87 @@ public:
 		else if (ponto.getY() > 1)
 			code |= 8;
 		return code;
+	}
+
+	void insereNaWindow(ListaEnc<Coordenada>* pontosWindow, Coordenada ponto){
+		//Código monstruoso comecando em 9, 8, 7, ...
+		/* B---2---C
+		 * |	   |
+		 * 1   0   3
+		 * |       |
+		 * A---4---D
+		 */
+		//1 e 2 contam em ordem crescente, considerando Y e X, respectivamente;
+		//3 e 4 contam em ordem decrescente, considerando Y e X, respectivamente;
+		int lado = classificaPonto(ponto);
+		int pos = 0;
+		//!!!!!!!!!!!PODE DAR MERDA NOS INDICES!!!!!!!!!!!!!
+		Elemento<Coordenada> *it_lista = pontosWindow->getHead();
+		switch(lado){
+		case(1):{
+			while(it_lista->info->getX()!=-1 || it_lista->info->getY()!=-1){//busca como referência o ponto A
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()==-1 && it_lista->info->getY()==-1){//para caso hajam pontos A além da referência
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getY()<ponto.getY()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		case(2):{
+			while(it_lista->info->getX()!=-1 || it_lista->info->getY()!=1){//busca como referência o ponto B
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()==-1 && it_lista->info->getY()==1){//busca como referência o ponto B
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()<ponto.getX()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		case(3):{
+			while(it_lista->info->getX()!=1 || it_lista->info->getY()!=1){//busca como referência o ponto C
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()==1 && it_lista->info->getY()==1){//busca como referência o ponto C
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getY()>ponto.getY()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		case(4):{
+			while(it_lista->info->getX()!=1 || it_lista->info->getY()!=-1){//busca como referência o ponto D
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()==1 && it_lista->info->getY()==-1){//busca como referência o ponto D
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()>ponto.getX()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		}
 	}
 };
