@@ -156,22 +156,26 @@ public:
 	}
 
 	void clip_Poligono(Objeto obj, DisplayFile* virt_clip){
+		//CHANCE DE DAR MERDA EM TUDO POR COMPARAR IGUALDADE ENTRE DOUBLES
 		//Inicializando as 3 listas
 		ListaEnc<Coordenada> pontos_obj;
+		ListaEnc<Coordenada> pontos_obj_it;//usado para percorrer os pontos do objeto. pontos_obj será modificado.
 		ListaEnc<Coordenada> pontos_window;
 		ListaEnc<Coordenada> entrantes;
 
 		ListaEnc<Coordenada>* pontos_obj_ori = obj.pontos();
 		for(int i =0; i<pontos_obj_ori->getSize();i++){
 			pontos_obj.adiciona(*pontos_obj_ori->posicaoMem(i));
+			pontos_obj_it.adiciona(*pontos_obj_ori->posicaoMem(i));
 		}
 		pontos_window.adiciona(Coordenada(-1,-1,1));
 		pontos_window.adiciona(Coordenada(-1,1,1));
 		pontos_window.adiciona(Coordenada(1,1,1));
 		pontos_window.adiciona(Coordenada(1,-1,1));
 
-		Elemento<Coordenada>* it_objeto = pontos_obj.getHead();
-		for(int i =0; i<pontos_obj.getSize();i++){
+		//percorrendo os segmentos de reta do polígono e montando as 3 listas
+		Elemento<Coordenada>* it_objeto = pontos_obj_it.getHead();
+		for(int i =0; i<pontos_obj_it.getSize();i++){
 			Coordenada pontoA = *it_objeto->info;
 			Coordenada pontoB = *it_objeto->_next->info;
 
@@ -183,24 +187,44 @@ public:
 					reta.adiciona(pontoB);
 					Objeto *nova_reta = reta_clippada(reta);
 					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
-					Coordenada novoA = *pontos_reta->posicaoMem(0);
-					Coordenada novoB = *pontos_reta->posicaoMem(1);
+					Coordenada novoB = *pontos_reta->posicaoMem(1);//pode dar problema de índice;
+					insereNaWindow(&pontos_window, novoB);
+					insereNoObjeto(&pontos_obj, pontoA, novoB, 0);
 				}
-				continue;
 			}
 			else{
+				Objeto reta(" ", Reta, false);
+				reta.adiciona(pontoA);
+				reta.adiciona(pontoB);
+				Objeto *nova_reta = reta_clippada(reta);
+
 				if(rcCode(pontoB)==0){ //pontoB dentro;
 					//caso fora-dentro;
+					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
+					Coordenada novoA = *pontos_reta->posicaoMem(0);//pode dar problema de índice;
+					insereNaWindow(&pontos_window, novoA);
+					insereNoObjeto(&pontos_obj, pontoA, novoA, 0)
+					entrantes.adiciona(novoA);
 				}
 				else{
 					//caso fora-fora
-
+					if(nova_reta=0){
+						continue;
+					}
+					//cortando 2 pontos da window:
+					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
+					Coordenada novoA = *pontos_reta->posicaoMem(0);//pode dar problema de índice;
+					Coordenada novoB = *pontos_reta->posicaoMem(1);//pode dar problema de índice;
+					insereNaWindow(&pontos_window, novoA);
+					insereNaWindow(&pontos_window, novoB);
+					insereNoObjeto(&pontos_obj, pontoA, novoA, novoB);
+					entrantes.adiciona(novoA);
 				}
-				continue;
 			}
-
-
 		}
+
+		//Três istas foram montadas, comecar a criar os novos objetos.
+
 	}
 
 	int classificaPonto(Coordenada c){
@@ -307,6 +331,20 @@ public:
 			pontosWindow->adicionaNaPosicao(ponto, pos);
 			return;
 		}
+		}
+	}
+
+	void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA, Coordenada pontoB){
+		int pos = 0;
+		Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
+		while(it_lista->info->getX()!=ref.getX() || it_lista->info->getY()!=ref.getY()){//busca como referência o ponto A
+			it_lista = it_lista->_next;
+			pos++;
+		}
+		pos++;
+		pontosWindow->adicionaNaPosicao(pontoA, pos++);
+		if(pontoB!=0){
+			pontosWindow->adicionaNaPosicao(pontoB, pos);
 		}
 	}
 };
