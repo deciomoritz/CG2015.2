@@ -159,23 +159,29 @@ public:
 		//CHANCE DE DAR MERDA EM TUDO POR COMPARAR IGUALDADE ENTRE DOUBLES
 		//Inicializando as 3 listas
 		ListaEnc<Coordenada> pontos_obj;
-		ListaEnc<Coordenada> pontos_obj_it;//usado para percorrer os pontos do objeto. pontos_obj será modificado.
+		ListaEnc<Coordenada> pontos_obj_ori;//usado para percorrer os pontos do objeto. pontos_obj será modificado.
 		ListaEnc<Coordenada> pontos_window;
+		ListaEnc<Coordenada> pontos_window_ori;
 		ListaEnc<Coordenada> entrantes;
 
-		ListaEnc<Coordenada>* pontos_obj_ori = obj.pontos();
-		for(int i =0; i<pontos_obj_ori->getSize();i++){
-			pontos_obj.adiciona(*pontos_obj_ori->posicaoMem(i));
-			pontos_obj_it.adiciona(*pontos_obj_ori->posicaoMem(i));
+		ListaEnc<Coordenada>* pontos_obj_ = obj.pontos();
+		for(int i =0; i<pontos_obj_->getSize();i++){
+			pontos_obj.adiciona(*pontos_obj_->posicaoMem(i));
+			pontos_obj_ori.adiciona(*pontos_obj_->posicaoMem(i));
 		}
 		pontos_window.adiciona(Coordenada(-1,-1,1));
 		pontos_window.adiciona(Coordenada(-1,1,1));
 		pontos_window.adiciona(Coordenada(1,1,1));
 		pontos_window.adiciona(Coordenada(1,-1,1));
 
+		pontos_window_ori.adiciona(Coordenada(-1,-1,1));
+		pontos_window_ori.adiciona(Coordenada(-1,1,1));
+		pontos_window_ori.adiciona(Coordenada(1,1,1));
+		pontos_window_ori.adiciona(Coordenada(1,-1,1));
+
 		//percorrendo os segmentos de reta do polígono e montando as 3 listas
-		Elemento<Coordenada>* it_objeto = pontos_obj_it.getHead();
-		for(int i =0; i<pontos_obj_it.getSize();i++){
+		Elemento<Coordenada>* it_objeto = pontos_obj_ori.getHead();
+		for(int i =0; i<pontos_obj_ori.getSize();i++){
 			Coordenada pontoA = *it_objeto->info;
 			Coordenada pontoB = *it_objeto->_next->info;
 
@@ -224,7 +230,56 @@ public:
 		}
 
 		//Três istas foram montadas, comecar a criar os novos objetos.
+		//		ListaEnc<Coordenada> pontos_obj;
+		//		ListaEnc<Coordenada> pontos_obj_it;//usado para percorrer os pontos do objeto. pontos_obj será modificado.
+		//		ListaEnc<Coordenada> pontos_window;
+		//		ListaEnc<Coordenada> entrantes;
 
+		while(!entrantes.listaVazia()){
+			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
+			Coordenada inicial = entrantes.retiraDoInicio();
+			Coordenada atual = inicial;
+
+			novo->adiciona(atual);
+			Elemento<Coordenada>* it_pontos_obj = pontos_obj.getHead();
+			Elemento<Coordenada>* it_pontos_window = pontos_window.getHead();
+
+			//ajustando iteradores para as posićões corretas.
+			bool varreWindow =false;
+			do{
+				if(varreWindow){
+					while(it_pontos_window->info->getX()!= atual.getX() || it_pontos_window->info->getY()!=atual.getY()){
+						it_pontos_window = it_pontos_window->_next;
+					}
+					it_pontos_window = it_pontos_window->_next;
+					atual = *it_pontos_window->info;
+					novo->adiciona(atual);
+					if(gambs_pontoPertence(pontos_obj_ori, atual)){
+						continue;
+					}
+					if(gambs_pontoPertence(entrantes, atual)){//encontrou um ponto que já pertence ao objeto sendo montado. Na pior das hipóteses vai criar dois objetos com mesmas coordenadas
+						//entrantes.retiraEspecifico(atual); //esse método fede.
+					}
+					varreWindow = false;
+				}
+				else{
+					while(it_pontos_obj->info->getX()!= atual.getX() || it_pontos_obj->info->getY()!=atual.getY()){
+						it_pontos_obj = it_pontos_obj->_next;
+					}
+					it_pontos_obj = it_pontos_obj->_next;
+					atual = *it_pontos_obj->info;
+					novo->adiciona(atual);
+					if(gambs_pontoPertence(pontos_obj_ori, atual)){
+						continue;
+					}
+					if(gambs_pontoPertence(entrantes, atual)){
+						//entrantes.retiraEspecifico(atual);//esse método fede.
+					}
+					varreWindow = true;
+				}
+			}while(atual.getX()!= inicial.getX() || atual.getY()!= inicial.getY());//atual!=inicial
+			virt_clip->adiciona(novo);
+		}
 	}
 
 	int classificaPonto(Coordenada c){
@@ -355,5 +410,15 @@ public:
 		pos++;
 		pontosObjeto->adicionaNaPosicao(pontoA, pos++);
 		pontosObjeto->adicionaNaPosicao(pontoB, pos);
+	}
+
+	bool gambs_pontoPertence(ListaEnc<Coordenada> pontos, Coordenada obj){
+		Elemento<Coordenada>* it = pontos.getHead();
+		for(int i =0; i<pontos.getSize(); i++){
+			if(it->info->getX() == obj.getX() && it->info->getY() == obj.getY())
+				return true;
+			it = it->_next;
+		}
+		return false;
 	}
 };

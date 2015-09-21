@@ -139,7 +139,7 @@ public:
 				return retiraDaPosicao(j);
 			aux = aux->_next;
 		}
-		return 0;
+		return;
 	}
 
 	void adicionaEmOrdem(const T& data){
