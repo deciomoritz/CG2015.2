@@ -78,9 +78,11 @@ public:
 				break;
 			}
 			case(Reta):{
+				clip_Reta(*obj, virt_clip);
 				break;
 			}
 			case(Poligono):{
+				clip_Poligono(*obj, virt_clip);
 				break;
 			}
 			}
@@ -92,7 +94,7 @@ public:
 	void clip_Ponto(Objeto obj, DisplayFile* virt_clip){
 		Coordenada* ponto = obj.pontos()->getHead()->info;
 		//Pode dar merda no trabalho por estar usando coordenadas normalizadas Aula de clipping 1, 9:10seg
-		if(verificaPonto(ponto)){
+		if(rcCode(*ponto)==0){
 			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 			novo->adiciona(*ponto);
 			virt_clip->adicionaNoInicio(novo);
@@ -100,8 +102,17 @@ public:
 	}
 
 	void clip_Reta(Objeto obj, DisplayFile* virt_clip){
-		ListaEnc<Coordenada>* pontos = obj.pontos();
+		Objeto* novo = reta_clippada(obj);
+		if(novo==0){
+			return;
+		}
+		virt_clip->adiciona(novo);
 		//Pode dar merda se a lista comećar a contar indices do 1
+
+	}
+
+	Objeto* reta_clippada(Objeto obj){
+		ListaEnc<Coordenada>* pontos = obj.pontos();
 		Coordenada ponto_A = *pontos->posicaoMem(0);
 		Coordenada ponto_B = *pontos->posicaoMem(1);
 		int codeA = rcCode(ponto_A);
@@ -111,11 +122,10 @@ public:
 				Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 				novo->adiciona(ponto_A);
 				novo->adiciona(ponto_B);
-				virt_clip->adiciona(novo);
-				return;
+				return novo;
 			}
 			else if(codeA & codeB){
-				return;
+				return 0;
 			}
 			else{
 				double novo_x, novo_y;
@@ -146,23 +156,56 @@ public:
 	}
 
 	void clip_Poligono(Objeto obj, DisplayFile* virt_clip){
-		ListaEnc<Coordenada>* pontos_obj = obj.pontos();
+		//Inicializando as 3 listas
+		ListaEnc<Coordenada> pontos_obj;
 		ListaEnc<Coordenada> pontos_window;
+		ListaEnc<Coordenada> entrantes;
+
+		ListaEnc<Coordenada>* pontos_obj_ori = obj.pontos();
+		for(int i =0; i<pontos_obj_ori->getSize();i++){
+			pontos_obj.adiciona(*pontos_obj_ori->posicaoMem(i));
+		}
+		pontos_window.adiciona(Coordenada(-1,-1,1));
 		pontos_window.adiciona(Coordenada(-1,1,1));
 		pontos_window.adiciona(Coordenada(1,1,1));
 		pontos_window.adiciona(Coordenada(1,-1,1));
-		pontos_window.adiciona(Coordenada(-1,-1,1));
 
+		Elemento<Coordenada>* it_objeto = pontos_obj.getHead();
+		for(int i =0; i<pontos_obj.getSize();i++){
+			Coordenada pontoA = *it_objeto->info;
+			Coordenada pontoB = *it_objeto->_next->info;
+			if(rcCode(pontoA)==0){ // A dentro;
+				if(rcCode(pontoB)!=0){ //pontoB fora;
+					//caso dentro-fora
+				}
+				continue;
+			}
+			else{
+				if(rcCode(pontoB)==0){ //pontoB dentro;
+					//caso fora-dentro;
+				}
+				continue;
+			}
+//			Objeto reta(" ", Reta, false);
+//			Objeto *nova_reta = reta_clippada(reta);
+//			ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
+//			Coordenada novoA = *pontos_reta->posicaoMem(0);
+//			Coordenada novoB = *pontos_reta->posicaoMem(1);
 
-	}
-
-	bool verificaPonto(Coordenada *ponto){
-		if(ponto->getX()<1 && ponto->getX()>-1 && ponto->getY()<1 && ponto->getY()>-1){
-			return true;
 		}
-		return false;
 	}
 
+	int classificaPonto(Coordenada c){
+		if(c.getX()==-1)
+			return 1;//borda Oeste
+		if(c.getY()==1)
+			return 2;//borda Norte
+		if(c.getX()==1)
+			return 3;//borda Leste
+		if(c.getY()==-1)
+			return 4;//borda Sul
+		return 0; //centro
+	}
 	int rcCode(Coordenada ponto){
 		int code =0;
 		if (ponto.getX() < -1)
