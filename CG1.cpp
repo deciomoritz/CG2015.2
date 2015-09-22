@@ -106,12 +106,12 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	manipulaWindow->refresh(window_m);
 	manipulaWindow->clipping(window_m);
+//	g_print("----------------------------------------------------\n");
+//	g_print("fuck\n");
+//	g_print(window_m->getDisplay_virtual()->to_string().c_str());
+//
+//	g_print("****************************************************\n");
 	displayFile = viewport_m->transformadaViewport(*window_m);
-	g_print("----------------------------------------------------\n");
-	g_print("fuck\n");
-	g_print(window_m->getDisplay_virtual()->to_string().c_str());
-
-	g_print("****************************************************\n");
 
 	clear(widget, cr, data);
 
