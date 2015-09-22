@@ -17,6 +17,7 @@ public:
 	using ListaEnc<Objeto*>::adiciona;
 	using ListaEnc<Objeto*>::posicaoMem;
 	using ListaEnc<Objeto*>::destroiLista;
+	using ListaEnc<Objeto*>::retira;
 	DisplayFile(){
 	}
 

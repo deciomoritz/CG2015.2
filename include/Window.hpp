@@ -7,7 +7,7 @@
 class Window {
 
 private:
-	Coordenada  wMin, wMax;
+	Coordenada wMin, wMax;
 	DisplayFile disp;
 	DisplayFile disp_virtual;
 	double altura, largura;
@@ -24,16 +24,16 @@ public:
 	~Window() {
 	}
 
-	void setTamanho(Coordenada c){
+	void setTamanho(Coordenada c) {
 		largura *= c.getX();
 		altura *= c.getY();
 	}
 
-	double getLargura(){
+	double getLargura() {
 		return largura;
 	}
 
-	double getAltura(){
+	double getAltura() {
 		return altura;
 	}
 
@@ -44,15 +44,20 @@ public:
 		return &wMin;
 	}
 	Coordenada getwCentro() {
-		Coordenada result = wMax+wMin;
-		Coordenada centro(result.getX()/2,result.getY()/2,result.getZ()/2);
+		Coordenada result = wMax + wMin;
+		Coordenada centro(result.getX() / 2, result.getY() / 2,
+				result.getZ() / 2);
 		return centro;
 	}
 	DisplayFile getDisplay() {
 		return disp;
 	}
+
+	void setDisplay_virtual(DisplayFile virt) {
+		disp_virtual = virt;
+	}
 	DisplayFile* getDisplay_virtual() {
-			return &disp_virtual;
+		return &disp_virtual;
 	}
 
 	void adicionaObjeto(Objeto* obj) {
@@ -60,8 +65,8 @@ public:
 	}
 
 	void adicionaVirtual(Objeto* obj) {
-			disp_virtual.adiciona(obj);
-		}
+		disp_virtual.adiciona(obj);
+	}
 
 	bool contem(string nomeDoObjeto) {
 		for (int i = 0; i < disp.getSize(); ++i) {
@@ -81,11 +86,11 @@ public:
 		return NULL;
 	}
 
-	void clear(){
+	void clear() {
 		disp.destroiLista();
 	}
 
-	void load(DisplayFile displayFile){
+	void load(DisplayFile displayFile) {
 		disp.destroiLista();
 		for (int i = 0; i < displayFile.getSize(); ++i) {
 			disp.adiciona(*displayFile.posicaoMem(i));

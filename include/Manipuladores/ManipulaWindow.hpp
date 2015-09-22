@@ -64,31 +64,30 @@ public:
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 	}
 
-	DisplayFile* clipping(Window* window){
+	void clipping(Window* window){
 		DisplayFile* virt_clip = new DisplayFile();
 		DisplayFile* virt = window->getDisplay_virtual();
-		virt->destroiLista();
 		Elemento<Objeto*>* it_objeto = virt->getHead();
 
 		for(int i =0; i< virt->getSize(); i++){
 			Objeto* obj= *it_objeto->info;
 			switch(obj->getTipo()){
-			case(Ponto):{
-				clip_Ponto(*obj, virt_clip);
-				break;
-			}
-			case(Reta):{
-				clip_Reta(*obj, virt_clip);
-				break;
-			}
-			case(Poligono):{
-				clip_Poligono(*obj, virt_clip);
-				break;
-			}
+				case(Ponto):{
+					clip_Ponto(*obj, virt_clip);
+					break;
+				}
+				case(Reta):{
+					clip_Reta(*obj, virt_clip);
+					break;
+				}
+				case(Poligono):{
+					clip_Poligono(*obj, virt_clip);
+					break;
+				}
 			}
 			it_objeto = it_objeto->getProximo();
 		}
-		return virt_clip;
+		window->setDisplay_virtual(*virt_clip);
 	}
 
 	void clip_Ponto(Objeto obj, DisplayFile* virt_clip){

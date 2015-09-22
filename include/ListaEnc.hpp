@@ -116,7 +116,7 @@ public:
 		for (int i = 0; i < pos-1; i++)
 			aux = aux->_next;
 		eliminar = aux->_next;
-		retorno = aux->dado;
+		retorno = *aux->info;
 		aux->_next = eliminar;
 		size--;
 		delete eliminar;

@@ -33,8 +33,7 @@ public:
 				it_pontos = it_pontos->getProximo();
 				obj_virtual->adiciona(coord_virtual);
 			}
-
-//			cout << obj_virtual->to_string() << endl;
+			it_objeto = it_objeto->getProximo();
 			virt->adicionaNoInicio(obj_virtual);
 		}
 	}

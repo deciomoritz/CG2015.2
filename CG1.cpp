@@ -105,12 +105,13 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	editDisplayFile(widget, cr, data);
 
 	manipulaWindow->refresh(window_m);
+	manipulaWindow->clipping(window_m);
+	displayFile = viewport_m->transformadaViewport(*window_m);
 	g_print("----------------------------------------------------\n");
 	g_print("fuck\n");
 	g_print(window_m->getDisplay_virtual()->to_string().c_str());
 
 	g_print("****************************************************\n");
-	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	clear(widget, cr, data);
 
@@ -150,25 +151,9 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 //________________________________________________________________________________________
 
-//	Coordenada* min = viewport_m->transformadaViewport(*window_m->getwMin());
-//	Coordenada* max = viewport_m->transformadaViewport(*window_m->getwMax());
-
 	Coordenada* min = &viewport_m->getVMin();
-	Coordenada* max = &viewport_m->getVMax();
-
-	cairo_move_to(cr, min->getX(), min->getY());
-	cairo_line_to(cr, min->getX(), max->getY());
-	cairo_move_to(cr, min->getX(), max->getY());
-
-	cairo_line_to(cr, max->getX(), max->getY());
-	cairo_move_to(cr, max->getX(), max->getY());
-
-	cairo_line_to(cr, max->getX(), min->getY());
-	cairo_move_to(cr, max->getX(), min->getY());
-
-	cairo_line_to(cr, min->getX(), min->getY());
-
-//	cairo_stroke(cr);
+	cairo_rectangle(cr,min->getX()+10, min->getY()+10,390,390);
+	cairo_stroke(cr);
 
 	displayFile.destroiLista();
 	return FALSE;
@@ -445,7 +430,7 @@ int main(int argc, char* argv[]) {
 	gtk_widget_modify_bg(gridWorld, GTK_STATE_NORMAL, &red);
 
 	gridObj = GTK_WIDGET(gtk_builder_get_object(builder, "grid13"));
-	gtk_widget_modify_bg(gridObj, GTK_STATE_NORMAL, &blue);
+	gtk_widget_modify_bg(gridObj, GTK_STATE_NORMAL, &green);
 
 	drawingArea = GTK_WIDGET(gtk_builder_get_object(builder, "drawingarea1"));
 	gtk_widget_set_size_request(drawingArea, 400, 400);

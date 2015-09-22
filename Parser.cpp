@@ -79,6 +79,7 @@ DisplayFile * Parser::read(string path) {
 		}
 		file.close();
 	}
+	displayFile->retira();
 	return displayFile;
 }
 
