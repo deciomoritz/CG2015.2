@@ -272,18 +272,21 @@ public:
 			Coordenada atual = inicial;
 
 			novo->adiciona(atual);
-			Elemento<Coordenada>* it_pontos_obj = pontos_obj.getHead();
-			Elemento<Coordenada>* it_pontos_window = pontos_window.getHead();
+			Coordenada* it_pontos_obj = pontos_obj.posicaoMem(0);
+			Coordenada* it_pontos_window = pontos_window.posicaoMem(0);
 
 			//ajustando iteradores para as posićões corretas.
 			bool varreWindow =false;
+			int fuck1=0, fuck2=0;
 			do{
 				if(varreWindow){
-					while(it_pontos_window->info->getX()!= atual.getX() || it_pontos_window->info->getY()!=atual.getY()){
-						it_pontos_window = it_pontos_window->_next;
+					cout << "WINDOW" << endl;
+					while(it_pontos_window->getX()!= atual.getX() || it_pontos_window->getY()!=atual.getY()){
+						it_pontos_window = pontos_window.posicaoMem(fuck1);
+						fuck1 = (fuck1+1) % pontos_window.getSize();
 					}
-					it_pontos_window = it_pontos_window->_next;
-					atual = *it_pontos_window->info;
+					it_pontos_window = pontos_window.posicaoMem((fuck1+1) % pontos_window.getSize());
+					atual = *it_pontos_window;
 					novo->adiciona(atual);
 					if(gambs_pontoPertence(pontos_obj_ori, atual)){
 						continue;
@@ -294,11 +297,13 @@ public:
 					varreWindow = false;
 				}
 				else{
-					while(it_pontos_obj->info->getX()!= atual.getX() || it_pontos_obj->info->getY()!=atual.getY()){
-						it_pontos_obj = it_pontos_obj->_next;
+					cout << "OBJETO" << endl;
+					while(it_pontos_obj->getX()!= atual.getX() || it_pontos_obj->getY()!=atual.getY()){
+						it_pontos_window = pontos_obj.posicaoMem(fuck2);
+						fuck2 = (fuck2+1) % pontos_obj.getSize();
 					}
-					it_pontos_obj = it_pontos_obj->_next;
-					atual = *it_pontos_obj->info;
+					it_pontos_window = pontos_obj.posicaoMem((fuck2+1) % pontos_obj.getSize());
+					atual = *it_pontos_obj;
 					novo->adiciona(atual);
 					if(gambs_pontoPertence(pontos_obj_ori, atual)){
 						continue;
