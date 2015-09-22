@@ -152,7 +152,9 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 //________________________________________________________________________________________
 
 	Coordenada* min = &viewport_m->getVMin();
-	cairo_rectangle(cr,min->getX()+10, min->getY()+10,390,390);
+	Coordenada* max = &viewport_m->getVMax();
+
+	cairo_rectangle(cr,min->getX(), min->getY(),max->getX()-10,max->getY()-10);
 	cairo_stroke(cr);
 
 	displayFile.destroiLista();
@@ -184,7 +186,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(-1, 0, 1);
+	Coordenada coord(-5, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -193,7 +195,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(1, 0, 1);
+	Coordenada coord(5, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -201,7 +203,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, 1, 1);
+	Coordenada coord(0, 5, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -210,7 +212,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, -1, 1);
+	Coordenada coord(0, -5, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -394,8 +396,8 @@ int main(int argc, char* argv[]) {
 	//coordenadas da window são importantes para realizar o escalonamento de objetos na normalizaćão do mundo
 	Coordenada wmax(50, 50, 1);
 	Coordenada wmin(-50, -50, 1);
-	Coordenada vmax(400, 400, 1);
-	Coordenada vmin(0, 0, 1);
+	Coordenada vmax(390, 390, 1);
+	Coordenada vmin(10, 10, 1);
 	viewport_m = new Viewport(vmax, vmin);
 	window_m = new Window(wmax, wmin);
 	manipulaObjeto = new ManipulaObjeto();

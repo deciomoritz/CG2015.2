@@ -57,8 +57,8 @@ public:
 				//				newX = ((atual.getX() - w.getwMin().getX()) / divX) * multX;
 				//				newY = (1 - (atual.getY() - w.getwMin().getY()) / divY) * multY;
 				//Alterado para 2 devido ao processo de normalizacao das coordenadas do mundo: window=(-1,-1), (1,1)
-				newX = ((atual.getX() +1) / divX) * multX;
-				newY = (1 - (atual.getY() +1) / divY) * multY;
+				newX = ((atual.getX() +1) / divX) * multX + vMin.getX();
+				newY = (1 - (atual.getY() +1) / divY) * multY + vMin.getY();
 				newZ = 1;
 				//criando novo ponto
 				Coordenada* novoPonto = new Coordenada(newX, newY, newZ);

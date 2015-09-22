@@ -130,7 +130,7 @@ public:
 				double novo_x, novo_y;
 				int rcFora = codeA ? codeA : codeB;
 				if (rcFora & 8) {           // point is above the clip rectangle
-					novo_x = ponto_A.getX() + (ponto_B.getX() - ponto_A.getX()) * (1 - ponto_A.getY()) / (ponto_B.getX() - ponto_A.getY());
+					novo_x = ponto_A.getX() + (ponto_B.getX() - ponto_A.getX()) * (1 - ponto_A.getY()) / (ponto_B.getY() - ponto_A.getY());
 					novo_y = 1;
 				} else if (rcFora & 4) { // point is below the clip rectangle
 					novo_x = ponto_A.getX() + (ponto_B.getX() - ponto_A.getX()) * (-1 - ponto_A.getY()) / (ponto_B.getY() - ponto_A.getY());
