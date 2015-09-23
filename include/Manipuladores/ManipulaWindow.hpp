@@ -74,18 +74,18 @@ public:
 		for(int i =0; i< virt->getSize(); i++){
 			Objeto* obj= *it_objeto->info;
 			switch(obj->getTipo()){
-				case(Ponto):{
-					clip_Ponto(*obj, virt_clip);
-					break;
-				}
-				case(Reta):{
-					clip_Reta(*obj, virt_clip);
-					break;
-				}
-				case(Poligono):{
-					clip_Poligono(*obj, virt_clip);
-					break;
-				}
+			case(Ponto):{
+				clip_Ponto(*obj, virt_clip);
+				break;
+			}
+			case(Reta):{
+				clip_Reta(*obj, virt_clip);
+				break;
+			}
+			case(Poligono):{
+				clip_Poligono(*obj, virt_clip);
+				break;
+			}
 			}
 			it_objeto = it_objeto->getProximo();
 		}
@@ -187,17 +187,18 @@ public:
 		for(int i =0; i<pontos_obj_ori.getSize();i++){
 			cout << "------------------------------------------" << i << endl;
 			Coordenada pontoA = *pontos_obj_ori.posicaoMem(i);
-					cout << pontoA.getX() << " " << pontoA.getY() << endl;
-					cout << "vai se fuder " << (i+1) % (pontos_obj_ori.getSize()) << endl;
+			cout << pontoA.getX() << " " << pontoA.getY() << endl;
+			cout << "vai se fuder " << (i+1) % (pontos_obj_ori.getSize()) << endl;
 			Coordenada pontoB = *pontos_obj_ori.posicaoMem((i+1) % (pontos_obj_ori.getSize()));
-					cout << pontoB.getX() << " " << pontoB.getY() << endl;
+			cout << pontoB.getX() << " " << pontoB.getY() << endl;
 			it_objeto = it_objeto->_next;
-					cout << "---------------------asdfasdfafad---------------------" << endl;
+			cout << "---------------------asdfasdfafad---------------------" << endl;
 
 			if(rcCode(pontoA)==0){ // A dentro;
 				if(rcCode(pontoB)!=0){ //pontoB fora;
-					cout << "dentro fora" << endl;
+
 					//caso dentro-fora
+					cout << "dentro fora" << endl;
 					Objeto reta(" ", Reta, false);
 					reta.adiciona(pontoA);
 					reta.adiciona(pontoB);
@@ -206,7 +207,9 @@ public:
 					Coordenada novoB = *pontos_reta->posicaoMem(1);//pode dar problema de índice;
 					insereNaWindow(&pontos_window, novoB);
 					insereNoObjeto(&pontos_obj, pontoA, novoB);
+
 					gambiarraTudoDentro = false;
+
 				}else{
 					cout << "dentro dentro" << endl;
 				}
@@ -256,17 +259,16 @@ public:
 		}
 		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
 		for (int var = 0; var < pontos_window.getSize(); ++var) {
-					cout << pontos_window.posicaoMem(var)->getX() << "," << pontos_window.posicaoMem(var)->getY() << endl;
+			cout << pontos_window.posicaoMem(var)->getX() << "," << pontos_window.posicaoMem(var)->getY() << endl;
 		}
 		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
 		for (int var = 0; var < entrantes.getSize(); ++var) {
-					cout << entrantes.posicaoMem(var)->getX() << "," << entrantes.posicaoMem(var)->getY() << endl;
+			cout << entrantes.posicaoMem(var)->getX() << "," << entrantes.posicaoMem(var)->getY() << endl;
 		}
 		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
 
 		cout << "antes" << endl;
 		while(!entrantes.listaVazia()){
-			cout << "entrantes size:" << entrantes.getSize() << endl;
 			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 			Coordenada inicial = entrantes.retiraDoInicio();
 			Coordenada atual = inicial;
@@ -280,36 +282,58 @@ public:
 			int fuck1=0, fuck2=0;
 			do{
 				if(varreWindow){
-					cout << "WINDOW" << endl;
-					while(it_pontos_window->getX()!= atual.getX() || it_pontos_window->getY()!=atual.getY()){
+
+					while(!igual(it_pontos_window->getX(), atual.getX()) || !igual(it_pontos_window->getY(),atual.getY())){
+						cout << "WINDOW" << endl;
+						cout<< atual.getX() << ", " << atual.getY() << endl;
+						cout<< it_pontos_window->getX() << ", " << it_pontos_window->getY() << endl;
 						it_pontos_window = pontos_window.posicaoMem(fuck1);
 						fuck1 = (fuck1+1) % pontos_window.getSize();
 					}
-					it_pontos_window = pontos_window.posicaoMem((fuck1+1) % pontos_window.getSize());
+
+
+					it_pontos_window = pontos_window.posicaoMem(fuck1);
+					fuck1 = (fuck1+1) % pontos_window.getSize();
 					atual = *it_pontos_window;
+					cout << "adicionou" << endl;
+					cout<< atual.getX() << ", " << atual.getY() << endl;
 					novo->adiciona(atual);
-					if(gambs_pontoPertence(pontos_obj_ori, atual)){
+
+
+					//					if(gambs_pontoPertence(entrantes, atual)){//encontrou um ponto que já pertence ao objeto sendo montado. Na pior das hipóteses vai criar dois objetos com mesmas coordenadas
+					//entrantes.retiraEspecifico(atual); //esse método fede.
+					//					}
+					if(gambs_pontoPertence(pontos_window_ori, atual)){
 						continue;
-					}
-					if(gambs_pontoPertence(entrantes, atual)){//encontrou um ponto que já pertence ao objeto sendo montado. Na pior das hipóteses vai criar dois objetos com mesmas coordenadas
-						//entrantes.retiraEspecifico(atual); //esse método fede.
 					}
 					varreWindow = false;
 				}
 				else{
-					cout << "OBJETO" << endl;
-					while(it_pontos_obj->getX()!= atual.getX() || it_pontos_obj->getY()!=atual.getY()){
-						it_pontos_window = pontos_obj.posicaoMem(fuck2);
+
+					while(!igual(it_pontos_obj->getX(), atual.getX()) || !igual(it_pontos_obj->getY(),atual.getY())){
+						cout << "OBJETO" << endl;
+						cout<< atual.getX() << ", " << atual.getY() << endl;
+						cout<< it_pontos_obj->getX() << ", " << it_pontos_obj->getY() << endl;
+						cout<< fuck2 << endl;
+						it_pontos_obj = pontos_obj.posicaoMem(fuck2);
 						fuck2 = (fuck2+1) % pontos_obj.getSize();
+
 					}
-					it_pontos_window = pontos_obj.posicaoMem((fuck2+1) % pontos_obj.getSize());
+
+
+					it_pontos_obj = pontos_obj.posicaoMem(fuck2);
+					fuck2 = (fuck2+1) % pontos_obj.getSize();
 					atual = *it_pontos_obj;
+					cout << "Adicionou" << endl;
+					cout<< atual.getX() << ", " << atual.getY() << endl;
 					novo->adiciona(atual);
+
+					//					if(gambs_pontoPertence(entrantes, atual)){
+					//entrantes.retiraEspecifico(atual);//esse método fede.
+					//					}
 					if(gambs_pontoPertence(pontos_obj_ori, atual)){
+
 						continue;
-					}
-					if(gambs_pontoPertence(entrantes, atual)){
-						//entrantes.retiraEspecifico(atual);//esse método fede.
 					}
 					varreWindow = true;
 				}
@@ -356,117 +380,136 @@ public:
 	}
 
 	void insereNaWindow(ListaEnc<Coordenada>* pontosWindow, Coordenada ponto){
-			//Código monstruoso comecando em 9, 8, 7, ...
-			/* B---2---C
-			 * |	   |
-			 * 1   0   3
-			 * |       |
-			 * A---4---D
-			 */
-			//1 e 2 contam em ordem crescente, considerando Y e X, respectivamente;
-			//3 e 4 contam em ordem decrescente, considerando Y e X, respectivamente;
-			int lado = classificaPonto(ponto);
-			int pos = 0;
-			//!!!!!!!!!!!PODE DAR MERDA NOS INDICES!!!!!!!!!!!!!
-			Elemento<Coordenada> *it_lista = pontosWindow->getHead();
-			switch(lado){
-			case(1):{
-				while(!igual(it_lista->info->getX(),-1) || !igual(it_lista->info->getY(),-1)){//busca como referência o ponto A
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(igual(it_lista->info->getX(),-1) && igual(it_lista->info->getY(),-1)){//para caso hajam pontos A além da referência
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(it_lista->info->getY()<ponto.getY()){//busca em ordem crescente
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				pontosWindow->adicionaNaPosicao(ponto, pos);
-				return;
-			}
-			case(2):{
-				while(!igual(it_lista->info->getX(),-1) || !igual(it_lista->info->getY(),1)){//busca como referência o ponto B
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(igual(it_lista->info->getX(),-1) && igual(it_lista->info->getY(),1)){//busca como referência o ponto B
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(it_lista->info->getX()<ponto.getX()){//busca em ordem crescente
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				pontosWindow->adicionaNaPosicao(ponto, pos);
-				return;
-			}
-			case(3):{
-				while(!igual(it_lista->info->getX(),1) || !igual(it_lista->info->getY(),1)){//busca como referência o ponto C
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(igual(it_lista->info->getX(),1) && igual(it_lista->info->getY(),1)){//busca como referência o ponto C
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(it_lista->info->getY()>ponto.getY()){//busca em ordem crescente
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				pontosWindow->adicionaNaPosicao(ponto, pos);
-				return;
-			}
-			case(4):{
-				while(!igual(it_lista->info->getX(),1) || !igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(igual(it_lista->info->getX(),1) && igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				while(it_lista->info->getX()>ponto.getX()){//busca em ordem crescente
-					it_lista = it_lista->_next;
-					pos++;
-				}
-				pontosWindow->adicionaNaPosicao(ponto, pos);
-				return;
-			}
-			}
-		}
-
-		//Obs: não consegui passar parâmetro null para fazer uma única funćão
-		void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA){
-			int pos = 0;
-			Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
-			while(!igual(it_lista->info->getX(),ref.getX()) || !igual(it_lista->info->getY(),ref.getY())){//busca como referência o ponto A
+		//Código monstruoso comecando em 9, 8, 7, ...
+		/* B---2---C
+		 * |	   |
+		 * 1   0   3
+		 * |       |
+		 * A---4---D
+		 */
+		//1 e 2 contam em ordem crescente, considerando Y e X, respectivamente;
+		//3 e 4 contam em ordem decrescente, considerando Y e X, respectivamente;
+		int lado = classificaPonto(ponto);
+		int pos = 0;
+		//!!!!!!!!!!!PODE DAR MERDA NOS INDICES!!!!!!!!!!!!!
+		Elemento<Coordenada> *it_lista = pontosWindow->getHead();
+		switch(lado){
+		case(1):{
+			while(!igual(it_lista->info->getX(),-1) || !igual(it_lista->info->getY(),-1)){//busca como referência o ponto A
 				it_lista = it_lista->_next;
 				pos++;
 			}
-			pos++;
-			pontosObjeto->adicionaNaPosicao(pontoA, pos);
-		}
-		void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA, Coordenada pontoB){
-			int pos = 0;
-			Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
-			while(!igual(it_lista->info->getX(),ref.getX()) || !igual(it_lista->info->getY(),ref.getY())){//busca como referência o ponto A
+			while(igual(it_lista->info->getX(),-1) && igual(it_lista->info->getY(),-1)){//para caso hajam pontos A além da referência
 				it_lista = it_lista->_next;
 				pos++;
 			}
-			pos++;
-			pontosObjeto->adicionaNaPosicao(pontoA, pos++);
-			pontosObjeto->adicionaNaPosicao(pontoB, pos);
-		}
-
-		bool gambs_pontoPertence(ListaEnc<Coordenada> pontos, Coordenada obj){
-			Elemento<Coordenada>* it = pontos.getHead();
-			for(int i =0; i<pontos.getSize(); i++){
-				if(igual(it->info->getX(),obj.getX()) && igual(it->info->getY(),obj.getY()))
-					return true;
-				it = it->_next;
+			while(it_lista->info->getY()<ponto.getY()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
 			}
-			return false;
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
 		}
+		case(2):{
+			while(!igual(it_lista->info->getX(),-1) || !igual(it_lista->info->getY(),1)){//busca como referência o ponto B
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(igual(it_lista->info->getX(),-1) && igual(it_lista->info->getY(),1)){//busca como referência o ponto B
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getX()<ponto.getX()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		case(3):{
+			while(!igual(it_lista->info->getX(),1) || !igual(it_lista->info->getY(),1)){//busca como referência o ponto C
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(igual(it_lista->info->getX(),1) && igual(it_lista->info->getY(),1)){//busca como referência o ponto C
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			while(it_lista->info->getY()>ponto.getY()){//busca em ordem crescente
+				it_lista = it_lista->_next;
+				pos++;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		case(4):{
+			cout <<pontosWindow->getSize() <<endl;
+			while(!igual(it_lista->info->getX(),1) || !igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
+				cout<< "QUASELA1###############################" << endl;
+				it_lista = it_lista->_next;
+				pos++;
+				cout <<pos <<endl;
+			}
+			cout<< "QUASELA2###############################" << endl;
+			cout <<pos <<endl;
+			while(igual(it_lista->info->getX(),1) && igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
+				cout<< "QUASELA3###############################" << endl;
+				pos++;
+				cout <<pos <<endl;
+				if(pos==pontosWindow->getSize()){
+					pontosWindow->adiciona(ponto);
+					return;
+				}
+				it_lista = it_lista->_next;
+			}
+			cout<< "QUASELA4###############################" << endl;
+			cout <<pos <<endl;
+			while(it_lista->info->getX()>ponto.getX()){//busca em ordem crescente
+				cout<< "QUASELA5###############################" << endl;
+				it_lista = it_lista->_next;
+				pos++;
+				if(pos==pontosWindow->getSize()){
+					pontosWindow->adiciona(ponto);
+					return;
+				}
+				cout <<pos <<endl;
+			}
+			pontosWindow->adicionaNaPosicao(ponto, pos);
+			return;
+		}
+		}
+	}
+
+	//Obs: não consegui passar parâmetro null para fazer uma única funćão
+	void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA){
+		int pos = 0;
+		Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
+		while(!igual(it_lista->info->getX(),ref.getX()) || !igual(it_lista->info->getY(),ref.getY())){//busca como referência o ponto A
+			it_lista = it_lista->_next;
+			pos++;
+		}
+		pos++;
+		pontosObjeto->adicionaNaPosicao(pontoA, pos);
+	}
+	void insereNoObjeto(ListaEnc<Coordenada>* pontosObjeto, Coordenada ref, Coordenada pontoA, Coordenada pontoB){
+		int pos = 0;
+		Elemento<Coordenada> *it_lista = pontosObjeto->getHead();
+		while(!igual(it_lista->info->getX(),ref.getX()) || !igual(it_lista->info->getY(),ref.getY())){//busca como referência o ponto A
+			it_lista = it_lista->_next;
+			pos++;
+		}
+		pos++;
+		pontosObjeto->adicionaNaPosicao(pontoA, pos++);
+		pontosObjeto->adicionaNaPosicao(pontoB, pos);
+	}
+
+	bool gambs_pontoPertence(ListaEnc<Coordenada> pontos, Coordenada obj){
+		Elemento<Coordenada>* it = pontos.getHead();
+		for(int i =0; i<pontos.getSize(); i++){
+			if(igual(it->info->getX(),obj.getX()) && igual(it->info->getY(),obj.getY()))
+				return true;
+			it = it->_next;
+		}
+		return false;
+	}
 };
