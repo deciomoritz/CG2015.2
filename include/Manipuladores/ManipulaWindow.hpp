@@ -34,12 +34,8 @@ public:
 	}
 	void translada(Window* window, Coordenada c){
 		vector<vector<double> > m = manipulaMtr->getTranslacao(c);
-		//		manipulaMtr->printaMatriz(m);
 		transformaWindow(window, m);
-		//		manipulaMtr->printaMatriz(window->getwMax()->getVector());
-		//		manipulaMtr->printaMatriz(window->getwMin()->getVector());
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(window->getwCentro(), window));
-		//		cout << window->getDisplay_virtual()->to_string() << endl;
 	}
 	void escalona(Window* window, Coordenada c){
 		window->setTamanho(c);
@@ -185,20 +181,14 @@ public:
 		//percorrendo os segmentos de reta do polígono e montando as 3 listas
 		Elemento<Coordenada>* it_objeto = pontos_obj_ori.getHead();
 		for(int i =0; i<pontos_obj_ori.getSize();i++){
-//			cout << "------------------------------------------" << i << endl;
 			Coordenada pontoA = *pontos_obj_ori.posicaoMem(i);
-//			cout << pontoA.getX() << " " << pontoA.getY() << endl;
-//			cout << "vai se fuder " << (i+1) % (pontos_obj_ori.getSize()) << endl;
 			Coordenada pontoB = *pontos_obj_ori.posicaoMem((i+1) % (pontos_obj_ori.getSize()));
-//			cout << pontoB.getX() << " " << pontoB.getY() << endl;
 			it_objeto = it_objeto->_next;
-//			cout << "---------------------asdfasdfafad---------------------" << endl;
 
 			if(rcCode(pontoA)==0){ // A dentro;
 				if(rcCode(pontoB)!=0){ //pontoB fora;
 
 					//caso dentro-fora
-//					cout << "dentro fora" << endl;
 					Objeto reta(" ", Reta, false);
 					reta.adiciona(pontoA);
 					reta.adiciona(pontoB);
@@ -222,7 +212,6 @@ public:
 				Objeto *nova_reta = reta_clippada(reta);
 
 				if(rcCode(pontoB)==0){ //pontoB dentro;
-//					cout << "fora dentro" << endl;
 					//caso fora-dentro;
 					ListaEnc<Coordenada>* pontos_reta = nova_reta->pontos();
 					Coordenada novoA = *pontos_reta->posicaoMem(0);//pode dar problema de índice;
@@ -232,7 +221,6 @@ public:
 				}
 				else{
 					//caso fora-fora
-//					cout << "fora fora" << endl;
 					if(nova_reta==0){
 						continue;
 					}
@@ -248,38 +236,6 @@ public:
 			}
 		}
 
-		//Três istas foram montadas, comecar a criar os novos objetos.
-		//		ListaEnc<Coordenada> pontos_obj;
-		//		ListaEnc<Coordenada> pontos_obj_it;//usado para percorrer os pontos do objeto. pontos_obj será modificado.
-		//		ListaEnc<Coordenada> pontos_window;
-		//		ListaEnc<Coordenada> entrantes;
-
-
-//
-//
-//		for (int var = 0; var < pontos_obj.getSize(); ++var) {
-//			cout << pontos_obj.posicaoMem(var)->getX() << "," << pontos_obj.posicaoMem(var)->getY() << endl;
-//		}
-//		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
-//		for (int var = 0; var < pontos_obj_ori.getSize(); ++var) {
-//			cout << pontos_obj_ori.posicaoMem(var)->getX() << "," << pontos_obj_ori.posicaoMem(var)->getY() << endl;
-//		}
-//		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
-//		for (int var = 0; var < pontos_window.getSize(); ++var) {
-//			cout << pontos_window.posicaoMem(var)->getX() << "," << pontos_window.posicaoMem(var)->getY() << endl;
-//		}
-//
-//		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
-//		for (int var = 0; var < pontos_window_ori.getSize(); ++var) {
-//			cout << pontos_window_ori.posicaoMem(var)->getX() << "," << pontos_window_ori.posicaoMem(var)->getY() << endl;
-//		}
-//		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
-//		for (int var = 0; var < entrantes.getSize(); ++var) {
-//			cout << entrantes.posicaoMem(var)->getX() << "," << entrantes.posicaoMem(var)->getY() << endl;
-//		}
-//		cout << "-----------jasdlfhasdlçfjalçkdfjaslfjkasdkfjasçklfasjçlkdfkçalsdfçlksdalçfdajçlfjlkfjlfsdaçfsda" << endl;
-//
-//		cout << "antes" << endl;
 		while(!entrantes.listaVazia()){
 			Objeto* novo = new Objeto(obj.nome(), obj.getTipo(), obj.isPreenchido());
 			Coordenada inicial = entrantes.retiraDoInicio();
@@ -296,9 +252,6 @@ public:
 				if(varreWindow){
 
 					while(!igual(it_pontos_window->getX(), atual.getX()) || !igual(it_pontos_window->getY(),atual.getY())){
-//						cout << "WINDOW" << endl;
-//						cout<< atual.getX() << ", " << atual.getY() << endl;
-//						cout<< it_pontos_window->getX() << ", " << it_pontos_window->getY() << endl;
 						it_pontos_window = pontos_window.posicaoMem(fuck1);
 						fuck1 = (fuck1+1) % pontos_window.getSize();
 					}
@@ -311,9 +264,6 @@ public:
 					novo->adiciona(atual);
 
 
-					//					if(gambs_pontoPertence(entrantes, atual)){//encontrou um ponto que já pertence ao objeto sendo montado. Na pior das hipóteses vai criar dois objetos com mesmas coordenadas
-					//entrantes.retiraEspecifico(atual); //esse método fede.
-					//					}
 					if(gambs_pontoPertence(pontos_window_ori, atual)){
 						continue;
 					}
@@ -322,10 +272,6 @@ public:
 				else{
 
 					while(!igual(it_pontos_obj->getX(), atual.getX()) || !igual(it_pontos_obj->getY(),atual.getY())){
-//						cout << "OBJETO" << endl;
-//						cout<< atual.getX() << ", " << atual.getY() << endl;
-//						cout<< it_pontos_obj->getX() << ", " << it_pontos_obj->getY() << endl;
-//						cout<< fuck2 << endl;
 						it_pontos_obj = pontos_obj.posicaoMem(fuck2);
 						fuck2 = (fuck2+1) % pontos_obj.getSize();
 
@@ -335,15 +281,9 @@ public:
 					it_pontos_obj = pontos_obj.posicaoMem(fuck2);
 					fuck2 = (fuck2+1) % pontos_obj.getSize();
 					atual = *it_pontos_obj;
-//					cout << "Adicionou" << endl;
-//					cout<< atual.getX() << ", " << atual.getY() << endl;
 					novo->adiciona(atual);
 
-					//					if(gambs_pontoPertence(entrantes, atual)){
-					//entrantes.retiraEspecifico(atual);//esse método fede.
-					//					}
 					if(gambs_pontoPertence(pontos_window, atual)){
-//						cout << "WINDOW" << endl;cout << "WINDOW" << endl;
 						varreWindow = true;
 						continue;
 					}
@@ -459,23 +399,18 @@ public:
 			return;
 		}
 		case(4):{
-//			cout <<pontosWindow->getSize() <<endl;
 			while(!igual(it_lista->info->getX(),1) || !igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
 				it_lista = it_lista->_next;
 				pos++;
-//				cout <<pos <<endl;
 			}
-//			cout <<pos <<endl;
 			while(igual(it_lista->info->getX(),1) && igual(it_lista->info->getY(),-1)){//busca como referência o ponto D
 				pos++;
-//				cout <<pos <<endl;
 				if(pos==pontosWindow->getSize()){
 					pontosWindow->adiciona(ponto);
 					return;
 				}
 				it_lista = it_lista->_next;
 			}
-//			cout <<pos <<endl;
 			while(it_lista->info->getX()>ponto.getX()){//busca em ordem crescente
 				it_lista = it_lista->_next;
 				pos++;
@@ -483,7 +418,6 @@ public:
 					pontosWindow->adiciona(ponto);
 					return;
 				}
-//				cout <<pos <<endl;
 			}
 			pontosWindow->adicionaNaPosicao(ponto, pos);
 			return;

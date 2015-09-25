@@ -4,6 +4,23 @@
 string Objeto::to_string() {
 	string s = _nome + " ";
 
+	switch (tipo) {
+	case Ponto:
+		s += " Ponto ";
+		break;
+	case Reta:
+		s += " Reta ";
+		break;
+	case Poligono:
+		s += " Polígono ";
+		break;
+	case Curva:
+		s += " Curva ";
+		break;
+	default:
+		break;
+	}
+
 	for (int j = 0; j < _pontos.getSize(); ++j) {
 		Coordenada & coord = *_pontos.posicaoMem(j);
 		s += "(" + std::to_string(coord.getX()) + ","

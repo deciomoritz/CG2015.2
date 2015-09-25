@@ -8,7 +8,7 @@
 using namespace std;
 
 
-enum Tipo{ Ponto, Reta, Poligono};
+enum Tipo{ Ponto, Reta, Poligono, Curva};
 
 class Objeto {
 
@@ -20,6 +20,7 @@ protected:
 
 public:
 	Objeto(){};
+	virtual ~Objeto(){};
 
 	Objeto(string nome, Tipo tipo, bool preenchido){
 		this->_nome = nome;
@@ -31,9 +32,6 @@ public:
 		this->_nome = nome;
 		this->tipo = tipo;
 		this->preenchido = preenchido;
-	};
-
-	~Objeto(){
 	};
 
 	Tipo getTipo(){
