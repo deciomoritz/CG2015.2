@@ -52,9 +52,6 @@ public:
 				incrementMundo(*dAux, virt, m);
 			}
 		}
-//		cout << virt->to_string() << endl;
-//		cout << "------------------------" << endl;
 		incrementMundo(ori, virt, m);
-		cout << virt->to_string() << endl;
 	}
 };

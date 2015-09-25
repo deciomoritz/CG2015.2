@@ -56,7 +56,7 @@ public:
 				x = geometria[3].getX()+passo*(geometria[2].getX()+passo*(geometria[1].getX()+geometria[0].getX()*passo));
 				y = geometria[3].getY()+passo*(geometria[2].getY()+passo*(geometria[1].getY()+geometria[0].getY()*passo));
 				ponto2 = new Coordenada(x,y,1);
-				passo += tamanhoPasso;
+//				passo += tamanhoPasso;
 
 				Objeto * obj = new Objeto(" ",Reta, false);
 				obj->adiciona(*ponto1);
