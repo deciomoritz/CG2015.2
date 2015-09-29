@@ -8,6 +8,7 @@
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include "include/Parser.h"
+#include "include/Curva2D.hpp"
 
 using namespace std;
 
@@ -23,16 +24,20 @@ Window* window_m;
 GtkWidget *view;
 GtkTextBuffer *buffer;
 
+GtkScrolledWindow* scrolledWindow;
+
 GtkWidget* gridWorld;
 GtkWidget* gridObj;
 
 GtkEntry* entry;
 GtkEntry* entry2;
 GtkToggleButton* checkButton;
+GtkToggleButton* checkButtonCurve;
 
 ManipulaObjeto* manipulaObjeto;
 ManipulaMundo* manipulaMundo;
 ManipulaWindow* manipulaWindow;
+ManipulaMatriz* manipulaMatriz;
 Parser* parser;
 
 static cairo_surface_t *surface = NULL;
@@ -65,6 +70,7 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	string comando = gtk_entry_get_text(entry);
 
 	bool preenchido = gtk_toggle_button_get_active(checkButton);
+	bool curva = gtk_toggle_button_get_active(checkButtonCurve);
 
 	vector<string> aux = separarParametros(comando);
 
@@ -73,6 +79,8 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		tipo = Ponto;
 	}else if(aux.size() == 5){
 		tipo = Reta;
+	}else if(curva){
+		tipo = Curva;
 	}else{
 		tipo = Poligono;
 	}
@@ -81,8 +89,8 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
 		Coordenada* coord;
 		for (int i = 1; i < aux.size() - 1; i += 2) {
-			coord = new Coordenada(atoi(aux[i].c_str()),
-					atoi(aux[i + 1].c_str()), 1);
+			coord = new Coordenada(atof(aux[i].c_str()),
+					atof(aux[i + 1].c_str()), 1);
 			obj->adiciona(*coord);
 		}
 		window_m->adicionaObjeto(obj);
@@ -106,11 +114,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	manipulaWindow->refresh(window_m);
 	manipulaWindow->clipping(window_m);
-//	g_print("----------------------------------------------------\n");
-//	g_print("fuck\n");
-//	g_print(window_m->getDisplay_virtual()->to_string().c_str());
-//
-//	g_print("****************************************************\n");
+//	cout << "clipou" << endl;
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
 	clear(widget, cr, data);
@@ -186,7 +190,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(-5, 0, 1);
+	Coordenada coord(-1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -195,7 +199,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(5, 0, 1);
+	Coordenada coord(1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -203,7 +207,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, 5, 1);
+	Coordenada coord(0, 1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -212,7 +216,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, -5, 1);
+	Coordenada coord(0, -1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -223,7 +227,6 @@ extern "C" G_MODULE_EXPORT void on_in_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(0.5, 0.5, 1);
 	manipulaWindow->escalona(window_m, coord);
-	displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -233,7 +236,6 @@ extern "C" G_MODULE_EXPORT void on_out_clicked(GtkWidget* widget,
 		gpointer data_user) {
 	Coordenada coord(1.5, 1.5, 1);
 	manipulaWindow->escalona(window_m, coord);
-	displayFile = *window_m->getDisplay_virtual();
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -403,8 +405,11 @@ int main(int argc, char* argv[]) {
 	manipulaObjeto = new ManipulaObjeto();
 	manipulaMundo = new ManipulaMundo();
 	manipulaWindow = new ManipulaWindow();
+	manipulaMatriz = new ManipulaMatriz();
 
 	//TESTE
+
+
 
 	//END TESTE
 	gtk_init(&argc, &argv);
@@ -420,9 +425,13 @@ int main(int argc, char* argv[]) {
 	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
 	gtk_text_buffer_set_text(buffer, displayFile.to_string().c_str(), -1);
 
+	scrolledWindow = GTK_SCROLLED_WINDOW(gtk_builder_get_object(builder, "scrolledwindow1"));
+	gtk_scrolled_window_set_min_content_height(scrolledWindow, 200);
+
 	frame = GTK_WIDGET(gtk_builder_get_object(builder, "frame1"));
 
 	checkButton = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton1"));
+	checkButtonCurve = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton2"));
 
 	GdkColor red = {0, 0xffff, 0x0ff0, 0x0000};
 	GdkColor green = {0, 0x0000, 0xffff, 0x0000};
@@ -461,6 +470,7 @@ int main(int argc, char* argv[]) {
 	delete viewport_m;
 	delete manipulaMundo;
 	delete manipulaWindow;
+	delete manipulaMatriz;
 
 	return 0;
 }

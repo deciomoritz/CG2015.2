@@ -24,8 +24,6 @@ public:
 	~DisplayFile(){
 	}
 
-	void desenha(DisplayFile* displayFile);
-
 	string to_string();
 
 
