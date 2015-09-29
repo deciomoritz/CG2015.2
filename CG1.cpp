@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
+#include "include/Curva2DBezier.hpp"
 #include "include/Manipuladores/ManipulaWindow.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"
 #include "include/Parser.h"
-#include "include/Curva2D.hpp"
 
 using namespace std;
 
@@ -33,6 +33,9 @@ GtkEntry* entry;
 GtkEntry* entry2;
 GtkToggleButton* checkButton;
 GtkToggleButton* checkButtonCurve;
+
+GtkToggleButton* bezier;
+GtkToggleButton* spline;
 
 ManipulaObjeto* manipulaObjeto;
 ManipulaMundo* manipulaMundo;
@@ -72,6 +75,8 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	bool preenchido = gtk_toggle_button_get_active(checkButton);
 	bool curva = gtk_toggle_button_get_active(checkButtonCurve);
 
+	bool isBezier = gtk_toggle_button_get_active(bezier);
+
 	vector<string> aux = separarParametros(comando);
 
 	Tipo tipo;
@@ -80,7 +85,10 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	}else if(aux.size() == 5){
 		tipo = Reta;
 	}else if(curva){
-		tipo = Curva;
+		if(isBezier)
+			tipo = CurvaBezier;
+		else
+			tipo = CurvaSpline;
 	}else{
 		tipo = Poligono;
 	}
@@ -432,6 +440,9 @@ int main(int argc, char* argv[]) {
 
 	checkButton = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton1"));
 	checkButtonCurve = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkbutton2"));
+
+	bezier = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "bezier"));
+	spline = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "spline"));
 
 	GdkColor red = {0, 0xffff, 0x0ff0, 0x0000};
 	GdkColor green = {0, 0x0000, 0xffff, 0x0000};
