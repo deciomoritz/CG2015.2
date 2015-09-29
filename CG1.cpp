@@ -113,7 +113,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	editDisplayFile(widget, cr, data);
 
 	manipulaWindow->refresh(window_m);
-//	manipulaWindow->clipping(window_m);
+	manipulaWindow->clipping(window_m);
 //	cout << "clipou" << endl;
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -190,7 +190,7 @@ extern "C" G_MODULE_EXPORT void on_novo_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(-5, 0, 1);
+	Coordenada coord(-1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -199,7 +199,7 @@ extern "C" G_MODULE_EXPORT void on_left_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(5, 0, 1);
+	Coordenada coord(1, 0, 1);
 	manipulaWindow->translada(window_m, coord);
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -207,7 +207,7 @@ extern "C" G_MODULE_EXPORT void on_right_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, 5, 1);
+	Coordenada coord(0, 1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
@@ -216,7 +216,7 @@ extern "C" G_MODULE_EXPORT void on_up_clicked(GtkWidget* widget,
 
 extern "C" G_MODULE_EXPORT void on_down_clicked(GtkWidget* widget,
 		gpointer data_user) {
-	Coordenada coord(0, -5, 1);
+	Coordenada coord(0, -1, 1);
 	manipulaWindow->translada(window_m, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);

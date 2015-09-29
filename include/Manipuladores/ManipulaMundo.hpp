@@ -18,8 +18,8 @@ public:
 	}
 	void incrementMundo(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){
 
-		cout << "original: " << ori.to_string() << endl;
-				cout << "---------------------------\n";
+//		cout << "original: " << ori.to_string() << endl;
+//				cout << "---------------------------\n";
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);

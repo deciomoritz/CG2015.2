@@ -2,14 +2,16 @@
 #include <iostream>
 #include "../Coordenada.hpp"
 using namespace std;
+
+using matrix=vector<vector<double> >;
 class ManipulaMatriz {
 
 private:
 	int fuck = 0;
-	vector<vector<double> >translacaoBase, rotacaoBase, escalonamentoBase, bezier;
+	matrix translacaoBase, rotacaoBase, escalonamentoBase, bezier;
 
 public:
-	void printaMatriz(vector<vector<double> > m){
+	void printaMatriz(matrix m){
 		for (int j = 0; j < m[0].size(); j++) {
 			for (int k = 0; k < m.size(); k++) {
 				cout << m[k][j]<<"  ";
@@ -35,12 +37,18 @@ public:
 		y[0][2] = xy[2]->getY();
 		y[0][3] = xy[3]->getY();
 //
+//		cout << "vetores de pontos " << endl;
 //		printaMatriz(x);
 //		printaMatriz(y);
 //		printaBezier();
 
-		vector<vector<double>> vetorX = multiplicaMatriz(bezier,x);
-		vector<vector<double>> vetorY = multiplicaMatriz(bezier,y);
+		matrix vetorX = multiplicaMatriz(bezier,x);
+		matrix vetorY = multiplicaMatriz(bezier,y);
+//
+//		cout << "resultado " << endl;
+//		printaMatriz(vetorX);
+//		printaMatriz(vetorY);
+//		cout << "--------------------" << endl;
 ////
 ////		cout << "v geometria x" << endl;
 ////		printaMatriz(vetorX);
@@ -86,27 +94,27 @@ public:
 		bezier[0][3] = 1;
 	};
 	~ManipulaMatriz(){};
-	vector<vector<double> > getTranslacao(Coordenada deslocamento){
+	matrix getTranslacao(Coordenada deslocamento){
 		translacaoBase[0][2] = deslocamento.getX();
 		translacaoBase[1][2] = deslocamento.getY();
 
 		return translacaoBase;
 	}
-	vector<vector<double> > getEscalonamento(Coordenada fator){
+	matrix getEscalonamento(Coordenada fator){
 		escalonamentoBase[0][0] = fator.getX();
 		escalonamentoBase[1][1] = fator.getY();
 		return escalonamentoBase;
 	}
-	vector<vector<double> > getRotacao(double theta){
+	matrix getRotacao(double theta){
 		rotacaoBase[0][0] = cos(theta);
 		rotacaoBase[0][1] = -sin(theta);
 		rotacaoBase[1][0] = sin(theta);
 		rotacaoBase[1][1] = cos(theta);
 		return rotacaoBase;
 	}
-	vector<vector<double> > multiplicaMatriz(vector<vector<double> > a, vector<vector<double> > b){
-		vector<vector<double> > result(b.size(), vector<double>(a[0].size(),0));
-		for(int i=0;i<a[0].size();++i)
+	matrix multiplicaMatriz(matrix a, matrix b){
+		matrix result(b.size(), vector<double>(a[0].size(),0));
+		for(int i=0;i<a.size();++i)
 		{
 			for(int j=0;j<b.size();++j)
 			{
@@ -116,6 +124,4 @@ public:
 		}
 		return result;
 	}
-
-
 };
