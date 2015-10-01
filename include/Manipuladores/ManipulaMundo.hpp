@@ -23,7 +23,7 @@ public:
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
-			if(obj.getTipo()==Curva){
+			if(obj.getTipo()==CurvaBezier || obj.getTipo()==CurvaSpline){
 				continue;
 			}
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
@@ -45,10 +45,14 @@ public:
 		virt->destroiLista();
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
-			if(obj.getTipo() == Curva){
+			if(obj.getTipo()==CurvaBezier || obj.getTipo()==CurvaSpline){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
 				ListaEnc<Coordenada>* pontos = obj.pontos();
-				DisplayFile * dAux = curva->getRetas(*pontos);
+				DisplayFile * dAux;
+				if(obj.getTipo()==CurvaBezier)
+					dAux = curva->getRetasBezier(*pontos);
+				else
+					dAux = curva->getRetasSpline(*pontos);
 				incrementMundo(*dAux, virt, m);
 			}
 		}

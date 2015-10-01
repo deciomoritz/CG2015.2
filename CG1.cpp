@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <gtk-3.0/gtk/gtk.h>
 
-#include "include/Curva2DBezier.hpp"
 #include "include/Manipuladores/ManipulaWindow.hpp"
 #include "include/Viewport.hpp"
 #include "include/DisplayFile.hpp"

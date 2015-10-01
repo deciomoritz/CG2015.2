@@ -8,7 +8,7 @@
 using namespace std;
 
 
-enum Tipo{ Ponto, Reta, Poligono, Curva};
+enum Tipo{ Ponto, Reta, Poligono, CurvaBezier, CurvaSpline};
 
 class Objeto {
 

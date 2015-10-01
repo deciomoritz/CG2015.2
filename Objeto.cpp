@@ -14,8 +14,11 @@ string Objeto::to_string() {
 	case Poligono:
 		s += " Polígono ";
 		break;
-	case Curva:
-		s += " Curva ";
+	case CurvaBezier:
+		s += " Bezier ";
+		break;
+	case CurvaSpline:
+		s += " Spline ";
 		break;
 	default:
 		break;
