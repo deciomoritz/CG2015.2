@@ -23,9 +23,6 @@ public:
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
-			if(obj.getTipo()==CurvaBezier || obj.getTipo()==CurvaSpline){
-				continue;
-			}
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
 			ListaEnc<Coordenada>* pontos = obj.pontos();
 			Elemento<Coordenada>* it_pontos = pontos->getHead();
@@ -36,26 +33,27 @@ public:
 				it_pontos = it_pontos->getProximo();
 				obj_virtual->adiciona(coord_virtual);
 			}
-			virt->adicionaNoInicio(obj_virtual);
+			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
+				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
+				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
+				DisplayFile * dAux;
+				if(obj.getTipo()==CurvaSpline)
+					dAux = curva->getRetasSpline(*pontos);
+				else
+					dAux = curva->getRetasBezier(*pontos);
+				for(int i =0; i< dAux->getSize(); i++){
+					Objeto & obj= **dAux->posicaoMem(i);
+					virt->adiciona(&obj);
+				}
+			}else{
+				virt->adicionaNoInicio(obj_virtual);
+			}
 		}
 	}
 
 	void fuckMundo(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){
 
 		virt->destroiLista();
-		for(int i =0; i< ori.getSize(); i++){
-			Objeto & obj= **ori.posicaoMem(i);
-			if(obj.getTipo()==CurvaBezier || obj.getTipo()==CurvaSpline){
-				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
-				ListaEnc<Coordenada>* pontos = obj.pontos();
-				DisplayFile * dAux;
-				if(obj.getTipo()==CurvaBezier)
-					dAux = curva->getRetasBezier(*pontos);
-				else if(obj.getTipo()==CurvaSpline)
-					dAux = curva->getRetasSpline(*pontos);
-				incrementMundo(*dAux, virt, m);
-			}
-		}
 		incrementMundo(ori, virt, m);
 	}
 };

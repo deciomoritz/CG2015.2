@@ -104,10 +104,10 @@ public:
 				double _delta2Y = 6*Cy[0][0]*_deltinha3 + 2*Cy[0][1]*_deltinha2;
 				double _delta3Y = 6*Cy[0][0]*_deltinha3;
 
-				forwardDiff(retas, Cx[0][0],Cy[0][0],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
+//				forwardDiff(retas, Cx[0][0],Cy[0][0],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
 //				forwardDiff(retas, Cx[0][1],Cy[0][1],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
 //				forwardDiff(retas, Cx[0][2],Cy[0][2],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
-//				forwardDiff(retas, Cx[0][3],Cy[0][3],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
+				forwardDiff(retas, Cx[0][3],Cy[0][3],1,_deltaX, _deltaY, 1,_delta2X, _delta2Y, 1, _delta3X, _delta3Y, 1);
 				coord1 = coord4;
 			}
 			cout << "retas" << endl;
