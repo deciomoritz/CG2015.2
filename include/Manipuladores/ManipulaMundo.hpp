@@ -51,7 +51,7 @@ public:
 				DisplayFile * dAux;
 				if(obj.getTipo()==CurvaBezier)
 					dAux = curva->getRetasBezier(*pontos);
-				else
+				else if(obj.getTipo()==CurvaSpline)
 					dAux = curva->getRetasSpline(*pontos);
 				incrementMundo(*dAux, virt, m);
 			}

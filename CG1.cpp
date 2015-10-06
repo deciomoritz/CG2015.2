@@ -121,8 +121,11 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	manipulaWindow->refresh(window_m);
 	manipulaWindow->clipping(window_m);
-//	cout << "clipou" << endl;
+	cout << "antes" << endl;
+	cout << window_m->getDisplay_virtual()->to_string() << endl;
 	displayFile = viewport_m->transformadaViewport(*window_m);
+	cout << "depois" << endl;
+	cout << displayFile.to_string() << endl;
 
 	clear(widget, cr, data);
 
