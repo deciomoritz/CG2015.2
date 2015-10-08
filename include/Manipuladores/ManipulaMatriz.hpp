@@ -8,9 +8,26 @@ class ManipulaMatriz {
 
 private:
 	int fuck = 0;
-	matrix translacaoBase, rotacaoBase, escalonamentoBase, bezier;
+	matrix translacaoBase, rotacaoBase, escalonamentoBase, bezier, spline;
 
 public:
+
+	void initSpline() {
+		spline[0][0] = -1.0 / 6.0;
+		spline[1][0] = 1.0 / 2.0;
+		spline[2][0] = -1.0 / 2.0;
+		spline[3][0] = 1.0 / 6.0;
+		spline[0][1] = 1.0 / 2.0;
+		spline[1][1] = -1.0;
+		spline[2][1] = 1.0 / 2.0;
+		spline[2][2] = 1.0 / 2.0;
+		spline[0][2] = -1.0 / 2.0;
+		spline[1][2] = 0.0;
+		spline[0][3] = 1.0 / 6.0;
+		spline[1][3] = 2.0 / 3.0;
+		spline[2][3] = 1.0 / 6.0;
+	}
+
 	void printaMatriz(matrix m){
 		for (int j = 0; j < m[0].size(); j++) {
 			for (int k = 0; k < m.size(); k++) {
@@ -24,8 +41,7 @@ public:
 		printaMatriz(bezier);
 	}
 
-	vector<Coordenada> vetorGeometria(vector<Coordenada*> xy){
-//		cout << "chegou" << endl;
+	vector<Coordenada> vetorGeometriaBezier(vector<Coordenada*> xy){
 		vector<vector<double>> x(1,vector<double>(4,0));
 		x[0][0] = xy[0]->getX();
 		x[0][1] = xy[1]->getX();
@@ -36,31 +52,9 @@ public:
 		y[0][1] = xy[1]->getY();
 		y[0][2] = xy[2]->getY();
 		y[0][3] = xy[3]->getY();
-//
-//		cout << "vetores de pontos " << endl;
-//		printaMatriz(x);
-//		printaMatriz(y);
-//		printaBezier();
 
 		matrix vetorX = multiplicaMatriz(bezier,x);
 		matrix vetorY = multiplicaMatriz(bezier,y);
-//
-//		cout << "resultado " << endl;
-//		printaMatriz(vetorX);
-//		printaMatriz(vetorY);
-//		cout << "--------------------" << endl;
-////
-////		cout << "v geometria x" << endl;
-////		printaMatriz(vetorX);
-////		cout << "v geometria y" << endl;
-////		printaMatriz(vetorY);
-////
-////		cout << endl << endl;
-//
-//		cout << vetorX[0][0]<<" "<<vetorY[0][0] << endl;
-//		cout << vetorX[0][1]<<" "<<vetorY[0][1] << endl;
-//		cout << vetorX[0][2]<<" "<<vetorY[0][2] << endl;
-//		cout << vetorX[0][3]<<" "<<vetorY[0][3] << endl;
 
 		Coordenada a(vetorX[0][0],vetorY[0][0],1);
 		Coordenada b(vetorX[0][1],vetorY[0][1],1);
@@ -71,7 +65,39 @@ public:
 		return geo;
 	}
 
-	ManipulaMatriz():translacaoBase(3,vector<double>(3,0)), rotacaoBase(3,vector<double>(3,0)), escalonamentoBase(3,vector<double>(3,0)), bezier(4,vector<double>(4,0)){
+	matrix getSplineCoefficientsX(vector<Coordenada*> xy){
+		vector<Coordenada> geometriaBS = vetorGeometriaBSpline(xy);
+		matrix geometriaBSMatrix(1,vector<double>(4,0));
+		geometriaBSMatrix[0][0] = geometriaBS[0].getX();
+		geometriaBSMatrix[0][1] = geometriaBS[1].getX();
+		geometriaBSMatrix[0][2] = geometriaBS[2].getX();
+		geometriaBSMatrix[0][3] = geometriaBS[3].getX();
+		initSpline();
+		return multiplicaMatriz(spline, geometriaBSMatrix);
+	}
+
+	matrix getSplineCoefficientsY(vector<Coordenada*> xy){
+		vector<Coordenada> geometriaBS = vetorGeometriaBSpline(xy);
+		matrix geometriaBSMatrix(1,vector<double>(4,0));
+		geometriaBSMatrix[0][0] = geometriaBS[0].getY();
+		geometriaBSMatrix[0][1] = geometriaBS[1].getY();
+		geometriaBSMatrix[0][2] = geometriaBS[2].getY();
+		geometriaBSMatrix[0][3] = geometriaBS[3].getY();
+		initSpline();
+		return multiplicaMatriz(spline, geometriaBSMatrix);
+	}
+
+	vector<Coordenada> vetorGeometriaBSpline(vector<Coordenada*> xy){
+		Coordenada a(xy[0]->getX(),xy[0]->getY(),1);
+		Coordenada b(xy[1]->getX(),xy[1]->getY(),1);
+		Coordenada c(xy[2]->getX(),xy[2]->getY(),1);
+		Coordenada d(xy[3]->getX(),xy[3]->getY(),1);
+		vector<Coordenada> geo = {a,b,c,d};
+		return geo;
+	}
+
+
+	ManipulaMatriz():translacaoBase(3,vector<double>(3,0)), rotacaoBase(3,vector<double>(3,0)), escalonamentoBase(3,vector<double>(3,0)), bezier(4,vector<double>(4,0)), spline(4,vector<double>(4,0)){
 		for(int i =0; i<3; i++){
 			translacaoBase[i][i]=1.0;
 
@@ -92,6 +118,8 @@ public:
 		bezier[1][2] = 3;
 
 		bezier[0][3] = 1;
+
+		initSpline();
 	};
 	~ManipulaMatriz(){};
 	matrix getTranslacao(Coordenada deslocamento){
