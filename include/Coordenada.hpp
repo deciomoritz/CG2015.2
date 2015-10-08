@@ -14,10 +14,11 @@ class Coordenada {
 private:
 	vector<vector<double> > ponto;
 public:
-	Coordenada(double x1, double y1, double z1):ponto(3,vector<double>(1,0)){
+	Coordenada(double x1, double y1, double z1):ponto(4,vector<double>(1,0)){
 		ponto[0][0]=x1;
 		ponto[1][0]=y1;
 		ponto[2][0]=z1;
+		ponto[3][0]=1.0;
 	}
 
 	Coordenada(){}

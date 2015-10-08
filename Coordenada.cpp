@@ -18,7 +18,7 @@ Coordenada operator -(const Coordenada & a, const Coordenada & b){
 	double newX, newY, newZ;
 	newX = a.ponto[0][0] - b.ponto[0][0];
 	newY = a.ponto[1][0] - b.ponto[1][0];
-	newZ = a.ponto[2][0] + b.ponto[2][0];
+	newZ = a.ponto[2][0] - b.ponto[2][0];
 	return  Coordenada(newX, newY, newZ);
 }
 
