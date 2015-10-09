@@ -38,6 +38,13 @@ public:
 	vector<vector<double> > getVector(){
 			return ponto;
 	}
+	vector<vector<double> > get2DVector(){
+		vector<vector<double> > ponto_2d(3,vector<double>(1,0));
+		ponto_2d[0][0] = ponto[0][0];
+		ponto_2d[1][0] = ponto[1][0];
+		ponto_2d[2][0] = 1;
+		return ponto_2d;
+		}
 	Coordenada negative(){
 		return Coordenada(-ponto[0][0], -ponto[1][0], -ponto[2][0]);
 	}
