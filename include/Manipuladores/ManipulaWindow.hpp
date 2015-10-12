@@ -9,8 +9,8 @@ private:
 	ManipulaMundo *manipulaWrld;
 	double angulo = 0.0;
 	void transformaWindow(Window * window, vector<vector<double> >transformada){
-		(window->getwMax())->setVector(manipulaMtr->multiplicaMatriz(window->getwMax()->getVector(),transformada));
-		(window->getwMin())->setVector(manipulaMtr->multiplicaMatriz(window->getwMin()->getVector(),transformada));
+		(window->getwMax())->setVector(manipulaMtr->multiplicaMatriz(window->getwMax()->get2DVector(),transformada));
+		(window->getwMin())->setVector(manipulaMtr->multiplicaMatriz(window->getwMin()->get2DVector(),transformada));
 	}
 	vector<vector<double> > getTransformadaMundo(Coordenada wCentro, Window * window){
 		Coordenada tr(-1*wCentro.getX(),-1*wCentro.getY(),1);

@@ -14,10 +14,11 @@ class Coordenada {
 private:
 	vector<vector<double> > ponto;
 public:
-	Coordenada(double x1, double y1, double z1):ponto(3,vector<double>(1,0)){
+	Coordenada(double x1, double y1, double z1):ponto(4,vector<double>(1,0)){
 		ponto[0][0]=x1;
 		ponto[1][0]=y1;
 		ponto[2][0]=z1;
+		ponto[3][0]=1.0;
 	}
 
 	Coordenada(){}
@@ -37,6 +38,13 @@ public:
 	vector<vector<double> > getVector(){
 			return ponto;
 	}
+	vector<vector<double> > get2DVector(){
+		vector<vector<double> > ponto_2d(3,vector<double>(1,0));
+		ponto_2d[0][0] = ponto[0][0];
+		ponto_2d[1][0] = ponto[1][0];
+		ponto_2d[2][0] = 1;
+		return ponto_2d;
+		}
 	Coordenada negative(){
 		return Coordenada(-ponto[0][0], -ponto[1][0], -ponto[2][0]);
 	}
