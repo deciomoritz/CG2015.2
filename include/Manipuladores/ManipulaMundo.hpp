@@ -62,9 +62,15 @@ public:
 			for(int j =0; j< pontos->getSize(); j++){
 				Coordenada *coord_real = it_pontos->info;
 				Coordenada coord_virtual(1,1,1);
-				coord_virtual.setVector(manipulaMtr->multiplicaMatriz(coord_real->getVector(),m));
+				cout << "porra" << endl;
+				matrix mTeste = manipulaMtr->multiplicaMatriz(coord_real->getVector(),m);
+				cout << "porra2" << endl;
+				coord_virtual.setVector(mTeste);
+				cout << "porra3" << endl;
 				it_pontos = it_pontos->getProximo();
+				cout << "porra4" << endl;
 				obj_virtual->adiciona(coord_virtual);
+				cout << "porra5" << endl;
 			}
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
@@ -79,7 +85,9 @@ public:
 					virt->adiciona(&obj);
 				}
 			}else{
+				cout << "porra6" << endl;
 				virt->adicionaNoInicio(obj_virtual);
+				cout << "porra7" << endl;
 			}
 		}
 	}

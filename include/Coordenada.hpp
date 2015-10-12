@@ -22,7 +22,7 @@ public:
 	}
 
 	Coordenada(){}
-	 ~Coordenada(){};
+	~Coordenada(){};
 	double getX(){
 		return ponto[0][0];
 	}
@@ -36,7 +36,12 @@ public:
 		ponto = novo;
 	}
 	vector<vector<double> > getVector(){
-			return ponto;
+		vector<vector<double> > ponto_3d(4,vector<double>(1,0));
+		ponto_3d[0][0] = ponto[0][0];
+		ponto_3d[1][0] = ponto[1][0];
+		ponto_3d[2][0] = ponto[2][0];
+		ponto_3d[3][0] = 1;
+		return ponto_3d;
 	}
 	vector<vector<double> > get2DVector(){
 		vector<vector<double> > ponto_2d(3,vector<double>(1,0));
@@ -44,7 +49,7 @@ public:
 		ponto_2d[1][0] = ponto[1][0];
 		ponto_2d[2][0] = 1;
 		return ponto_2d;
-		}
+	}
 	Coordenada negative(){
 		return Coordenada(-ponto[0][0], -ponto[1][0], -ponto[2][0]);
 	}

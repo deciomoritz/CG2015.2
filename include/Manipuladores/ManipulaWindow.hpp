@@ -13,7 +13,7 @@ private:
 		(window->getwMin())->setVector(manipulaMtr->multiplicaMatriz(window->getwMin()->get2DVector(),transformada));
 	}
 	vector<vector<double> > getTransformadaMundo(Coordenada wCentro, Window * window){
-		Coordenada tr(-1*wCentro.getX(),-1*wCentro.getY(),1);
+		Coordenada tr(-1*wCentro.getX(),-1*wCentro.getY(),-1*wCentro.getZ());
 		vector<vector<double> > m = manipulaMtr->getTranslacao(tr);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacao(-1*angulo));
 		Coordenada tr2(2/window->getLargura(),2/window->getAltura(),1);
@@ -60,6 +60,11 @@ public:
 	void refresh(Window * window){
 		Coordenada centro = window->getwCentro();
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+	}
+
+	void refresh3D(Window * window){
+		Coordenada centro = window->getwCentro();
+		manipulaWrld->fuckMundo3D(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 	}
 
 	void clipping(Window* window){

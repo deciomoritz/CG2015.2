@@ -27,7 +27,8 @@ string Objeto::to_string() {
 	for (int j = 0; j < _pontos.getSize(); ++j) {
 		Coordenada & coord = *_pontos.posicaoMem(j);
 		s += "(" + std::to_string(coord.getX()) + ","
-				+ std::to_string(coord.getY()) + "),";
+				+ std::to_string(coord.getY()) + ","
+				+ std::to_string(coord.getZ()) + "),";
 	}
 	return s;
 }
@@ -50,14 +51,15 @@ string Objeto::to_obj(){
 	for (int j = 0; j < _pontos.getSize(); ++j) {
 		Coordenada & coord = *_pontos.posicaoMem(j);
 		s += std::to_string(coord.getX()) + " "
-				+ std::to_string(coord.getY()) + " ";
+				+ std::to_string(coord.getY()) + " "
+				+ std::to_string(coord.getZ()) + " ";
 	}
 	s += "\n\n";
 	return s;
 }
 
 bool operator ==(const Objeto & a, const Objeto & b) {
-//	return a.nome().compare(b.nome())==0;
+	//	return a.nome().compare(b.nome())==0;
 	return true;
 }
 

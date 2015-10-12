@@ -36,6 +36,10 @@ GtkToggleButton* checkButtonCurve;
 GtkToggleButton* bezier;
 GtkToggleButton* spline;
 
+GtkToggleButton* xAxis;
+GtkToggleButton* yAxis;
+GtkToggleButton* zAxis;
+
 ManipulaObjeto* manipulaObjeto;
 ManipulaMundo* manipulaMundo;
 ManipulaWindow* manipulaWindow;
@@ -79,9 +83,9 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	vector<string> aux = separarParametros(comando);
 
 	Tipo tipo;
-	if(aux.size() == 3){
+	if(aux.size() == 4){
 		tipo = Ponto;
-	}else if(aux.size() == 5){
+	}else if(aux.size() == 7){
 		tipo = Reta;
 	}else if(curva){
 		if(isBezier)
@@ -95,9 +99,9 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	if (!window_m->contem(aux[0])) {
 		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
 		Coordenada* coord;
-		for (int i = 1; i < aux.size() - 1; i += 2) {
+		for (int i = 1; i < aux.size() - 1; i += 3) {
 			coord = new Coordenada(atof(aux[i].c_str()),
-					atof(aux[i + 1].c_str()), 1);
+					atof(aux[i + 1].c_str()), atof(aux[i + 2].c_str()));
 			obj->adiciona(*coord);
 		}
 		window_m->adicionaObjeto(obj);
@@ -119,7 +123,8 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	editDisplayFile(widget, cr, data);
 
-	manipulaWindow->refresh(window_m);
+	manipulaWindow->refresh3D(window_m);
+	cout << "vai se fuder" << endl;
 	manipulaWindow->clipping(window_m);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
@@ -254,8 +259,9 @@ extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(-1, 0, 1);
-	manipulaObjeto->translada(obj, coord);
+	Coordenada coord(-1, 0, 0);
+//	manipulaObjeto->translada(obj, coord);
+	manipulaObjeto->translada3D(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -441,6 +447,10 @@ int main(int argc, char* argv[]) {
 
 	bezier = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "bezier"));
 	spline = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "spline"));
+
+	xAxis = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "x1"));
+	yAxis = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "y1"));
+	zAxis = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "z1"));
 
 	GdkColor red = {0, 0xffff, 0x0ff0, 0x0000};
 	GdkColor green = {0, 0x0000, 0xffff, 0x0000};
