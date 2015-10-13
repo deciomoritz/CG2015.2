@@ -176,7 +176,7 @@ public:
 			eliminaDoInicio();
 	}
 	int getSize(){
-			return size;
+		return size;
 	}
 
 	T* posicaoMem(int i){

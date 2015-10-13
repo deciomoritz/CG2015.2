@@ -64,7 +64,14 @@ public:
 
 	void refresh3D(Window * window){
 		Coordenada centro = window->getwCentro();
-		manipulaWrld->fuckMundo3D(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+
+		Coordenada c1(1,1,1);
+		Coordenada c(0,0,0);
+
+		DisplayFile * outroDisp = new DisplayFile();
+		manipulaWrld->projecaoParalelaOrtogonal(window->getDisplay(), outroDisp, c, c1);
+		cout << "projetou" << endl;
+		manipulaWrld->fuckMundo(*outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 	}
 
 	void clipping(Window* window){

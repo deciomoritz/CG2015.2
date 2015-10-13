@@ -59,19 +59,23 @@ public:
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
 			ListaEnc<Coordenada>* pontos = obj.pontos();
 			Elemento<Coordenada>* it_pontos = pontos->getHead();
-			for(int j =0; j< pontos->getSize(); j++){
-				Coordenada *coord_real = it_pontos->info;
+			int pontosSize = pontos->getSize();
+			for(int j =0; j< pontosSize; j++){
+//				cout << pontos->getSize() << endl;
+				cout << "entrou no for" << endl;
+				Coordenada *coord_real = pontos->posicaoMem(j);
+				cout << "porra 1" << endl;
 				Coordenada coord_virtual(1,1,1);
-				cout << "porra" << endl;
+				cout << "porra 2" << endl;
 				matrix mTeste = manipulaMtr->multiplicaMatriz(coord_real->getVector(),m);
-				cout << "porra2" << endl;
+				cout << "porra 3" << endl;
 				coord_virtual.setVector(mTeste);
-				cout << "porra3" << endl;
-				it_pontos = it_pontos->getProximo();
-				cout << "porra4" << endl;
+				cout << "porra 4" << endl;
 				obj_virtual->adiciona(coord_virtual);
-				cout << "porra5" << endl;
+				cout << "porra 5" << endl;
+//				cout << pontos->getSize() << endl;
 			}
+			cout << "saiu no for" << endl;
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
 				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
@@ -85,9 +89,7 @@ public:
 					virt->adiciona(&obj);
 				}
 			}else{
-				cout << "porra6" << endl;
 				virt->adicionaNoInicio(obj_virtual);
-				cout << "porra7" << endl;
 			}
 		}
 	}
@@ -107,13 +109,29 @@ public:
 		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 
+		cout << "cosX" << cosX << endl;
+		cout << "senX" << senX << endl;
+
+
 		vector<vector<double> > m = manipulaMtr->getTranslacao3D(a);
+		cout << "translacao" << endl;
+		manipulaMtr->printaMatriz(m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
-		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(m,novo_vpn.getVector());
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[0][2]));
+		cout << "m" << endl;
+		manipulaMtr->printaMatriz(m);
+		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
+		cout << "fez algo em x" << endl;
+		manipulaMtr->printaMatriz(transf_vpn);
+		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
+		cout << "rotacao y" << endl;
+		manipulaMtr->printaMatriz(manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
+		cout << "sen" << transf_vpn[0][0] << endl;
+		cout << "cos" << transf_vpn[2][0] << endl;
+		cout << "rotacionou em y" << endl;
+		manipulaMtr->printaMatriz(m);
 
 		virt->destroiLista();
 		incrementMundo3D(ori, virt, m);
-
+		cout << "fudeu o mundo em 3D" << endl;
 	}
 };

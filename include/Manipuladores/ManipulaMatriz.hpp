@@ -143,7 +143,7 @@ public:
 		translacaoBase3D[0][3] = deslocamento.getX();
 		translacaoBase3D[1][3] = deslocamento.getY();
 		translacaoBase3D[2][3] = deslocamento.getZ();
-		return translacaoBase;
+		return translacaoBase3D;
 	}
 	matrix getEscalonamento(Coordenada fator){
 		escalonamentoBase[0][0] = fator.getX();
