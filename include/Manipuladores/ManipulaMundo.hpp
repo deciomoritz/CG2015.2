@@ -103,7 +103,7 @@ public:
 		incrementMundo3D(ori, virt, m);
 	}
 
-	void projecaoParalelaOrtogonal(DisplayFile ori, DisplayFile *virt, Coordenada vrp, Coordenada vpn){
+	void projecaoParalelaOrtogonal(DisplayFile ori, DisplayFile & virt, Coordenada vrp, Coordenada vpn){
 		Coordenada a(-1*vrp.getX(),-1*vrp.getY(), -1*vrp.getZ());
 		Coordenada novo_vpn = a+vpn;
 		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
@@ -119,6 +119,8 @@ public:
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
 		cout << "m" << endl;
 		manipulaMtr->printaMatriz(m);
+		cout << "fucking vector" << endl;
+		manipulaMtr->printaMatriz(novo_vpn.getVector());
 		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
 		cout << "fez algo em x" << endl;
 		manipulaMtr->printaMatriz(transf_vpn);
@@ -130,8 +132,8 @@ public:
 		cout << "rotacionou em y" << endl;
 		manipulaMtr->printaMatriz(m);
 
-		virt->destroiLista();
-		incrementMundo3D(ori, virt, m);
+		virt.destroiLista();
+//		incrementMundo3D(ori, virt, m);
 		cout << "fudeu o mundo em 3D" << endl;
 	}
 };
