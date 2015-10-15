@@ -50,23 +50,22 @@ public:
 			}
 		}
 	}
-	void incrementMundo3D(DisplayFile ori, DisplayFile & virt, vector<vector<double> >m){
+	void incrementMundo3D(DisplayFile ori, DisplayFile & virt, matrix m){
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
 			ListaEnc<Coordenada>& pontos = *obj.pontos();
 			for(int j =0; j< pontos.getSize(); j++){
-				cout << "entrou no for" << endl;
 				Coordenada &coord_real = *pontos.posicaoMem(j);
 				Coordenada coord_virtual(1,1,1);
 				matrix & merda = coord_real.getVector();
-				matrix mTeste = manipulaMtr->multiplicaMatriz(merda,m);
-				manipulaMtr->printaMatriz(mTeste);
-				coord_virtual.setVector(mTeste);
+				matrix result = manipulaMtr->multiplicaMatriz(merda,m);
+				cout << "result" << endl;
+				manipulaMtr->printaMatriz(result);
+				coord_virtual.setVector(result);
 				obj_virtual->adiciona(coord_virtual);
 			}
-			cout << "saiu no for" << endl;
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
 				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
@@ -100,14 +99,12 @@ public:
 		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 
-		vector<vector<double> > m = manipulaMtr->getTranslacao3D(a);
+		matrix m = manipulaMtr->getTranslacao3D(a);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
-//		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
-		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(m,m);
+		matrix transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
 
-//		virt.destroiLista();
+		virt.destroiLista();
 		incrementMundo3D(ori, virt, m);
-		cout << "fudeu o mundo em 3D" << endl;
 	}
 };
