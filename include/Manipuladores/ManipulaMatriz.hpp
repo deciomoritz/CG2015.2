@@ -207,11 +207,11 @@ public:
 	}
 	matrix multiplicaMatriz(matrix a, matrix b){
 		matrix result(b.size(), vector<double>(a[0].size(),0));
-		for(int i=0;i<a.size();++i)
+		for(int i=0;i<a[0].size();++i)
 		{
 			for(int j=0;j<b.size();++j)
 			{
-				for(int k=0;k<a.size();++k)
+				for(int k=0;k<a[0].size();++k)
 					result[j][i]+=(a[k][i]*b[j][k]);
 			}
 		}

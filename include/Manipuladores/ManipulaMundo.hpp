@@ -50,30 +50,21 @@ public:
 			}
 		}
 	}
-	void incrementMundo3D(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){
-		//		cout << "original: " << ori.to_string() << endl;
-		//				cout << "---------------------------\n";
+	void incrementMundo3D(DisplayFile ori, DisplayFile & virt, vector<vector<double> >m){
 
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
-			ListaEnc<Coordenada>* pontos = obj.pontos();
-			Elemento<Coordenada>* it_pontos = pontos->getHead();
-			int pontosSize = pontos->getSize();
-			for(int j =0; j< pontosSize; j++){
-//				cout << pontos->getSize() << endl;
+			ListaEnc<Coordenada>& pontos = *obj.pontos();
+			for(int j =0; j< pontos.getSize(); j++){
 				cout << "entrou no for" << endl;
-				Coordenada *coord_real = pontos->posicaoMem(j);
-				cout << "porra 1" << endl;
+				Coordenada &coord_real = *pontos.posicaoMem(j);
 				Coordenada coord_virtual(1,1,1);
-				cout << "porra 2" << endl;
-				matrix mTeste = manipulaMtr->multiplicaMatriz(coord_real->getVector(),m);
-				cout << "porra 3" << endl;
+				matrix & merda = coord_real.getVector();
+				matrix mTeste = manipulaMtr->multiplicaMatriz(merda,m);
+				manipulaMtr->printaMatriz(mTeste);
 				coord_virtual.setVector(mTeste);
-				cout << "porra 4" << endl;
 				obj_virtual->adiciona(coord_virtual);
-				cout << "porra 5" << endl;
-//				cout << pontos->getSize() << endl;
 			}
 			cout << "saiu no for" << endl;
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
@@ -86,10 +77,10 @@ public:
 					dAux = curva->getRetasBezier(*pontos);
 				for(int i =0; i< dAux->getSize(); i++){
 					Objeto & obj= **dAux->posicaoMem(i);
-					virt->adiciona(&obj);
+					virt.adiciona(&obj);
 				}
 			}else{
-				virt->adicionaNoInicio(obj_virtual);
+				virt.adicionaNoInicio(obj_virtual);
 			}
 		}
 	}
@@ -98,8 +89,8 @@ public:
 		virt->destroiLista();
 		incrementMundo(ori, virt, m);
 	}
-	void fuckMundo3D(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){
-		virt->destroiLista();
+	void fuckMundo3D(DisplayFile ori, DisplayFile & virt, vector<vector<double> >m){
+		virt.destroiLista();
 		incrementMundo3D(ori, virt, m);
 	}
 
@@ -109,31 +100,14 @@ public:
 		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 
-		cout << "cosX" << cosX << endl;
-		cout << "senX" << senX << endl;
-
-
 		vector<vector<double> > m = manipulaMtr->getTranslacao3D(a);
-		cout << "translacao" << endl;
-		manipulaMtr->printaMatriz(m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
-		cout << "m" << endl;
-		manipulaMtr->printaMatriz(m);
-		cout << "fucking vector" << endl;
-		manipulaMtr->printaMatriz(novo_vpn.getVector());
-		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
-		cout << "fez algo em x" << endl;
-		manipulaMtr->printaMatriz(transf_vpn);
+//		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
+		vector<vector<double> > transf_vpn =manipulaMtr->multiplicaMatriz(m,m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
-		cout << "rotacao y" << endl;
-		manipulaMtr->printaMatriz(manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
-		cout << "sen" << transf_vpn[0][0] << endl;
-		cout << "cos" << transf_vpn[2][0] << endl;
-		cout << "rotacionou em y" << endl;
-		manipulaMtr->printaMatriz(m);
 
-		virt.destroiLista();
-//		incrementMundo3D(ori, virt, m);
+//		virt.destroiLista();
+		incrementMundo3D(ori, virt, m);
 		cout << "fudeu o mundo em 3D" << endl;
 	}
 };
