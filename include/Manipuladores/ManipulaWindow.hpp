@@ -36,6 +36,7 @@ public:
 		vector<vector<double> > m = manipulaMtr->getTranslacao(c);
 		transformaWindow(window, m);
 		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(window->getwCentro(), window));
+
 	}
 	void escalona(Window* window, Coordenada c){
 		window->setTamanho(c);
@@ -70,9 +71,10 @@ public:
 
 		DisplayFile outroDisp;
 		manipulaWrld->projecaoParalelaOrtogonal(window->getDisplay(), outroDisp, c, c1);
-		cout << "display after projection" << endl;
-		cout << outroDisp.to_string() << endl;
-		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+		//		cout << "display after projection" << endl;
+		//		cout << outroDisp.to_string() << endl;
+		//		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 
 	}
 
@@ -215,7 +217,7 @@ public:
 					gambiarraTudoDentro = false;
 
 				}else{
-//					cout << "dentro dentro" << endl;
+					//					cout << "dentro dentro" << endl;
 				}
 			}
 			else{
@@ -273,7 +275,7 @@ public:
 					it_pontos_window = pontos_window.posicaoMem(fuck1);
 					fuck1 = (fuck1+1) % pontos_window.getSize();
 					atual = *it_pontos_window;
-//					cout << "adicionou" << endl;
+					//					cout << "adicionou" << endl;
 					cout<< atual.getX() << ", " << atual.getY() << endl;
 					novo->adiciona(atual);
 

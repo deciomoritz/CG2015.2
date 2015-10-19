@@ -35,7 +35,7 @@ public:
 	void setVector(vector<vector<double> >novo){
 		ponto = novo;
 	}
-	vector<vector<double> > & getVector(){
+	vector<vector<double> >  getVector(){
 		return ponto;
 	}
 

@@ -59,7 +59,7 @@ public:
 			for(int j =0; j< pontos.getSize(); j++){
 				Coordenada &coord_real = *pontos.posicaoMem(j);
 				Coordenada coord_virtual(1,1,1);
-				matrix & merda = coord_real.getVector();
+				matrix  merda = coord_real.getVector();
 				matrix result = manipulaMtr->multiplicaMatriz(merda,m);
 				cout << "result" << endl;
 				manipulaMtr->printaMatriz(result);
@@ -95,16 +95,25 @@ public:
 
 	void projecaoParalelaOrtogonal(DisplayFile ori, DisplayFile & virt, Coordenada vrp, Coordenada vpn){
 		Coordenada a(-1*vrp.getX(),-1*vrp.getY(), -1*vrp.getZ());
-		Coordenada novo_vpn = a+vpn;
-		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
-		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
+		//promblema de memória com novo_vpn
+		vector<vector<double> > novo_vpn(4,vector<double>(1,0));
+		novo_vpn[0][0] = vpn.getX() - vrp.getX();
+		novo_vpn[1][0] = vpn.getY() - vrp.getY();
+		novo_vpn[2][0] = vpn.getZ() - vrp.getZ();
+		novo_vpn[3][0] = 1;
+				double cosX = novo_vpn[2][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
+				double senX = novo_vpn[1][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
+//		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
+//		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 
 		matrix m = manipulaMtr->getTranslacao3D(a);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
-		matrix transf_vpn =manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
-		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
+//		manipulaMtr->printaMatriz(m);
+		manipulaMtr->multiplicaMatriz(novo_vpn,m);
+//		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
+//		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
 
-		virt.destroiLista();
-		incrementMundo3D(ori, virt, m);
+//		virt.destroiLista();
+//		incrementMundo3D(ori, virt, m);
 	}
 };

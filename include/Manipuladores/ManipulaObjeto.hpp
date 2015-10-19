@@ -4,21 +4,30 @@ class ManipulaObjeto {
 private:
 	ManipulaMatriz *manipulador;
 public:
-	void transformaObjeto(Objeto* b, vector<vector<double> >transformada){
+	void transforma2DObjeto(Objeto* b, vector<vector<double> >transformada){
 		ListaEnc<Coordenada>* coordenadas = b->pontos();
 		for(int i=0; i<coordenadas->getSize(); i++){
 			Coordenada antiga = coordenadas->retiraDoInicio();
-			vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
+			vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.get2DVector(), transformada);
 			Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
 			coordenadas->adiciona(nova_c);
 		}
 	}
+	void transformaObjeto(Objeto* b, vector<vector<double> >transformada){
+			ListaEnc<Coordenada>* coordenadas = b->pontos();
+			for(int i=0; i<coordenadas->getSize(); i++){
+				Coordenada antiga = coordenadas->retiraDoInicio();
+				vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
+				Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
+				coordenadas->adiciona(nova_c);
+			}
+		}
 
 	ManipulaObjeto(){	manipulador = new ManipulaMatriz();}
 	~ManipulaObjeto(){ delete manipulador;	}
 	void translada(Objeto* obj, Coordenada c){
 		vector<vector<double> > m = manipulador->getTranslacao(c);
-		transformaObjeto(obj, m);
+		transforma2DObjeto(obj, m);
 
 	}
 	void translada3D(Objeto* obj, Coordenada c){
@@ -32,7 +41,7 @@ public:
 		vector<vector<double> > m = manipulador->getTranslacao(a);
 		m = manipulador->multiplicaMatriz(m, manipulador->getEscalonamento(c));
 		m = manipulador->multiplicaMatriz(m, manipulador->getTranslacao(centro));
-		transformaObjeto(obj, m);
+		transforma2DObjeto(obj, m);
 	}
 	void escalona3D(Objeto* obj, Coordenada c){
 		Coordenada centro = obj->getCentro();
@@ -51,7 +60,7 @@ public:
 		vector<vector<double> > m = manipulador->getTranslacao(a);
 		m = manipulador->multiplicaMatriz(m, manipulador->getRotacao(angulo));
 		m = manipulador->multiplicaMatriz(m, manipulador->getTranslacao(coord));
-		transformaObjeto(obj, m);
+		transforma2DObjeto(obj, m);
 	}
 	void rotacionaX(Objeto* obj, Coordenada coord, double angulo){
 		/* (0,0,1): rotaciona no centro do mundo
