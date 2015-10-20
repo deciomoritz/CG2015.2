@@ -206,6 +206,7 @@ public:
 		return rotacaoBase;
 	}
 	matrix multiplicaMatriz(matrix a, matrix b){
+		cout<<"fuck1"<<endl;
 		matrix result(b.size(), vector<double>(a[0].size(),0));
 //				for(int i=0;i<a[0].size();++i)
 //				{
@@ -216,12 +217,18 @@ public:
 //					}
 //				}
 //				return result;
-		for(int i=0;i<a.size();++i)
+		cout<<"fuck2"<<endl;
+		for(int i=0;i<a[0].size();++i)
 		{
 			for(int j=0;j<b.size();++j)
 			{
-				for(int k=0;k<a.size();++k)
+				for(int k=0;k<a.size();++k){
+					cout<<"fuck3"<<endl;
+					cout<<i<<endl;
+					cout<<j<<endl;
+					cout<<k<<endl;
 					result[j][i]+=(a[k][i]*b[j][k]);
+				}
 			}
 		}
 		return result;
