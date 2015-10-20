@@ -59,10 +59,7 @@ public:
 			for(int j =0; j< pontos.getSize(); j++){
 				Coordenada &coord_real = *pontos.posicaoMem(j);
 				Coordenada coord_virtual(1,1,1);
-				matrix  merda = coord_real.getVector();
-				matrix result = manipulaMtr->multiplicaMatriz(merda,m);
-				cout << "result" << endl;
-				manipulaMtr->printaMatriz(result);
+				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
 				coord_virtual.setVector(result);
 				obj_virtual->adiciona(coord_virtual);
 			}

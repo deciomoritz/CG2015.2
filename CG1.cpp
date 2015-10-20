@@ -267,7 +267,7 @@ extern "C" G_MODULE_EXPORT void on_left1_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(-1, 0, 0);
-	manipulaObjeto->translada(obj, coord);
+	manipulaObjeto->translada3D(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -281,7 +281,7 @@ extern "C" G_MODULE_EXPORT void on_right1_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(1, 0, 1);
-	manipulaObjeto->translada(obj, coord);
+	manipulaObjeto->translada3D(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -295,7 +295,7 @@ extern "C" G_MODULE_EXPORT void on_up1_clicked(GtkWidget* widget,
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
 	Coordenada coord(0, 1, 1);
-	manipulaObjeto->translada(obj, coord);
+	manipulaObjeto->translada3D(obj, coord);
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -307,12 +307,8 @@ extern "C" G_MODULE_EXPORT void on_down1_clicked(GtkWidget* widget,
 	string comando = gtk_entry_get_text(entry2);
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
-//	cout<<"obj da window"<<endl;
-//	cout<<obj->to_string()<<endl;
 	Coordenada coord(0, -1, 1);
-	manipulaObjeto->translada(obj, coord);
-//	cout<<"obj transladado"<<endl;
-//	cout<<obj->to_string()<<endl;
+	manipulaObjeto->translada3D(obj, coord);
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
 }
@@ -338,8 +334,9 @@ extern "C" G_MODULE_EXPORT void on_rotArb_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(atof(aux[1].c_str()), atof(aux[2].c_str()), 1);
-	manipulaObjeto->rotaciona(obj, coord, atof(aux[3].c_str()));
+	Coordenada coord(atof(aux[1].c_str()), atof(aux[2].c_str()), atof(aux[3].c_str()));
+	Coordenada coord2(atof(aux[4].c_str()), atof(aux[5].c_str()), atof(aux[6].c_str()));
+	manipulaObjeto->rotacionaEixo(obj, coord, coord2, atof(aux[7].c_str()));
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -352,8 +349,19 @@ extern "C" G_MODULE_EXPORT void on_rotObject_clicked(GtkWidget* widget,
 	vector<string> aux = separarParametros(comando);
 	Objeto* obj = window_m->getObjeto(aux[0]);
 
-	Coordenada coord(obj->getCentro().getX(), obj->getCentro().getY(), 1);
-	manipulaObjeto->rotaciona(obj, coord, atof(aux[1].c_str()));
+	Coordenada coord(obj->getCentro().getX(), obj->getCentro().getY(), obj->getCentro().getZ());
+
+	bool rotX = gtk_toggle_button_get_active(xAxis);
+	bool rotY = gtk_toggle_button_get_active(yAxis);
+	bool rotZ = gtk_toggle_button_get_active(zAxis);
+
+	if(rotX){
+		manipulaObjeto->rotacionaX(obj, coord, atof(aux[1].c_str()));
+	}else if(rotY){
+		manipulaObjeto->rotacionaY(obj, coord, atof(aux[1].c_str()));
+	}else if(rotZ){
+		manipulaObjeto->rotacionaZ(obj, coord, atof(aux[1].c_str()));
+	}
 
 	g_signal_connect(G_OBJECT(frame), "draw", G_CALLBACK (draw), NULL);
 	gtk_widget_queue_draw(drawingArea);
@@ -427,9 +435,26 @@ int main(int argc, char* argv[]) {
 	manipulaWindow = new ManipulaWindow();
 	manipulaMatriz = new ManipulaMatriz();
 
+	Coordenada c1(0,0,0);
+	Coordenada c2(10,0,0);
+	Coordenada c3(0,10,0);
+	Coordenada c4(0,0,10);
+
+	Objeto* retinhaX = new Objeto("retinhaX",Reta,false);
+	retinhaX->adiciona(c1);
+	retinhaX->adiciona(c2);
+	Objeto* retinhaY = new Objeto("retinhaY",Reta,false);
+	retinhaY->adiciona(c1);
+	retinhaY->adiciona(c3);
+	Objeto* retinhaZ = new Objeto("retinhaZ",Reta,false);
+	retinhaZ->adiciona(c1);
+	retinhaZ->adiciona(c4);
+
+	window_m->adicionaObjeto(retinhaX);
+	window_m->adicionaObjeto(retinhaY);
+	window_m->adicionaObjeto(retinhaZ);
+
 	//TESTE
-
-
 
 	//END TESTE
 	gtk_init(&argc, &argv);

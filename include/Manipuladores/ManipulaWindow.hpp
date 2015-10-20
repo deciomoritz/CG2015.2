@@ -74,7 +74,7 @@ public:
 		//		cout << "display after projection" << endl;
 		//		cout << outroDisp.to_string() << endl;
 		//		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
-		manipulaWrld->fuckMundo(window->getDisplay(), window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 
 	}
 

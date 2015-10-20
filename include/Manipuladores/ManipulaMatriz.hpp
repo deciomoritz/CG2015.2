@@ -182,7 +182,7 @@ public:
 		rotacaoBaseZ[0][1] = -sin(theta);
 		rotacaoBaseZ[1][0] = sin(theta);
 		rotacaoBaseZ[1][1] = cos(theta);
-		return rotacaoBase;
+		return rotacaoBaseZ;
 	}
 	matrix getRotacaoX(double sen, double cos){
 		rotacaoBaseX[1][1] = cos;
@@ -203,30 +203,15 @@ public:
 		rotacaoBaseZ[0][1] = -1*sen;
 		rotacaoBaseZ[1][0] = sen;
 		rotacaoBaseZ[1][1] = cos;
-		return rotacaoBase;
+		return rotacaoBaseZ;
 	}
 	matrix multiplicaMatriz(matrix a, matrix b){
-		cout<<"fuck1"<<endl;
 		matrix result(b.size(), vector<double>(a[0].size(),0));
-//				for(int i=0;i<a[0].size();++i)
-//				{
-//					for(int j=0;j<b.size();++j)
-//					{
-//						for(int k=0;k<a[0].size();++k)
-//							result[j][i]+=(a[k][i]*b[j][k]);
-//					}
-//				}
-//				return result;
-		cout<<"fuck2"<<endl;
 		for(int i=0;i<a[0].size();++i)
 		{
 			for(int j=0;j<b.size();++j)
 			{
 				for(int k=0;k<a.size();++k){
-					cout<<"fuck3"<<endl;
-					cout<<i<<endl;
-					cout<<j<<endl;
-					cout<<k<<endl;
 					result[j][i]+=(a[k][i]*b[j][k]);
 				}
 			}

@@ -94,6 +94,11 @@ public:
 		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoZ(angulo));
 		m = manipulador->multiplicaMatriz(m, manipulador->getTranslacao3D(coord));
 		transformaObjeto(obj, m);
+
+		cout << "matriz de rotação" << endl;
+		manipulador->printaMatriz(manipulador->getRotacaoZ(angulo));
+
+		cout << obj->to_string() << endl;
 	}
 	void rotacionaEixo(Objeto* obj, Coordenada coordA, Coordenada coordB, double angulo){
 		/* (0,0,1): rotaciona no centro do mundo
