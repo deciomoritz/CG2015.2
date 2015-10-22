@@ -1,7 +1,6 @@
 #include "../Window.hpp"
 #include "ManipulaMundo.hpp"
 
-
 class ManipulaWindow {
 
 private:

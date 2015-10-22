@@ -1,6 +1,7 @@
 #include "../DisplayFile.hpp"
 #include "ManipulaObjeto.hpp"
 #include "../Curva2D.hpp"
+#include "../Objeto3D.hpp"
 
 class ManipulaMundo {
 private:
