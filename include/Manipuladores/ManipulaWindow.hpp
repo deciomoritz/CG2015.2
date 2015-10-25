@@ -70,10 +70,10 @@ public:
 
 		DisplayFile outroDisp;
 		manipulaWrld->projecaoParalelaOrtogonal(window->getDisplay(), outroDisp, c, c1);
-		//		cout << "display after projection" << endl;
-		//		cout << outroDisp.to_string() << endl;
+//				cout << "display after projection" << endl;
+//				cout << outroDisp.to_string() << endl;
 		//		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
-		manipulaWrld->fuckMundo(outroDisp, window->getDisplay_virtual(), getTransformadaMundo(centro, window));
+		manipulaWrld->fuckMundo3D(outroDisp, *window->getDisplay_virtual(), getTransformadaMundo(centro, window));
 
 	}
 

@@ -26,6 +26,10 @@ public:
 
 	string to_string();
 
+	string to_string2();
+
+	Coordenada * contem(Coordenada coord);
+
 
 };
 

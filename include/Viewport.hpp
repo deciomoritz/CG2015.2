@@ -44,29 +44,38 @@ public:
 		multX = (vMax - vMin).getX();
 		multY = (vMax - vMin).getY();
 		// iterando lista de objetos
-		Elemento<Objeto*>* it_originalDisplay = originalDisplay.getHead();
 		for (int i = 0; i < originalDisplay.getSize(); i++) {
-			Objeto *novoObj = new Objeto((it_originalDisplay->getInfo())->nome(), it_originalDisplay->getInfo()->getTipo(), it_originalDisplay->getInfo()->isPreenchido());
-			ListaEnc<Coordenada>* coordenadas_obj = (it_originalDisplay->getInfo())->pontos();
-			Elemento<Coordenada>* it_coordenada = coordenadas_obj->getHead();
-			//iterando as coordenadas do objeto
-			for (int j = 0; j < coordenadas_obj->getSize(); j++) {
-				Coordenada atual = it_coordenada->getInfo();
-				//Transformacao
+			Objeto &obj = **originalDisplay.posicaoMem(i);
+			Objeto *novoObj = new Objeto(obj.getNome(),obj.getTipo(), obj.isPreenchido());
+			ListaEnc<Coordenada>* coordenadas_obj = obj.pontos();
+
+			ListaEnc<aresta> *arestas = obj.arestas();
+			cout << "num de arestas" << arestas->getSize() << endl;
+			for (int k = 0; k < arestas->getSize(); k++) {
+				aresta *a = arestas->posicaoMem(k);
+
+				Coordenada &c1 = *a->first;
+				Coordenada &c2 = *a->second;
+
 				double newX, newY, newZ;
-				//				newX = ((atual.getX() - w.getwMin().getX()) / divX) * multX;
-				//				newY = (1 - (atual.getY() - w.getwMin().getY()) / divY) * multY;
-				//Alterado para 2 devido ao processo de normalizacao das coordenadas do mundo: window=(-1,-1), (1,1)
-				newX = ((atual.getX() +1) / divX) * multX + vMin.getX();
-				newY = (1 - (atual.getY() +1) / divY) * multY + vMin.getY();
+
+				newX = ((c1.getX() +1) / divX) * multX + vMin.getX();
+				newY = (1 - (c1.getY() +1) / divY) * multY + vMin.getY();
 				newZ = 1;
-				//criando novo ponto
+
 				Coordenada* novoPonto = new Coordenada(newX, newY, newZ);
 				novoObj->adiciona(*novoPonto);
-				it_coordenada = it_coordenada->getProximo();
+
+				newX = ((c2.getX() +1) / divX) * multX + vMin.getX();
+				newY = (1 - (c2.getY() +1) / divY) * multY + vMin.getY();
+				newZ = 1;
+
+				Coordenada* novoPonto2 = new Coordenada(newX, newY, newZ);
+				novoObj->adiciona(*novoPonto);
+
+				novoObj->adiciona(novoPonto, novoPonto2);
 			}
 			novoDisplay.adicionaNoInicio(novoObj);
-			it_originalDisplay = it_originalDisplay->getProximo();
 		}
 		return novoDisplay;
 	}

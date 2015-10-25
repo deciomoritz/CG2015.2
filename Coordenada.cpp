@@ -23,5 +23,6 @@ Coordenada operator -(const Coordenada & a, const Coordenada & b){
 }
 
 bool operator ==(const Coordenada & a, const Coordenada & b){
-	return (a.ponto[0][0] == b.ponto[0][0] && a.ponto[1][0] == b.ponto[1][0]) && a.ponto[2][0] == b.ponto[2][0];
+	double threshold = 1.e-7;
+	return (a.ponto[0][0] - b.ponto[0][0] < threshold) && (a.ponto[1][0] - b.ponto[1][0] < threshold) && (a.ponto[2][0] - b.ponto[2][0] < threshold);
 }

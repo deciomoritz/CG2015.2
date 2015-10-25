@@ -7,6 +7,10 @@
 
 using namespace std;
 
+#include <utility>
+
+typedef pair<Coordenada*, Coordenada*> aresta;
+
 enum Tipo{ Ponto, Reta, Poligono, CurvaBezier, CurvaSpline};
 
 class Objeto {
@@ -16,6 +20,7 @@ protected:
 	ListaEnc<Coordenada> _pontos;
 	Tipo tipo;
 	bool preenchido;
+	ListaEnc<aresta> _arestas;
 
 public:
 	Objeto(){};
@@ -63,6 +68,14 @@ public:
 
 	void adiciona(const Coordenada & c){
 		_pontos.adiciona(c);
+	}
+
+	void adiciona(Coordenada * c1, Coordenada * c2){
+		_arestas.adiciona(make_pair(c1,c2));
+	}
+
+	ListaEnc<aresta> * arestas(){
+		return &_arestas;
 	}
 
 	string to_string();

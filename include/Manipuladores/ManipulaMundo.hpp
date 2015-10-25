@@ -1,7 +1,6 @@
 #include "../DisplayFile.hpp"
 #include "ManipulaObjeto.hpp"
 #include "../Curva2D.hpp"
-#include "../Objeto3D.hpp"
 
 class ManipulaMundo {
 private:
@@ -53,17 +52,37 @@ public:
 	}
 	void incrementMundo3D(DisplayFile ori, DisplayFile & virt, matrix m){
 
+		cout << ori.to_string2() << endl;
+
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
-			ListaEnc<Coordenada>& pontos = *obj.pontos();
-			for(int j =0; j< pontos.getSize(); j++){
-				Coordenada &coord_real = *pontos.posicaoMem(j);
-				Coordenada coord_virtual(1,1,1);
-				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
-				coord_virtual.setVector(result);
-				obj_virtual->adiciona(coord_virtual);
+			ListaEnc<aresta>& arestas = *obj.arestas();
+			for (int k = 0; k < arestas.getSize(); ++k) {
+				aresta *a = arestas.posicaoMem(k);
+
+				Coordenada &c1 = *a->first;
+				Coordenada &c2 = *a->second;
+
+				Coordenada *coord_virtual1 = new Coordenada(1,1,1);
+				matrix result = manipulaMtr->multiplicaMatriz(c1.getVector(),m);
+				coord_virtual1->setVector(result);
+				obj_virtual->adiciona(*coord_virtual1);
+
+				Coordenada *coord_virtual2 = new Coordenada(1,1,1);
+				result = manipulaMtr->multiplicaMatriz(c2.getVector(),m);
+				coord_virtual2->setVector(result);
+				obj_virtual->adiciona(*coord_virtual2);
+
+				obj_virtual->adiciona(coord_virtual1,coord_virtual2);
 			}
+//			for(int j =0; j< pontos.getSize(); j++){
+//				Coordenada &coord_real = *pontos.posicaoMem(j);
+//				Coordenada coord_virtual(1,1,1);
+//				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
+//				coord_virtual.setVector(result);
+//				obj_virtual->adiciona(coord_virtual);
+//			}
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
 				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
@@ -107,11 +126,11 @@ public:
 		matrix m = manipulaMtr->getTranslacao3D(a);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
 //		manipulaMtr->printaMatriz(m);
-		cout<<"---------------------------------"<<endl;
+//		cout<<"---------------------------------"<<endl;
 		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn,m);
 //		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
-		cout<<"fuck"<<endl;
+//		cout<<"fuck"<<endl;
 		virt.destroiLista();
 		incrementMundo3D(ori, virt, m);
 	}

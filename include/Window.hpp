@@ -60,12 +60,58 @@ public:
 		return &disp_virtual;
 	}
 
-	void adicionaObjeto(Objeto* obj) {
+	void adicionaObjeto(vector<string> aux, bool curva, bool isBezier, bool preenchido) {
+
+		Tipo tipo;
+		if(aux.size() == 4){
+			tipo = Ponto;
+		}else if(aux.size() == 7){
+			tipo = Reta;
+		}else if(curva){
+			if(isBezier)
+				tipo = CurvaBezier;
+			else
+				tipo = CurvaSpline;
+		}else{
+			tipo = Poligono;
+		}
+
+		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
+		Coordenada* coord1, *coord2;
+		for (int i = 1; i < aux.size() - 1; i += 6) {
+			coord1 = new Coordenada(atof(aux[i].c_str()),
+					atof(aux[i + 1].c_str()), atof(aux[i + 2].c_str()));
+			coord2 = new Coordenada(atof(aux[i + 3].c_str()),
+								atof(aux[i + 4].c_str()), atof(aux[i + 5].c_str()));
+			Coordenada * coordAux1 = contem(*coord1);
+			Coordenada * coordAux2 = contem(*coord2);
+			//nenhuma existe
+			if(!coordAux1 && !coordAux2){
+				coordAux1 = coord1;
+				coordAux2 = coord2;
+				obj->adiciona(*coord1);
+				obj->adiciona(*coord2);
+				//existe apenas uma
+			}else if(!coordAux1 && coordAux2){
+				obj->adiciona(*coord2);
+				coordAux2 = coord2;
+				//existe apenas uma
+			}else if(!coordAux2 && coordAux1){
+				obj->adiciona(*coord1);
+				coordAux1 = coord1;
+			}
+//			cout << "aresta" << coordAux1->getX() << coordAux1->getY() << coordAux1->getZ() << coordAux2->getX() << coordAux2->getY() << coordAux2->getZ() << endl;
+			obj->adiciona(coordAux1, coordAux2);
+		}
 		disp.adiciona(obj);
 	}
 
 	void adicionaVirtual(Objeto* obj) {
 		disp_virtual.adiciona(obj);
+	}
+
+	Coordenada * contem(Coordenada coord) {
+		return disp.contem(coord);
 	}
 
 	bool contem(string nomeDoObjeto) {
