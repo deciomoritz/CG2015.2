@@ -76,13 +76,13 @@ public:
 
 				obj_virtual->adiciona(coord_virtual1,coord_virtual2);
 			}
-//			for(int j =0; j< pontos.getSize(); j++){
-//				Coordenada &coord_real = *pontos.posicaoMem(j);
-//				Coordenada coord_virtual(1,1,1);
-//				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
-//				coord_virtual.setVector(result);
-//				obj_virtual->adiciona(coord_virtual);
-//			}
+			//			for(int j =0; j< pontos.getSize(); j++){
+			//				Coordenada &coord_real = *pontos.posicaoMem(j);
+			//				Coordenada coord_virtual(1,1,1);
+			//				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
+			//				coord_virtual.setVector(result);
+			//				obj_virtual->adiciona(coord_virtual);
+			//			}
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
 				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
@@ -118,19 +118,19 @@ public:
 		novo_vpn[1][0] = vpn.getY() - vrp.getY();
 		novo_vpn[2][0] = vpn.getZ() - vrp.getZ();
 		novo_vpn[3][0] = 1;
-				double cosX = novo_vpn[2][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
-				double senX = novo_vpn[1][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
-//		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
-//		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
+		double cosX = novo_vpn[2][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
+		double senX = novo_vpn[1][0]/(pow((pow(novo_vpn[1][0],2)+pow(novo_vpn[2][0],2)),0.5));
+		//		double cosX = novo_vpn.getZ()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
+		//		double senX = novo_vpn.getY()/(pow((pow(novo_vpn.getY(),2)+pow(novo_vpn.getZ(),2)),0.5));
 
 		matrix m = manipulaMtr->getTranslacao3D(a);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
-//		manipulaMtr->printaMatriz(m);
-//		cout<<"---------------------------------"<<endl;
+		//		manipulaMtr->printaMatriz(m);
+		//		cout<<"---------------------------------"<<endl;
 		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn,m);
-//		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
+		//		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
-//		cout<<"fuck"<<endl;
+		//		cout<<"fuck"<<endl;
 		virt.destroiLista();
 		incrementMundo3D(ori, virt, m);
 	}

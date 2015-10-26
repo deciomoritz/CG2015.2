@@ -14,14 +14,14 @@ public:
 		}
 	}
 	void transformaObjeto(Objeto* b, vector<vector<double> >transformada){
-			ListaEnc<Coordenada>* coordenadas = b->pontos();
-			for(int i=0; i<coordenadas->getSize(); i++){
-				Coordenada antiga = coordenadas->retiraDoInicio();
-				vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
-				Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
-				coordenadas->adiciona(nova_c);
-			}
+		ListaEnc<Coordenada>* coordenadas = b->pontos();
+		for(int i=0; i<coordenadas->getSize(); i++){
+			Coordenada antiga = coordenadas->retiraDoInicio();
+			vector<vector<double> > nova = manipulador->multiplicaMatriz(antiga.getVector(), transformada);
+			Coordenada nova_c(nova[0][0],nova[1][0],nova[2][0]);
+			coordenadas->adiciona(nova_c);
 		}
+	}
 
 	ManipulaObjeto(){	manipulador = new ManipulaMatriz();}
 	~ManipulaObjeto(){ delete manipulador;	}
@@ -112,10 +112,10 @@ public:
 
 		vector<vector<double> > m = manipulador->getTranslacao3D(a);
 		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoX(senX, cosX));
-		vector<vector<double> > transfNovoB =manipulador->multiplicaMatriz(m,novoB.getVector());
-		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoY(transfNovoB[0][0], transfNovoB[0][2]));
+		vector<vector<double> > transfNovoB =manipulador->multiplicaMatriz(novoB.getVector(), m);
+		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoY(transfNovoB[0][0], transfNovoB[2][0]));
 		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoZ(angulo));
-		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoY(-1*transfNovoB[0][0], -1*transfNovoB[0][2]));
+		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoY(-1*transfNovoB[0][0], -1*transfNovoB[2][0]));
 		m = manipulador->multiplicaMatriz(m, manipulador->getRotacaoX(-1*senX, -1*cosX));
 		m = manipulador->multiplicaMatriz(m, manipulador->getTranslacao3D(coordA));
 		transformaObjeto(obj, m);
