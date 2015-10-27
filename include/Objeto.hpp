@@ -42,6 +42,15 @@ public:
 		return tipo;
 	}
 
+	Coordenada * contem(Coordenada coord){
+		for (int j = 0; j < _pontos.getSize(); ++j) {
+			Coordenada *c = _pontos.posicaoMem(j);
+			if(coord == *c)
+				return c;
+		}
+		return NULL;
+	}
+
 	void setTipo(Tipo tipo){//usado na leitura de objetos de arquivo
 		this->tipo = tipo;
 	}

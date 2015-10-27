@@ -55,13 +55,31 @@ public:
 		for(int i =0; i< ori.getSize(); i++){
 			Objeto & obj= **ori.posicaoMem(i);
 			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
-			ListaEnc<Coordenada>& pontos = *obj.pontos();
-			for(int j =0; j< pontos.getSize(); j++){
-				Coordenada &coord_real = *pontos.posicaoMem(j);
-				Coordenada coord_virtual(1,1,1);
-				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
-				coord_virtual.setVector(result);
-				obj_virtual->adiciona(coord_virtual);
+			ListaEnc<aresta>& arestas = *obj.arestas();
+			for(int j =0; j< arestas.getSize(); j++){
+				cout << "num arestas" << arestas.getSize() << endl;
+				aresta *a = arestas.posicaoMem(j);
+
+				Coordenada *coord_real1 = a->first;
+				Coordenada *coord_virtual1 = new Coordenada(1,1,1);
+				matrix result = manipulaMtr->multiplicaMatriz(coord_real1->getVector(),m);
+				coord_virtual1->setVector(result);
+				if(!obj_virtual->contem(*coord_virtual1)){
+					cout << "adicionou" << endl;
+					obj_virtual->adiciona(*coord_virtual1);
+				}
+
+				Coordenada *coord_real2 = a->second;
+				Coordenada *coord_virtual2 = new Coordenada(1,1,1);
+				result = manipulaMtr->multiplicaMatriz(coord_real2->getVector(),m);
+				coord_virtual2->setVector(result);
+
+				if(!obj_virtual->contem(*coord_virtual2)){
+					cout << "adicionou" << endl;
+					obj_virtual->adiciona(*coord_virtual2);
+				}
+
+				obj_virtual->adiciona(coord_real1, coord_real2);
 			}
 			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
 				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
@@ -79,6 +97,7 @@ public:
 				virt.adicionaNoInicio(obj_virtual);
 			}
 		}
+		cout << virt.to_string() << endl;
 	}
 
 	void fuckMundo(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){

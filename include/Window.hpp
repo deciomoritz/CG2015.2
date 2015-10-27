@@ -48,8 +48,8 @@ public:
 			coord2 = new Coordenada(atof(aux[i + 3].c_str()),
 					atof(aux[i + 4].c_str()), atof(aux[i + 5].c_str()));
 
-			Coordenada * coordAux1 = contem(*coord1);
-			Coordenada * coordAux2 = contem(*coord2);
+			Coordenada * coordAux1 = obj->contem(*coord1);
+			Coordenada * coordAux2 = obj->contem(*coord2);
 			cout << coordAux1 << "   " << coordAux2 << endl;
 			//nenhuma existe
 			if(coordAux1 == NULL && coordAux2 == NULL){

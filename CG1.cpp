@@ -123,10 +123,11 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	//	cout << "fuck" << endl;
 	//	cout << window_m->getDisplay_virtual()->to_string() << endl;
 //	manipulaWindow->clipping(window_m);
-	displayFile = viewport_m->transformadaViewport(*window_m);
+//	displayFile = viewport_m->transformadaViewport(*window_m);
+	displayFile = *window_m->getDisplay_virtual();
 
-	//	cout << "shit" << endl;
-	//	cout << displayFile.to_string() << endl;
+		cout << "shit" << endl;
+		cout << displayFile.to_string() << endl;
 
 	clear(widget, cr, data);
 
@@ -135,18 +136,26 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_set_line_width(cr, 2);
 
-	Coordenada* primeiro;
-	Coordenada* ultimo;
 	for (int i = 0; i < displayFile.getSize(); ++i) {
 		Objeto & obj = **displayFile.posicaoMem(i);
 		if(obj.getNome().empty())
 			continue;
-		ListaEnc<Coordenada> & pontos = *obj.pontos();
+		ListaEnc<aresta> & arestas = *obj.arestas();
+
+		cout << "fucking num arestas" << arestas.getSize() << endl;
 
 		if(obj.getTipo() != Ponto){
-			for (int j = 0; j < pontos.getSize() ; ++j) {
-				Coordenada & coord1 = *pontos.posicaoMem(j);
-				cairo_line_to(cr, coord1.getX(), coord1.getY());
+			for (int j = 0; j < arestas.getSize() ; ++j) {
+
+				cout << "desenhando aresta" << endl;
+				aresta & a = *arestas.posicaoMem(j);
+
+				Coordenada * coord1 = a.first;
+				Coordenada * coord2 = a.second;
+				cairo_line_to(cr, coord1->getX(), coord1->getY());
+				cairo_stroke(cr);
+				cairo_line_to(cr, coord2->getX(), coord2->getY());
+				cairo_stroke(cr);
 			}
 			cairo_close_path(cr);
 			if(obj.isPreenchido()){
@@ -156,7 +165,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 				cairo_stroke(cr);
 			}
 		}else{
-			Coordenada & coord = *pontos.posicaoMem(0);
+			Coordenada & coord = *obj.pontos()->posicaoMem(0);
 			cairo_rectangle(cr,coord.getX(), coord.getY(),1,1);
 			cairo_close_path(cr);
 			cairo_stroke_preserve(cr);
