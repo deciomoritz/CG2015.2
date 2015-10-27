@@ -97,14 +97,7 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 	}
 
 	if (!window_m->contem(aux[0])) {
-		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
-		Coordenada* coord;
-		for (int i = 1; i < aux.size() - 1; i += 3) {
-			coord = new Coordenada(atof(aux[i].c_str()),
-					atof(aux[i + 1].c_str()), atof(aux[i + 2].c_str()));
-			obj->adiciona(*coord);
-		}
-		window_m->adicionaObjeto(obj);
+		window_m->adicionaObjeto(aux, curva, isBezier, preenchido);
 		gtk_text_buffer_set_text(buffer,
 				window_m->getDisplay().to_string().c_str(), -1);
 	}
@@ -123,17 +116,17 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
 	editDisplayFile(widget, cr, data);
 
-//	cout << "hey" << endl;
-//	cout << window_m->getDisplay().to_string() << endl;
+	//	cout << "hey" << endl;
+	//	cout << window_m->getDisplay().to_string() << endl;
 	manipulaWindow->refresh3D(window_m);
-//	manipulaWindow->refresh(window_m);
-//	cout << "fuck" << endl;
-//	cout << window_m->getDisplay_virtual()->to_string() << endl;
-	manipulaWindow->clipping(window_m);
+	//	manipulaWindow->refresh(window_m);
+	//	cout << "fuck" << endl;
+	//	cout << window_m->getDisplay_virtual()->to_string() << endl;
+//	manipulaWindow->clipping(window_m);
 	displayFile = viewport_m->transformadaViewport(*window_m);
 
-//	cout << "shit" << endl;
-//	cout << displayFile.to_string() << endl;
+	//	cout << "shit" << endl;
+	//	cout << displayFile.to_string() << endl;
 
 	clear(widget, cr, data);
 
@@ -171,7 +164,7 @@ static gboolean draw2(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		}
 	}
 
-//________________________________________________________________________________________
+	//________________________________________________________________________________________
 
 	Coordenada* min = &viewport_m->getVMin();
 	Coordenada* max = &viewport_m->getVMax();
@@ -435,24 +428,24 @@ int main(int argc, char* argv[]) {
 	manipulaWindow = new ManipulaWindow();
 	manipulaMatriz = new ManipulaMatriz();
 
-	Coordenada c1(0,0,0);
-	Coordenada c2(10,0,0);
-	Coordenada c3(0,10,0);
-	Coordenada c4(0,0,10);
-
-	Objeto* retinhaX = new Objeto("retinhaX",Reta,false);
-	retinhaX->adiciona(c1);
-	retinhaX->adiciona(c2);
-	Objeto* retinhaY = new Objeto("retinhaY",Reta,false);
-	retinhaY->adiciona(c1);
-	retinhaY->adiciona(c3);
-	Objeto* retinhaZ = new Objeto("retinhaZ",Reta,false);
-	retinhaZ->adiciona(c1);
-	retinhaZ->adiciona(c4);
-
-	window_m->adicionaObjeto(retinhaX);
-	window_m->adicionaObjeto(retinhaY);
-	window_m->adicionaObjeto(retinhaZ);
+//	Coordenada c1(0,0,0);
+//	Coordenada c2(10,0,0);
+//	Coordenada c3(0,10,0);
+//	Coordenada c4(0,0,10);
+//
+//	Objeto* retinhaX = new Objeto("retinhaX",Reta,false);
+//	retinhaX->adiciona(c1);
+//	retinhaX->adiciona(c2);
+//	Objeto* retinhaY = new Objeto("retinhaY",Reta,false);
+//	retinhaY->adiciona(c1);
+//	retinhaY->adiciona(c3);
+//	Objeto* retinhaZ = new Objeto("retinhaZ",Reta,false);
+//	retinhaZ->adiciona(c1);
+//	retinhaZ->adiciona(c4);
+//
+//	window_m->adicionaObjeto(retinhaX);
+//	window_m->adicionaObjeto(retinhaY);
+//	window_m->adicionaObjeto(retinhaZ);
 
 	//TESTE
 

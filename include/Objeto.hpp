@@ -5,8 +5,11 @@
 #include "Coordenada.hpp"
 #include "ListaEnc.hpp"
 
+#include <utility>
+
 using namespace std;
 
+typedef pair<Coordenada*, Coordenada*> aresta;
 
 enum Tipo{ Ponto, Reta, Poligono, CurvaBezier, CurvaSpline};
 
@@ -17,6 +20,7 @@ protected:
 	ListaEnc<Coordenada> _pontos;
 	Tipo tipo;
 	bool preenchido;
+	ListaEnc<aresta> _arestas;
 
 public:
 	Objeto(){};
@@ -55,8 +59,16 @@ public:
 	}
 
 	string getNome(){
-			return _nome;
-		}
+		return _nome;
+	}
+
+	void adiciona(Coordenada * c1, Coordenada * c2){
+		_arestas.adiciona(make_pair(c1,c2));
+	}
+
+	ListaEnc<aresta> * arestas(){
+		return &_arestas;
+	}
 
 	ListaEnc<Coordenada>* pontos(){
 		return &_pontos;

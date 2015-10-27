@@ -106,11 +106,9 @@ public:
 		matrix m = manipulaMtr->getTranslacao3D(a);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoX(senX, cosX));
 //		manipulaMtr->printaMatriz(m);
-		cout<<"---------------------------------"<<endl;
 		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn,m);
 //		matrix transf_vpn = manipulaMtr->multiplicaMatriz(novo_vpn.getVector(),m);
 		m = manipulaMtr->multiplicaMatriz(m, manipulaMtr->getRotacaoY(transf_vpn[0][0], transf_vpn[2][0]));
-		cout<<"fuck"<<endl;
 		virt.destroiLista();
 		incrementMundo3D(ori, virt, m);
 	}
