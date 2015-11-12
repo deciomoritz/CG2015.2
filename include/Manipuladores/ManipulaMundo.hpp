@@ -52,53 +52,55 @@ public:
 	}
 	void incrementMundo3D(DisplayFile ori, DisplayFile & virt, matrix m){
 
-		for(int i =0; i< ori.getSize(); i++){
-			Objeto & obj= **ori.posicaoMem(i);
-			Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
-			ListaEnc<aresta>& arestas = *obj.arestas();
-			for(int j =0; j< arestas.getSize(); j++){
-				cout << "num arestas" << arestas.getSize() << endl;
-				aresta *a = arestas.posicaoMem(j);
+			cout << ori.to_string2() << endl;
 
-				Coordenada *coord_real1 = a->first;
-				Coordenada *coord_virtual1 = new Coordenada(1,1,1);
-				matrix result = manipulaMtr->multiplicaMatriz(coord_real1->getVector(),m);
-				coord_virtual1->setVector(result);
-				if(!obj_virtual->contem(*coord_virtual1)){
-					cout << "adicionou" << endl;
+			for(int i =0; i< ori.getSize(); i++){
+				Objeto & obj= **ori.posicaoMem(i);
+				Objeto* obj_virtual = new Objeto(obj.getNome(), obj.getTipo(), obj.isPreenchido());
+				ListaEnc<aresta>& arestas = *obj.arestas();
+				for (int k = 0; k < arestas.getSize(); ++k) {
+					aresta *a = arestas.posicaoMem(k);
+
+					Coordenada &c1 = *a->first;
+					Coordenada &c2 = *a->second;
+
+					Coordenada *coord_virtual1 = new Coordenada(1,1,1);
+					matrix result = manipulaMtr->multiplicaMatriz(c1.getVector(),m);
+					coord_virtual1->setVector(result);
 					obj_virtual->adiciona(*coord_virtual1);
-				}
 
-				Coordenada *coord_real2 = a->second;
-				Coordenada *coord_virtual2 = new Coordenada(1,1,1);
-				result = manipulaMtr->multiplicaMatriz(coord_real2->getVector(),m);
-				coord_virtual2->setVector(result);
-
-				if(!obj_virtual->contem(*coord_virtual2)){
-					cout << "adicionou" << endl;
+					Coordenada *coord_virtual2 = new Coordenada(1,1,1);
+					result = manipulaMtr->multiplicaMatriz(c2.getVector(),m);
+					coord_virtual2->setVector(result);
 					obj_virtual->adiciona(*coord_virtual2);
-				}
 
-				obj_virtual->adiciona(coord_real1, coord_real2);
-			}
-			if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
-				Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
-				ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
-				DisplayFile * dAux;
-				if(obj.getTipo()==CurvaSpline)
-					dAux = curva->getRetasSpline(*pontos);
-				else
-					dAux = curva->getRetasBezier(*pontos);
-				for(int i =0; i< dAux->getSize(); i++){
-					Objeto & obj= **dAux->posicaoMem(i);
-					virt.adiciona(&obj);
+					obj_virtual->adiciona(coord_virtual1,coord_virtual2);
 				}
-			}else{
-				virt.adicionaNoInicio(obj_virtual);
+				//			for(int j =0; j< pontos.getSize(); j++){
+				//				Coordenada &coord_real = *pontos.posicaoMem(j);
+				//				Coordenada coord_virtual(1,1,1);
+				//				matrix result = manipulaMtr->multiplicaMatriz(coord_real.getVector(),m);
+				//				coord_virtual.setVector(result);
+				//				obj_virtual->adiciona(coord_virtual);
+				//			}
+				if(obj.getTipo()==CurvaSpline || obj.getTipo()==CurvaBezier){
+					Curva2D* curva = dynamic_cast<Curva2D*>(&obj);
+					ListaEnc<Coordenada>* pontos = obj_virtual->pontos();
+					DisplayFile * dAux;
+					if(obj.getTipo()==CurvaSpline)
+						dAux = curva->getRetasSpline(*pontos);
+					else
+						dAux = curva->getRetasBezier(*pontos);
+					for(int i =0; i< dAux->getSize(); i++){
+						Objeto & obj= **dAux->posicaoMem(i);
+						virt.adiciona(&obj);
+					}
+				}else{
+					virt.adicionaNoInicio(obj_virtual);
+				}
 			}
 		}
-		cout << virt.to_string() << endl;
-	}
+
 
 	void fuckMundo(DisplayFile ori, DisplayFile *virt, vector<vector<double> >m){
 		virt->destroiLista();

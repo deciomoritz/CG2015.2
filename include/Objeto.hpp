@@ -11,7 +11,7 @@ using namespace std;
 
 typedef pair<Coordenada*, Coordenada*> aresta;
 
-enum Tipo{ Ponto, Reta, Poligono, CurvaBezier, CurvaSpline};
+enum Tipo{ Ponto, Reta, Poligono, CurvaBezier, CurvaSpline, Solido};
 
 class Objeto {
 
@@ -67,6 +67,17 @@ public:
 		_nome = nome;
 	}
 
+	ListaEnc<Objeto*> getRetas(){
+		ListaEnc<Objeto*> retas;
+		for(int i =0; i<_arestas.getSize(); i++){
+			aresta* a = _arestas.posicaoMem(i);
+			Objeto* novo = new Objeto(" ", Reta, preenchido);
+			novo->adiciona(*a->first);
+			novo->adiciona(*a->second);
+			retas.adiciona(novo);
+		}
+		return retas;
+	}
 	string getNome(){
 		return _nome;
 	}
