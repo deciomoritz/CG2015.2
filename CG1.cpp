@@ -440,19 +440,19 @@ int main(int argc, char* argv[]) {
 	Coordenada c3(0,10,0);
 	Coordenada c4(0,0,10);
 
-	Objeto* retinhaX = new Objeto("retinhaX",Reta,false);
-	retinhaX->adiciona(c1);
-	retinhaX->adiciona(c2);
-	Objeto* retinhaY = new Objeto("retinhaY",Reta,false);
-	retinhaY->adiciona(c1);
-	retinhaY->adiciona(c3);
-	Objeto* retinhaZ = new Objeto("retinhaZ",Reta,false);
-	retinhaZ->adiciona(c1);
-	retinhaZ->adiciona(c4);
-
-	window_m->adicionaObjeto(retinhaX);
-	window_m->adicionaObjeto(retinhaY);
-	window_m->adicionaObjeto(retinhaZ);
+//	Objeto* retinhaX = new Objeto("retinhaX",Reta,false);
+//	retinhaX->adiciona(c1);
+//	retinhaX->adiciona(c2);
+//	Objeto* retinhaY = new Objeto("retinhaY",Reta,false);
+//	retinhaY->adiciona(c1);
+//	retinhaY->adiciona(c3);
+//	Objeto* retinhaZ = new Objeto("retinhaZ",Reta,false);
+//	retinhaZ->adiciona(c1);
+//	retinhaZ->adiciona(c4);
+//
+//	window_m->adicionaObjeto(retinhaX);
+//	window_m->adicionaObjeto(retinhaY);
+//	window_m->adicionaObjeto(retinhaZ);
 
 	//TESTE
 

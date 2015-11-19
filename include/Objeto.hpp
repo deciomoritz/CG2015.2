@@ -50,6 +50,10 @@ public:
 		return _nome;
 	}
 
+	void setPreenchido(bool preenchi){
+		preenchido = preenchi;
+	}
+
 	void setNome(string nome){
 		_nome = nome;
 	}

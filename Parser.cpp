@@ -46,30 +46,37 @@ DisplayFile * Parser::read(string path) {
 		Objeto * obj;
 		while (getline(file, line)) {
 			Coordenada * coord;
+			cout << "uma linha" << endl;
 			if(!line.find("#")){
 				obj = new Objeto();
 				string nome = line.erase(0,1);
 				nome = split(nome," ").front();
+				cout << nome << endl;
+//				if(split(nome," ").back().compare("1") == 0){
+//				obj->setPreenchido(true);
+//				}else{
+//					obj->setPreenchido(true);
+//				}
 				obj->setNome(nome);
 				continue;
 			}else if(!line.find("v")){
 				vector<string> aux = split(line," ");
 				Tipo tipo;
-				if(aux.size() == 3){
+				if(aux.size() == 4){
 					tipo = Ponto;
-				}else if(aux.size() == 5){
+				}else if(aux.size() == 7){
 					tipo = Reta;
 				}else{
 					tipo = Poligono;
 				}
 				obj->setTipo(tipo);
 				if(tipo != Ponto){
-					for (int i = 1; i < aux.size() - 1; i += 2) {
-						coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), 1);
+					for (int i = 1; i < aux.size() - 1; i += 3) {
+						coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), atoi(aux[i + 2].c_str()));
 						obj->adiciona(*coord);
 					}
 				}else{
-					coord = new Coordenada(atoi(aux[1].c_str()), atoi(aux[2].c_str()), 1);
+					coord = new Coordenada(atoi(aux[1].c_str()), atoi(aux[2].c_str()), atoi(aux[3].c_str()));
 					obj->adiciona(*coord);
 				}
 			}else{
@@ -79,7 +86,7 @@ DisplayFile * Parser::read(string path) {
 		}
 		file.close();
 	}
-	displayFile->retira();
+//	displayFile->retira();
 	return displayFile;
 }
 
