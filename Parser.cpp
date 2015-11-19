@@ -42,21 +42,22 @@ DisplayFile * Parser::read(string path) {
 	string line;
 	ifstream file(path);
 	DisplayFile * displayFile = new DisplayFile();
+	bool curva = false;
+	bool bezier = false;
 	if (file.is_open()) {
 		Objeto * obj;
 		while (getline(file, line)) {
 			Coordenada * coord;
-			cout << "uma linha" << endl;
 			if(!line.find("#")){
 				obj = new Objeto();
 				string nome = line.erase(0,1);
 				nome = split(nome," ").front();
-				cout << nome << endl;
-//				if(split(nome," ").back().compare("1") == 0){
-//				obj->setPreenchido(true);
-//				}else{
-//					obj->setPreenchido(true);
-//				}
+				cout << split(line," ")[1] << endl;
+				obj->setPreenchido(atoi(split(line," ")[1].c_str()));
+				curva = atoi(split(line," ")[2].c_str()) > 0;
+				bezier = atoi(split(line," ")[2].c_str()) > 1;
+				cout << "bezier " << bezier << endl;
+				cout << "curva" << curva << endl;
 				obj->setNome(nome);
 				continue;
 			}else if(!line.find("v")){
@@ -66,11 +67,25 @@ DisplayFile * Parser::read(string path) {
 					tipo = Ponto;
 				}else if(aux.size() == 7){
 					tipo = Reta;
+				}else if(curva){
+					if(bezier){
+						tipo = CurvaBezier;
+					}else{
+						tipo = CurvaSpline;
+					}
 				}else{
 					tipo = Poligono;
 				}
+
 				obj->setTipo(tipo);
-				if(tipo != Ponto){
+				cout << "tipo" << tipo << endl;
+				if(curva){
+					for (int i = 1; i < aux.size() - 1; i += 2) {
+						coord = new Coordenada(atof(aux[i].c_str()), atof(aux[i + 1].c_str()), 1);
+						obj->adiciona(*coord);
+					}
+				}else if(tipo != Ponto){
+					cout << "oi" << endl;
 					for (int i = 1; i < aux.size() - 1; i += 3) {
 						coord = new Coordenada(atoi(aux[i].c_str()), atoi(aux[i + 1].c_str()), atoi(aux[i + 2].c_str()));
 						obj->adiciona(*coord);

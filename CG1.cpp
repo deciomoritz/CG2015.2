@@ -96,17 +96,33 @@ static gboolean editDisplayFile(GtkWidget *widget, cairo_t *cr, gpointer data) {
 		tipo = Poligono;
 	}
 
-	if (!window_m->contem(aux[0])) {
-		Objeto* obj = new Objeto(aux[0], tipo, preenchido);
-		Coordenada* coord;
-		for (int i = 1; i < aux.size() - 1; i += 3) {
-			coord = new Coordenada(atof(aux[i].c_str()),
-					atof(aux[i + 1].c_str()), atof(aux[i + 2].c_str()));
-			obj->adiciona(*coord);
+	if(curva){
+		if (!window_m->contem(aux[0])) {
+				Objeto* obj = new Objeto(aux[0], tipo, preenchido);
+				Coordenada* coord;
+				for (int i = 1; i < aux.size() - 1; i += 2) {
+					coord = new Coordenada(atof(aux[i].c_str()),
+							atof(aux[i + 1].c_str()), 1);
+					obj->adiciona(*coord);
+				}
+				window_m->adicionaObjeto(obj);
+				gtk_text_buffer_set_text(buffer,
+						window_m->getDisplay().to_string().c_str(), -1);
+			}
+	}else{
+
+		if (!window_m->contem(aux[0])) {
+			Objeto* obj = new Objeto(aux[0], tipo, preenchido);
+			Coordenada* coord;
+			for (int i = 1; i < aux.size() - 1; i += 3) {
+				coord = new Coordenada(atof(aux[i].c_str()),
+						atof(aux[i + 1].c_str()), atof(aux[i + 2].c_str()));
+				obj->adiciona(*coord);
+			}
+			window_m->adicionaObjeto(obj);
+			gtk_text_buffer_set_text(buffer,
+					window_m->getDisplay().to_string().c_str(), -1);
 		}
-		window_m->adicionaObjeto(obj);
-		gtk_text_buffer_set_text(buffer,
-				window_m->getDisplay().to_string().c_str(), -1);
 	}
 	return FALSE;
 }
